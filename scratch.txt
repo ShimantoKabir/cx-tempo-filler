@@ -1,0 +1,6 @@
+moudle search: input[data-testid="search-vms"] then type "hero pov"
+hero pov moudle: div[data-testid="module-explorer-id"] 
+    text content should be: HeroPov
+    then click 3 parent up
+
+then click: button[type="button"] text content should be: Select Module

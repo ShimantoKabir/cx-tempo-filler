@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "CX Tempo Page Filler",
+  "version": "1.0.0",
+  "description": "Fills the Page Selection form on CX Tempo (device type + page ID) to speed up repetitive brief entry.",
+  "permissions": ["tabs"],
+  "host_permissions": ["https://v2.tempo.cxtools.walmart.com/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://v2.tempo.cxtools.walmart.com/*"],
+      "js": ["helper.js", "desktop-module-container.js", "page-id-founder.js", "init.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
