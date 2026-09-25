@@ -4,3 +4,8 @@ hero pov moudle: div[data-testid="module-explorer-id"]
     then click 3 parent up
 
 then click: button[type="button"] text content should be: Select Module
+
+
+moudle name: input[id="../name"]
+
+schedule: input[value="startImmediate"], input[value="endIndefinite"], input[min="0"]
