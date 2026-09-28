@@ -1,11 +1,157 @@
-moudle search: input[data-testid="search-vms"] then type "hero pov"
-hero pov moudle: div[data-testid="module-explorer-id"] 
-    text content should be: HeroPov
-    then click 3 parent up
+after click select module a loading showing: div[data-focus-lock-disabled="false"]
+need to observe when this element gone from the page only then go for next execution
 
-then click: button[type="button"] text content should be: Select Module
+create a new file skinny-banner.js
+run function show take deviceType: web/app
+banner-type: image-and-text/text-only
+folow instuction in screatch.txt file
+it will start execution after moudle finder js finshed.
+all input value shoud take from a json file
+
+skinny banner web
+==================
+module name: input[id="../name"] => image+text and text-only both
+skinny banner type selection box: button[data-e2eid="bannerType"] 
+options: button[data-e2eid="bannerType"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "POV" => image+text banner
+    "Skinny" => text-only banner
+
+banner height: input[data-e2eid="desktopBannerHeight"]
+    for image+text height should be: 220
+    for text-only height should be: 100
+
+only for image+text skinny banner: [
+    en desktop banner search box opener button: button[data-e2eid="bannerImage-dropdown-button"]
+    en desktop image search text: input[data-e2eid="bannerImage-dropdown-input"] placeholder="Search"
+    en search button: button[data-e2eid="bannerImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="bannerImage-alt-text"]
+
+    fr desktop banner search box opener button: button[data-e2eid="fr_bannerImage-dropdown-button"]
+    fr desktop image search text: input[data-e2eid="fr_bannerImage-dropdown-input"] placeholder="Search"
+    fr search button: button[data-e2eid="fr_bannerImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="fr_bannerImage-alt-text"]
+
+    en mobile banner search box opener button button: button[data-e2eid="mobileImage-dropdown-button"]
+    en mobile image search text: input[data-e2eid="mobileImage-dropdown-input"] placeholder="Search"
+    en search button: button[data-e2eid="mobileImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="mobileImage-alt-text"]
+
+    fr mobile banner search box opener button button fr: button[data-e2eid="fr_mobileImage-dropdown-button"]
+    fr mobile image search text: input[data-e2eid="fr_mobileImage-dropdown-input"] placeholder="Search"
+    fr search button: button[data-e2eid="fr_mobileImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="fr_mobileImage-alt-text"]
+]
+
+banner heading: image+text and text-only both
+    add button: div[data-e2eid="heading-left-nav-Heading details-add-button"]
+    en heading: input[data-e2eid="heading-heading-0-title"]
+        max character: 40
+    fr heading: input[data-e2eid="heading-heading-0-fr_title"]
+        max character: 40 
+    font color: input[data-e2eid="heading-heading-0-fontColor"]
+        max character: 6
+
+banner sub-heading: image+text
+    add button: div[data-e2eid="subHeading-left-nav-Sub Heading details-add-button"]
+    en sub heading: input[data-e2eid="subHeading-subHeading-0-title"]
+        max character: 40
+    fr sub heading: input[data-e2eid="subHeading-subHeading-0-fr_title"]
+        max character: 40 
+    font color: input[data-e2eid="subHeading-subHeading-0-fontColor"]
+        max character: 6
+
+banner cta: image+text and text-only both
+    add button: div[data-e2eid="bannerCta-left-nav-Banner CTA-add-button"]
+    en link text: input[data-e2eid="bannerCta-bannerCta-0-ctaLink-clickable-el"]
+    en link value: textarea[data-e2eid="bannerCta-bannerCta-0-ctaLink-url-link"]
+
+    en link text: input[data-e2eid="bannerCta-bannerCta-0-fr_ctaLink-clickable-el"]
+    fr link value: textarea[data-e2eid="bannerCta-bannerCta-0-fr_ctaLink-url-link"]
+    
+    text color: input[data-e2eid="bannerCta-bannerCta-0-textColor"]
+
+save button: 
+    ask permission before click save button
+    button[type="button"] inner html should be "SAVE"
 
 
-moudle name: input[id="../name"]
+skinny banner app
+==================
+module name: input[id="../name"] => image+text and text-only both
+skinny banner type selection box: button[data-e2eid="campaigns-campaigns-0-bannerType"] 
+options: button[data-e2eid="campaigns-campaigns-0-bannerType"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "POV" => image+text banner
+    "Skinny" => text-only banner
 
-schedule: input[value="startImmediate"], input[value="endIndefinite"], input[min="0"]
+banner height: input[data-e2eid="campaigns-campaigns-0-bannerHeight"]
+    for image+text height should be: 220
+    for text-only height should be: 100
+
+only for image+text skinny banner: [
+    en banner search box opener button: button[data-e2eid="campaigns-campaigns-0-image-dropdown-button"]
+    en image search text: input[data-e2eid="campaigns-campaigns-0-image-dropdown-input"] placeholder="Search"
+    en search button: button[data-e2eid="campaigns-campaigns-0-image-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text fr: input[data-e2eid="campaigns-campaigns-0-image-alt-text"]
+
+    fr banner search box opener button: button[data-e2eid="campaigns-campaigns-0-fr_image-dropdown-button"]
+    fr image search text: input[data-e2eid="campaigns-campaigns-0-fr_image-dropdown-input"] placeholder="Search"
+    fr search button: button[data-e2eid="campaigns-campaigns-0-fr_image-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text fr: input[data-e2eid="campaigns-campaigns-0-fr_image-alt-text"]
+]
+
+banner heading: image+text and text-only both
+    add button: button.add-group-button-right inner HTML should "HEADING"
+    en heading: div[id="heading"] input[data-e2eid="campaigns-campaigns-0-text"]
+        max character: 115
+    fr heading: div[id="heading"] input[data-e2eid="campaigns-campaigns-0-fr_text"]
+        max character: 115 
+    font color: div[id="heading"] input[data-e2eid="campaigns-campaigns-0-textColor"]
+        max character: 6
+
+banner sub-heading: image+text
+    add button: button.add-group-button-right inner HTML should "SUB-HEADING"
+    en heading: div[id="subHeading"] input[data-e2eid="campaigns-campaigns-0-text"]
+        max character: 100
+    fr heading: div[id="subHeading"] input[data-e2eid="campaigns-campaigns-0-fr_text"]
+        max character: 100
+    font color: div[id="subHeading"] input[data-e2eid="campaigns-campaigns-0-textColor"]
+        max character: 6
+
+banner cta: image+text and text-only both
+    add button: button.add-group-button-right inner HTML should "BANNER CTA"
+
+    en link text: input[data-e2eid="campaigns-campaigns-0-ctaLink-clickable-el"]
+    en link value: textarea[data-e2eid="campaigns-campaigns-0-ctaLink-url-link"]
+
+    fr link text: input[data-e2eid="campaigns-campaigns-0-fr_ctaLink-clickable-el"]
+    fr link value: textarea[data-e2eid="campaigns-campaigns-0-fr_ctaLink-url-link"]
+    
+    text color: div[id="bannerCta,0"] input[data-e2eid="campaigns-campaigns-0-textColor"]
+
+save button: 
+    ask permission before click save button
+    button[type="button"] inner html should includes "SAVE"
+
+
+
+    
+
+
+
+
+
+
+    
+
+
+
+
+

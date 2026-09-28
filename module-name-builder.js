@@ -32,7 +32,7 @@ class ModuleNameBuilder {
    * Generates a single Tempo CMS module name.
    * @param {string} brandName - The name of the brand page (e.g., "KCC PUP Silver")
    * @param {string} moduleType - Kebab-case module key, e.g. "hero-pov"
-   * @param {string} deviceType - "mobile" or "desktop"; mobile prepends "App "
+   * @param {string} deviceType - "app" or "web"; app prepends "App "
    * @param {Object} options - Optional parameters (custom week, year, NxM grid layout)
    */
   static generateTempoModuleName = (brandName, moduleType, deviceType, options = {}) => {
@@ -45,7 +45,7 @@ class ModuleNameBuilder {
     const week = options.week || ModuleNameBuilder.getISOWeekNumber(today);
     const year = options.year || today.getFullYear();
     const gridLayout = options.gridLayout || "2x6";
-    const prefix = deviceType === 'mobile' ? 'App ' : '';
+    const prefix = deviceType === 'app' ? 'App ' : '';
     const timeSuffix = `Week ${week} ${year}`;
 
     return template({ brandName, prefix, timeSuffix, gridLayout });

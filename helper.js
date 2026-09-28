@@ -32,6 +32,26 @@ class Helper {
     });
   };
 
+  static waitForElementGone = (selector, timeout = 10000) => {
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(selector);
+      if (!existing) return resolve();
+
+      const observer = new MutationObserver(() => {
+        if (!document.querySelector(selector)) {
+          observer.disconnect();
+          resolve();
+        }
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+
+      setTimeout(() => {
+        observer.disconnect();
+        reject(new Error('Timed out waiting for element to disappear: ' + selector));
+      }, timeout);
+    });
+  };
+
   static waitForTextMatch = (selector, text, timeout = 10000) => {
     return new Promise((resolve, reject) => {
       let interval;

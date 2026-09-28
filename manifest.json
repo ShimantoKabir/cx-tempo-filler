@@ -14,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["https://v2.tempo.cxtools.walmart.com/*"],
-      "js": ["helper.js", "desktop-module-container.js", "page-id-founder.js", "init.js"],
+      "js": ["helper.js", "module-finder.js", "page-id-founder.js", "init.js"],
       "run_at": "document_idle"
     }
   ]

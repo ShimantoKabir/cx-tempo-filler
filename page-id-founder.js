@@ -10,8 +10,8 @@ class PageIdFounder {
     pageSelectionLink: 'a[aria-current="page"]',
     tenantButton: 'button[placeholder="Please Select A Tenant"]',
     tenantOption: {
-      desktop: 'div#dropdown-1>div>div#option-1',
-      mobile: 'div#dropdown-1>div>div#option-0',
+      web: 'div#dropdown-1>div>div#option-1',
+      app: 'div#dropdown-1>div>div#option-0',
     },
     pageTypeButton: 'button[data-testid="Select-page-type"]',
     pageIdButton: 'button[data-e2eid="seconday-page-selector"]',
@@ -24,8 +24,8 @@ class PageIdFounder {
     // page type would need its own entries here rather than reusing these.
     brandPage: {
       pageTypeOption: {
-        desktop: 'div#dropdown-3>div>div#option-67',
-        mobile: 'div#dropdown-3>div>div#option-50',
+        web: 'div#dropdown-3>div>div#option-67',
+        app: 'div#dropdown-3>div>div#option-50',
       },
       pageSuggestionRow: 'div#dropdown-4>div:last-child>div:first-child',
     },
@@ -126,16 +126,12 @@ class PageIdFounder {
       if (this.autoSubmit) {
         submitBtn.click();
         Helper.log('Form filled and submitted automatically.');
-        if (this.deviceType === 'desktop') {
-          await DesktopModuleContainer.run();
-        }
+        await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
       } else {
         submitBtn.addEventListener(
           'click',
           async () => {
-            if (this.deviceType === 'desktop') {
-              await DesktopModuleContainer.run();
-            }
+            await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
           },
           { once: true }
         );
