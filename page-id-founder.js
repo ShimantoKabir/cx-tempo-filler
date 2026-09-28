@@ -40,11 +40,77 @@ class PageIdFounder {
     }
   };
 
-  constructor({ deviceType, pageId, autoSubmit }) {
+  constructor({ deviceType, pageId, autoSubmit, briefData, selectedModules }) {
     this.deviceType = deviceType;
     this.pageId = pageId;
     this.autoSubmit = autoSubmit;
+    this.briefData = briefData;
+    this.selectedModules = selectedModules;
   }
+
+  // Adds and fills one Skinny Banner module per banner variant found in the
+  // brief AND checked by the user in the popup (image-and-text and/or
+  // text-only). With no brief uploaded — or nothing selected — falls back
+  // to adding a single blank module, matching the pre-brief behavior.
+  // Regardless of outcome, downloads output.json annotating every module
+  // found in the brief with whether it actually got completed.
+  runSkinnyBanner = async () => {
+    const brandPage = this.briefData && this.briefData.brandPage;
+    if (!brandPage) {
+      Helper.log('No brief JSON supplied — adding a blank module.');
+      await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+      return;
+    }
+
+    const allBannerTypes = SkinnyBanner.detectBannerTypes(brandPage);
+    const bannerTypes = this.selectedModules
+      ? allBannerTypes.filter((type) => this.selectedModules.includes(SkinnyBanner.moduleKeyForBannerType(type)))
+      : allBannerTypes;
+
+    if (bannerTypes.length === 0) {
+      Helper.log('No Skinny Banner modules selected — adding a blank module.');
+      await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+      return;
+    }
+
+    const completion = {};
+    allBannerTypes.forEach((type) => {
+      completion[SkinnyBanner.moduleKeyForBannerType(type)] = false;
+    });
+
+    try {
+      for (const bannerType of bannerTypes) {
+        await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+        await SkinnyBanner.run(this.deviceType, bannerType, brandPage);
+        completion[SkinnyBanner.moduleKeyForBannerType(bannerType)] = true;
+      }
+    } finally {
+      this.downloadOutputJson(completion);
+    }
+  };
+
+  // Writes isCompleted: true/false onto each module the brief contained
+  // (based on the completion map built in runSkinnyBanner) and downloads the
+  // result as output.json, so a failed/partial run is downloadable too.
+  downloadOutputJson = (completion) => {
+    const output = JSON.parse(JSON.stringify(this.briefData));
+    for (const [moduleKey, isCompleted] of Object.entries(completion)) {
+      if (output.brandPage && output.brandPage[moduleKey]) {
+        output.brandPage[moduleKey].isCompleted = isCompleted;
+      }
+    }
+
+    const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'output.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    Helper.log('Downloaded output.json with module completion status.');
+  };
 
   run = async () => {
     try {
@@ -70,7 +136,13 @@ class PageIdFounder {
       // Selecting the tenant triggers a full page reload, which destroys this
       // script's execution context. Persist state so the freshly-injected
       // content script can resume from step 5 once the new page loads.
-      Helper.saveResumeState({ deviceType: this.deviceType, pageId: this.pageId, autoSubmit: this.autoSubmit });
+      Helper.saveResumeState({
+        deviceType: this.deviceType,
+        pageId: this.pageId,
+        autoSubmit: this.autoSubmit,
+        briefData: this.briefData,
+        selectedModules: this.selectedModules,
+      });
       tenantOption.click();
       Helper.log('Selected tenant. Waiting for page reload...');
     } catch (err) {
@@ -126,12 +198,12 @@ class PageIdFounder {
       if (this.autoSubmit) {
         submitBtn.click();
         Helper.log('Form filled and submitted automatically.');
-        await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+        await this.runSkinnyBanner();
       } else {
         submitBtn.addEventListener(
           'click',
           async () => {
-            await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+            await this.runSkinnyBanner();
           },
           { once: true }
         );

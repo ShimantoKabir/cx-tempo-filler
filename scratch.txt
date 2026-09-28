@@ -1,13 +1,3 @@
-after click select module a loading showing: div[data-focus-lock-disabled="false"]
-need to observe when this element gone from the page only then go for next execution
-
-create a new file skinny-banner.js
-run function show take deviceType: web/app
-banner-type: image-and-text/text-only
-folow instuction in screatch.txt file
-it will start execution after moudle finder js finshed.
-all input value shoud take from a json file
-
 skinny banner web
 ==================
 module name: input[id="../name"] => image+text and text-only both
@@ -143,10 +133,6 @@ save button:
 
 
     
-
-
-
-
 
 
     

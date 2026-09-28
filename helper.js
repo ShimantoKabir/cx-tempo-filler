@@ -77,14 +77,17 @@ class Helper {
   // every element matching the selector and returns the one whose trimmed
   // text content exactly equals `text` — needed when a selector matches
   // many elements (e.g. a list of search results) and only one is wanted.
-  static waitForElementByText = (selector, text, timeout = 10000) => {
+  static waitForElementByText = (selector, text, exact = true, timeout = 10000) => {
+    console.log('waitForElementByText candidate selector:', selector);
     return new Promise((resolve, reject) => {
       let interval;
       let timer;
       const check = () => {
         const candidates = document.querySelectorAll(selector);
         for (const el of candidates) {
-          if (el.textContent.trim() === text) {
+          console.log('waitForElementByText candidate innerHTML:', el.innerHTML);
+          const matches = exact ? el.innerHTML.trim() === text : el.innerHTML.includes(text);
+          if (matches) {
             clearInterval(interval);
             clearTimeout(timer);
             resolve(el);

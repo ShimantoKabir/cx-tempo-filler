@@ -24,6 +24,11 @@
     background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; padding: 6px;
     white-space: pre-wrap; word-break: break-word;
   }
+  #moduleChecklist {
+    margin-top: 6px; font-size: 12px;
+  }
+  #moduleChecklist .row { margin-top: 4px; }
+  #moduleChecklist .row label { font-weight: 400; }
 </style>
 </head>
 <body>
@@ -37,10 +42,10 @@
   </select>
 
   <label for="pageId">Page ID</label>
-  <input type="text" id="pageId" placeholder="e.g. 44545454545" value="6000210021949" />
+  <input type="text" id="pageId" placeholder="e.g. 44545454545" />
 
-  <label for="briefFile">Brief Workbook (optional)</label>
-  <input type="file" id="briefFile" accept=".xlsx,.xls" />
+  <label for="briefFile">Brief File (optional, .xlsx or .json)</label>
+  <input type="file" id="briefFile" accept=".xlsx,.xls,.json" />
 
   <div class="row">
     <input type="checkbox" id="autoSubmit" />
@@ -50,6 +55,7 @@
   <button id="startBtn">Open &amp; Fill Form</button>
   <div id="status"></div>
   <div id="briefSummary"></div>
+  <div id="moduleChecklist"></div>
 
   <script src="xlsx.full.min.js"></script>
   <script src="popup.js"></script>

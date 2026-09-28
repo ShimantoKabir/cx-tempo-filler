@@ -66,77 +66,77 @@ class ModuleFinder {
     });
   };
 
+  // Errors intentionally propagate to the caller rather than being swallowed
+  // here — page-id-founder.js's runSkinnyBanner loop needs a failed module
+  // to stop the loop instead of continuing on to a module that was never
+  // actually added.
   static run = async (deviceType, moduleKey = 'HeroPov') => {
-    try {
-      Helper.log('Looking for a free module zone...');
+    Helper.log('Looking for a free module zone...');
 
-      const zone = await ModuleFinder.waitForFreeZone(deviceType);
-      Helper.log(`Found free zone: ${zone.token}${zone.position}`);
+    const zone = await ModuleFinder.waitForFreeZone(deviceType);
+    Helper.log(`Found free zone: ${zone.token}${zone.position}`);
 
-      // Assumes the Add Module button's e2eid mirrors the droppable zone's
-      // id (e.g. a free "contentZone5" clicks "contentZone5-pagesAddModule").
-      // Only confirmed against the topZone example given — verify against
-      // the console log below if content/bottom zones misbehave.
-      const addModuleSelector = ModuleFinder.SELECTORS.addModule(zone.token, zone.position);
-      console.log('Add Module selector:', addModuleSelector);
-      const addModuleBtn = await Helper.waitForElement(addModuleSelector);
-      addModuleBtn.click();
-      Helper.log(`Clicked Add Module for ${zone.token}${zone.position}.`);
+    // Assumes the Add Module button's e2eid mirrors the droppable zone's
+    // id (e.g. a free "contentZone5" clicks "contentZone5-pagesAddModule").
+    // Only confirmed against the topZone example given — verify against
+    // the console log below if content/bottom zones misbehave.
+    const addModuleSelector = ModuleFinder.SELECTORS.addModule(zone.token, zone.position);
+    console.log('Add Module selector:', addModuleSelector);
+    const addModuleBtn = await Helper.waitForElement(addModuleSelector);
+    addModuleBtn.click();
+    Helper.log(`Clicked Add Module for ${zone.token}${zone.position}.`);
 
-      // Search the module explorer for the requested module and select it.
-      // moduleKey is PascalCase (e.g. "HeroPov") matching the explorer item's
-      // text; the search box takes the same key space-separated and lowercased.
-      const searchQuery = moduleKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
-      const searchInput = await Helper.waitForElement(ModuleFinder.SELECTORS.moduleSearchInput);
-      Helper.setInputValue(searchInput, searchQuery);
-      Helper.log(`Searched for ${moduleKey} module.`);
+    // Search the module explorer for the requested module and select it.
+    // moduleKey is PascalCase (e.g. "HeroPov") matching the explorer item's
+    // text; the search box takes the same key space-separated and lowercased.
+    const searchQuery = moduleKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+    const searchInput = await Helper.waitForElement(ModuleFinder.SELECTORS.moduleSearchInput);
+    Helper.setInputValue(searchInput, searchQuery);
+    Helper.log(`Searched for ${moduleKey} module.`);
 
-      const moduleLabel = await Helper.waitForElementByText(
-        ModuleFinder.SELECTORS.moduleExplorerItem,
-        moduleKey
-      );
-      const moduleCard = moduleLabel.parentElement.parentElement.parentElement;
-      moduleCard.click();
-      Helper.log(`Selected ${moduleKey} module.`);
+    const moduleLabel = await Helper.waitForElementByText(
+      ModuleFinder.SELECTORS.moduleExplorerItem,
+      moduleKey
+    );
+    const moduleCard = moduleLabel.parentElement.parentElement.parentElement;
+    moduleCard.click();
+    Helper.log(`Selected ${moduleKey} module.`);
 
-      const selectModuleBtn = await Helper.waitForElementByText(
-        ModuleFinder.SELECTORS.selectModuleButton,
-        'Select Module'
-      );
-      selectModuleBtn.click();
-      Helper.log('Clicked Select Module.');
+    const selectModuleBtn = await Helper.waitForElementByText(
+      ModuleFinder.SELECTORS.selectModuleButton,
+      'Select Module'
+    );
+    selectModuleBtn.click();
+    Helper.log('Clicked Select Module.');
 
-      await Helper.waitForElementGone(ModuleFinder.SELECTORS.loadingOverlay);
-      Helper.log('Loading overlay gone.');
+    await Helper.waitForElementGone(ModuleFinder.SELECTORS.loadingOverlay,50000);
+    Helper.log('Loading overlay gone.');
 
-      // TODO: fill the module name input (input[id="../name"]) using
-      // ModuleNameBuilder once brandName is wired in from the parsed brief
-      // workbook. Skipped for now — moving on to the next step.
+    // TODO: fill the module name input (input[id="../name"]) using
+    // ModuleNameBuilder once brandName is wired in from the parsed brief
+    // workbook. Skipped for now — moving on to the next step.
 
-      const scheduleTab = await Helper.waitForElement(ModuleFinder.SELECTORS.scheduleTab);
-      scheduleTab.click();
-      Helper.log('scheduleTab tab 4.');
+    const scheduleTab = await Helper.waitForElement(ModuleFinder.SELECTORS.scheduleTab);
+    scheduleTab.click();
+    Helper.log('scheduleTab tab 4.');
 
-      const startImmediate = await Helper.waitForElement(ModuleFinder.SELECTORS.startImmediate);
-      startImmediate.click();
-      Helper.log('Selected start: immediate.');
-      await Helper.sleep(500);
+    const startImmediate = await Helper.waitForElement(ModuleFinder.SELECTORS.startImmediate);
+    startImmediate.click();
+    Helper.log('Selected start: immediate.');
+    await Helper.sleep(500);
 
-      const endIndefinite = await Helper.waitForElement(ModuleFinder.SELECTORS.endIndefinite);
-      endIndefinite.click();
-      Helper.log('Selected end: indefinite.');
-      await Helper.sleep(500);
+    const endIndefinite = await Helper.waitForElement(ModuleFinder.SELECTORS.endIndefinite);
+    endIndefinite.click();
+    Helper.log('Selected end: indefinite.');
+    await Helper.sleep(500);
 
-      const priorityInput = await Helper.waitForElement(ModuleFinder.SELECTORS.priorityInput);
-      Helper.setInputValue(priorityInput, 30);
-      Helper.log('Set priority to 30.');
-      await Helper.sleep(500);
+    const priorityInput = await Helper.waitForElement(ModuleFinder.SELECTORS.priorityInput);
+    Helper.setInputValue(priorityInput, 30);
+    Helper.log('Set priority to 30.');
+    await Helper.sleep(500);
 
-      const contentTab = await Helper.waitForElement(ModuleFinder.SELECTORS.contentTab);
-      contentTab.click();
-      Helper.log('contentTab Clicked tab 0.');
-    } catch (err) {
-      Helper.fail(err);
-    }
+    const contentTab = await Helper.waitForElement(ModuleFinder.SELECTORS.contentTab);
+    contentTab.click();
+    Helper.log('contentTab Clicked tab 0.');
   };
 }

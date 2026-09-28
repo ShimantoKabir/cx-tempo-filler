@@ -1,135 +1,104 @@
 {
   "brandPage": {
-    "brandId": "6000208498470",
-    "brandName": "Pull-Ups",
+    "pageId": "6000208631151",
+    "brandName": "Reebok",
     "imageAndTextSkinnyBanner": {
+      "order": 1,
       "bannerType": "image-and-text",
       "bannerHeight": "220",
       "banner": {
         "web": {
           "english": {
-            "desktop": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_E",
+            "desktop": "SKB_CZ6969_Reebok-HilaryDuff_261001-D.jpg",
             "desktopAltCopy": "",
-            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_M",
+            "mobile": "SKB_CZ6969_Reebok-HilaryDuff_261001-M.jpg",
             "mobileAltCopy": ""
           },
           "french": {
-            "desktop": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "desktop": "SKB_CZ6969_Reebok-HilaryDuff_261001-D.jpg",
             "desktopAltCopy": "",
-            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "mobile": "SKB_CZ6969_Reebok-HilaryDuff_261001-M.jpg",
             "mobileAltCopy": ""
           }
         },
         "app": {
           "english": {
-            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_M",
+            "mobile": "SKB_CZ6969_Reebok-HilaryDuff_261001-M.jpg",
             "mobileAltCopy": ""
           },
           "french": {
-            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "mobile": "SKB_CZ6969_Reebok-HilaryDuff_261001-M.jpg",
             "mobileAltCopy": ""
           }
         }
       },
       "bannerCta": {
+        "linkColor": "",
         "web": {
-          "english": {
-            "linkText": "Buy Now",
-            "linkValue": "https://www.walmart.ca/en/search?q=pullups"
-          },
-          "french": {
-            "linkText": "Acheter",
-            "linkValue": "https://www.walmart.ca/fr/search?q=pullups"
-          }
+          "english": { "linkText": "", "linkValue": "" },
+          "french": { "linkText": "", "linkValue": "" }
         },
         "app": {
-          "english": {
-            "linkText": "Buy Now",
-            "linkValue": "https://www.walmart.ca/en/search?q=pullups"
-          },
-          "french": {
-            "linkText": "Acheter",
-            "linkValue": "https://www.walmart.ca/fr/search?q=pullups"
-          }
+          "english": { "linkText": "", "linkValue": "" },
+          "french": { "linkText": "", "linkValue": "" }
         }
       },
       "headline": {
         "web": {
-          "english": {
-            "text": "Pull-Ups with Learning Layer",
-            "textColor": "001E60"
-          },
-          "french": {
-            "text": "Culottes avec couche d'apprentissage",
-            "textColor": "001E60"
-          }
+          "english": { "text": "", "textColor": "" },
+          "french": { "text": "", "textColor": "" }
         },
         "app": {
-          "english": {
-            "text": "Pull-Ups with Learning Layer",
-            "textColor": "001E60"
-          },
-          "french": {
-            "text": "Culottes avec couche d'apprentissage",
-            "textColor": "001E60"
-          }
+          "english": { "text": "", "textColor": "" },
+          "french": { "text": "", "textColor": "" }
         }
       },
       "subHeadline": {
         "web": {
-          "english": {
-            "text": "Helps kids learn wet from dry",
-            "textColor": "001E60"
-          },
-          "french": {
-            "text": "Aident à déterminer s'ils sont au sec.",
-            "textColor": "001E60"
-          }
+          "english": { "text": "", "textColor": "" },
+          "french": { "text": "", "textColor": "" }
         },
         "app": {
-          "english": {
-            "text": "Helps kids learn wet from dry",
-            "textColor": "001E60"
-          },
-          "french": {
-            "text": "Aident à déterminer s'ils sont au sec.",
-            "textColor": "001E60"
-          }
+          "english": { "text": "", "textColor": "" },
+          "french": { "text": "", "textColor": "" }
         }
       }
     },
     "textOnlySkinnyBanner": {
+      "order": 2,
       "bannerType": "text-only",
       "bannerHeight": "100",
+      "bannerBgColor": "",
       "headline": {
         "web": {
-          "english": { "text": "Pull-Ups", "textColor": "FFFFFF" },
-          "french": { "text": "", "textColor": "FFFFFF" }
+          "english": { "text": "Reebok", "textColor": "" },
+          "french": { "text": "Produits Reebok", "textColor": "" }
         },
         "app": {
-          "english": { "text": "Pull-Ups", "textColor": "FFFFFF" },
-          "french": { "text": "", "textColor": "FFFFFF" }
+          "english": { "text": "Reebok", "textColor": "" },
+          "french": { "text": "Produits Reebok", "textColor": "" }
         }
       },
       "bannerCta": {
+        "linkColor": "",
         "web": {
           "english": {
             "linkText": "Shop all",
-            "linkValue": "https://www.walmart.ca/en/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+            "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH"
           },
           "french": {
-            "linkText": "",
-            "linkValue": "https://www.walmart.ca/fr/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+            "linkText": "Voir tout",
+            "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH"
           }
         },
         "app": {
           "english": {
             "linkText": "Shop all",
-            "linkValue": "https://www.walmart.ca/en/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+            "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH"
           },
           "french": {
-            "linkText": "",
-            "linkValue": "https://www.walmart.ca/fr/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+            "linkText": "Voir tout",
+            "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH"
           }
         }
       }
