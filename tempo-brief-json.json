@@ -1,0 +1,138 @@
+{
+  "brandPage": {
+    "brandId": "6000208498470",
+    "brandName": "Pull-Ups",
+    "imageAndTextSkinnyBanner": {
+      "bannerType": "image-and-text",
+      "bannerHeight": "220",
+      "banner": {
+        "web": {
+          "english": {
+            "desktop": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_E",
+            "desktopAltCopy": "",
+            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_M",
+            "mobileAltCopy": ""
+          },
+          "french": {
+            "desktop": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "desktopAltCopy": "",
+            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "mobileAltCopy": ""
+          }
+        },
+        "app": {
+          "english": {
+            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_M",
+            "mobileAltCopy": ""
+          },
+          "french": {
+            "mobile": "SKB_CZ2843_KCC-PUP-LearningLayer_260709-D_F",
+            "mobileAltCopy": ""
+          }
+        }
+      },
+      "bannerCta": {
+        "web": {
+          "english": {
+            "linkText": "Buy Now",
+            "linkValue": "https://www.walmart.ca/en/search?q=pullups"
+          },
+          "french": {
+            "linkText": "Acheter",
+            "linkValue": "https://www.walmart.ca/fr/search?q=pullups"
+          }
+        },
+        "app": {
+          "english": {
+            "linkText": "Buy Now",
+            "linkValue": "https://www.walmart.ca/en/search?q=pullups"
+          },
+          "french": {
+            "linkText": "Acheter",
+            "linkValue": "https://www.walmart.ca/fr/search?q=pullups"
+          }
+        }
+      },
+      "headline": {
+        "web": {
+          "english": {
+            "text": "Pull-Ups with Learning Layer",
+            "textColor": "001E60"
+          },
+          "french": {
+            "text": "Culottes avec couche d'apprentissage",
+            "textColor": "001E60"
+          }
+        },
+        "app": {
+          "english": {
+            "text": "Pull-Ups with Learning Layer",
+            "textColor": "001E60"
+          },
+          "french": {
+            "text": "Culottes avec couche d'apprentissage",
+            "textColor": "001E60"
+          }
+        }
+      },
+      "subHeadline": {
+        "web": {
+          "english": {
+            "text": "Helps kids learn wet from dry",
+            "textColor": "001E60"
+          },
+          "french": {
+            "text": "Aident à déterminer s'ils sont au sec.",
+            "textColor": "001E60"
+          }
+        },
+        "app": {
+          "english": {
+            "text": "Helps kids learn wet from dry",
+            "textColor": "001E60"
+          },
+          "french": {
+            "text": "Aident à déterminer s'ils sont au sec.",
+            "textColor": "001E60"
+          }
+        }
+      }
+    },
+    "textOnlySkinnyBanner": {
+      "bannerType": "text-only",
+      "bannerHeight": "100",
+      "headline": {
+        "web": {
+          "english": { "text": "Pull-Ups", "textColor": "FFFFFF" },
+          "french": { "text": "", "textColor": "FFFFFF" }
+        },
+        "app": {
+          "english": { "text": "Pull-Ups", "textColor": "FFFFFF" },
+          "french": { "text": "", "textColor": "FFFFFF" }
+        }
+      },
+      "bannerCta": {
+        "web": {
+          "english": {
+            "linkText": "Shop all",
+            "linkValue": "https://www.walmart.ca/en/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+          },
+          "french": {
+            "linkText": "",
+            "linkValue": "https://www.walmart.ca/fr/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+          }
+        },
+        "app": {
+          "english": {
+            "linkText": "Shop all",
+            "linkValue": "https://www.walmart.ca/en/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+          },
+          "french": {
+            "linkText": "",
+            "linkValue": "https://www.walmart.ca/fr/search?q=pull+ups&icid=cp_page_other_pull_ups_102018_2CHP10PW5U"
+          }
+        }
+      }
+    }
+  }
+}
