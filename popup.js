@@ -8,7 +8,11 @@ let selectedBriefData = null;
 // Single source of truth for module key -> display label, mirroring
 // page-id-founder.js's buildModuleDescriptors on the content-script side.
 // heroPov is an array, so its presence check differs from the plain-object
-// Skinny Banner modules.
+// Skinny Banner modules. itemCarousel is also an array, but unlike heroPov
+// (whose entries are cards within ONE module save) each itemCarousel entry
+// is a fully separate module instance — so it's marked "multi" to get one
+// checklist row (and one moduleKey/completion flag) per entry instead of one
+// row for the whole array.
 const MODULE_DEFS = [
   { key: 'imageAndTextSkinnyBanner', label: 'Image + Text Skinny Banner' },
   { key: 'textOnlySkinnyBanner', label: 'Text Only Skinny Banner' },
@@ -16,43 +20,86 @@ const MODULE_DEFS = [
     key: 'heroPov',
     label: 'Hero POV',
     isPresent: (brandPage) => Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0,
+    // heroPov's completion flags live on each card, not on brandPage.heroPov
+    // itself — all cards get the same value (see downloadOutputJson), so
+    // checking the first one is enough.
+    isFullyCompleted: (brandPage) => {
+      const card = brandPage.heroPov?.[0];
+      return Boolean(card?.isCompletedForWeb && card?.isCompletedForApp);
+    },
   },
+  { key: 'hubSpokesNM', label: 'Hub Spokes NxM' },
+  { key: 'povCard', label: 'POV Card' },
+  { key: 'itemCarousel', label: 'Item Carousel', multi: true },
 ];
 
 function isModulePresent(def, brandPage) {
   return def.isPresent ? def.isPresent(brandPage) : Boolean(brandPage[def.key]);
 }
 
-function detectBriefModules(brandPage) {
-  return MODULE_DEFS.filter((def) => isModulePresent(def, brandPage)).map((def) => def.label);
+// True once a module has been completed for both device types, based on the
+// isCompletedForWeb/isCompletedForApp flags an earlier run's output.json
+// would have stamped in (if that file gets re-uploaded as the next brief).
+function isModuleFullyCompleted(def, brandPage) {
+  if (def.isFullyCompleted) return def.isFullyCompleted(brandPage);
+  const module = brandPage[def.key];
+  return Boolean(module?.isCompletedForWeb && module?.isCompletedForApp);
 }
 
-// Renders one checkbox per module found in the brief (checked by default) so
-// the user can opt specific modules out before running the automation.
+// Expands a def into the checklist rows it contributes: one row for an
+// ordinary module, or one row per array entry for a "multi" def — matching
+// page-id-founder.js's buildModuleDescriptors moduleKey scheme
+// (`${key}-${index}`) so selectedModules filtering lines up on both sides.
+function getModuleInstances(def, brandPage) {
+  if (def.multi) {
+    const list = brandPage[def.key];
+    if (!Array.isArray(list)) return [];
+    return list.map((entry, index) => ({
+      moduleKey: `${def.key}-${index}`,
+      label: `${def.label} #${index + 1}`,
+      isFullyCompleted: Boolean(entry?.isCompletedForWeb && entry?.isCompletedForApp),
+    }));
+  }
+
+  if (!isModulePresent(def, brandPage)) return [];
+  return [{ moduleKey: def.key, label: def.label, isFullyCompleted: isModuleFullyCompleted(def, brandPage) }];
+}
+
+function detectBriefModules(brandPage) {
+  return MODULE_DEFS.flatMap((def) => getModuleInstances(def, brandPage)).map((inst) => inst.label);
+}
+
+// Renders one checkbox per module instance found in the brief (checked by
+// default) so the user can opt specific ones out before running the
+// automation.
 function renderModuleChecklist(brandPage) {
   const container = document.getElementById('moduleChecklist');
   container.innerHTML = '';
 
-  const found = MODULE_DEFS.filter((def) => isModulePresent(def, brandPage));
-  if (found.length === 0) return;
+  const instances = MODULE_DEFS.flatMap((def) => getModuleInstances(def, brandPage));
+  if (instances.length === 0) return;
 
   const heading = document.createElement('label');
   heading.textContent = 'Modules to run';
   container.appendChild(heading);
 
-  found.forEach((def) => {
+  instances.forEach((inst) => {
     const row = document.createElement('div');
     row.className = 'row';
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = true;
-    checkbox.dataset.moduleKey = def.key;
-    checkbox.id = `module-${def.key}`;
+    checkbox.dataset.moduleKey = inst.moduleKey;
+    checkbox.id = `module-${inst.moduleKey}`;
+
+    if (inst.isFullyCompleted) {
+      checkbox.disabled = true;
+    }
 
     const label = document.createElement('label');
     label.htmlFor = checkbox.id;
-    label.textContent = def.label;
+    label.textContent = inst.isFullyCompleted ? `${inst.label} (already completed)` : inst.label;
 
     row.appendChild(checkbox);
     row.appendChild(label);
@@ -63,8 +110,10 @@ function renderModuleChecklist(brandPage) {
 function getSelectedModules() {
   const checkboxes = document.querySelectorAll('#moduleChecklist input[type="checkbox"]');
   if (checkboxes.length === 0) return null;
+  // Disabled boxes are "already completed for both device types" markers,
+  // not a real selection — checked-but-disabled shouldn't re-run the module.
   return Array.from(checkboxes)
-    .filter((cb) => cb.checked)
+    .filter((cb) => cb.checked && !cb.disabled)
     .map((cb) => cb.dataset.moduleKey);
 }
 

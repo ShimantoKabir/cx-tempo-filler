@@ -129,54 +129,51 @@
       {
         "povStyle": "card-with-no-cta",
         "order": 3,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "backgroundColor" : {
+        "isCompletedForWeb": true,
+        "isCompletedForApp": true,
+        "backgroundColor": {
           "app": "",
           "web": ""
         },
         "image": {
           "web": {
             "english": {
-              "desktop": "",
+              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobileAltCopy": "",
+              "desktop": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
               "desktopAltCopy": ""
+
             },
             "french": {
-              "mobile": "",
-              "mobileAltCopy": ""
+              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobileAltCopy": "",
+              "desktop": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "desktopAltCopy": ""
             }
           },
           "app": {
             "english": {
-              "mobile": "",
-              "mobileAltCopy": ""
+              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobileAltCopy": "",
+              "tablet": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "tabletAltCopy": ""
             },
             "french": {
-              "tablet": "",
+              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobileAltCopy": "",
+              "tablet": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
               "tabletAltCopy": ""
             }
           }
         },
         "logo": {
           "web": {
-            "english": {
-              "searchText": "",
-              "altCopy": ""
-            },
-            "french": {
-              "searchText": "",
-              "altCopy": ""
-            }
+            "english": { "searchText": "", "altCopy": "" },
+            "french": { "searchText": "", "altCopy": "" }
           },
           "app": {
-            "english": {
-              "searchText": "",
-              "altCopy": ""
-            },
-            "french": {
-              "searchText": "",
-              "altCopy": ""
-            }
+            "english": { "searchText": "", "altCopy": "" },
+            "french": { "searchText": "", "altCopy": "" }
           }
         },
         "legal": {
@@ -213,49 +210,61 @@
         },
         "headline": {
           "web": {
-            "english": { 
-              "text": "", 
-              "desktopTextColor": "",
-              "mobileTextColor": ""
+            "english": {
+              "text": "Hilary Duff for Reebok",
+              "desktopTextColor": "001E60",
+              "mobileTextColor": "001E60"
             },
-            "french": { 
-              "text": "", 
-              "desktopTextColor": "",
-              "mobileTextColor": ""
+            "french": {
+              "text": "Hilary Duff pour Reebok",
+              "desktopTextColor": "001E60",
+              "mobileTextColor": "001E60"
             }
           },
           "app": {
-            "english": { "text": "", "textColor": "" },
-            "french": { "text": "", "textColor": "" }
+            "english": {
+              "text": "Hilary Duff for Reebok",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Hilary Duff pour Reebok",
+              "textColor": "001E60"
+            }
           }
         },
         "subHeadline": {
           "web": {
-            "english": { 
-              "text": "", 
-              "desktopTextColor": "",
-              "mobileTextColor": ""
+            "english": {
+              "text": "Unfiltered & unstoppable.",
+              "desktopTextColor": "001E60",
+              "mobileTextColor": "001E60"
             },
-            "french": { 
-              "text": "", 
-              "desktopTextColor": "",
-              "mobileTextColor": ""
+            "french": {
+              "text": "Sans filtre et inarrêtable.",
+              "desktopTextColor": "001E60",
+              "mobileTextColor": "001E60"
             }
           },
           "app": {
-            "english": { "text": "", "textColor": "" },
-            "french": { "text": "", "textColor": "" }
+            "english": {
+              "text": "Unfiltered & unstoppable.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Sans filtre et inarrêtable.",
+              "textColor": "001E60"
+            }
           }
         },
         "eyebrow": {
           "web": {
-            "english": { 
-              "text": "", 
+            "english": {
+              "text": "",
               "desktopTextColor": "",
               "mobileTextColor": ""
             },
-            "french": { 
-              "text": "", 
+            "french": {
+              "text": "",
               "desktopTextColor": "",
               "mobileTextColor": ""
             }
@@ -267,26 +276,318 @@
         },
         "cta": {
           "web": {
-            "english": {
-              "linkText": "",
-              "linkValue": ""
-            },
-            "french": {
-              "linkText": "",
-              "linkValue": ""
-            }
+            "english": { "linkText": "", "linkValue": "" },
+            "french": { "linkText": "", "linkValue": "" }
           },
           "app": {
-            "english": {
-              "linkText": "",
-              "linkValue": ""
+            "english": { "linkText": "", "linkValue": "" },
+            "french": { "linkText": "", "linkValue": "" }
+          }
+        }
+      }
+    ],
+    "hubSpokesNM": {
+      "isCompletedForWeb": true,
+      "isCompletedForApp": true,
+      "columns": 4,
+      "heading": { "english": "hub-spoke", "french": "hub-spoke" },
+      "rows": [
+        {
+          "categories": [
+            {
+              "name": { "english": "Women's", "french": "Femmes" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Women_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_21067&icid=search_page_clothing_shoes_and_accessories_reebok_womens_68817_BPO05C3TX0",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Women_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_21067&icid=search_page_clothing_shoes_and_accessories_reebok_womens_68817_BPO05C3TX0",
+                  "altCopy": ""
+                }
+              }
             },
-            "french": {
-              "linkText": "",
-              "linkValue": ""
+            {
+              "name": { "english": "Men's", "french": "Hommes" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Men_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_21070&icid=search_page_clothing_shoes_and_accessories_reebok_mens_68818_WYGQ6RO17P",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Men_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_21070&icid=search_page_clothing_shoes_and_accessories_reebok_mens_68818_WYGQ6RO17P",
+                  "altCopy": ""
+                }
+              }
+            },
+            {
+              "name": { "english": "Girls'", "french": "Filles" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Girls_CZ6969_Brand-Program_Name_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_21065&icid=search_page_clothing_shoes_and_accessories_reebok_girls_68819_4X8348JWEZ",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Girls_CZ6969_Brand-Program_Name_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_21065&icid=search_page_clothing_shoes_and_accessories_reebok_girls_68819_4X8348JWEZ",
+                  "altCopy": ""
+                }
+              }
+            },
+            {
+              "name": { "english": "Boys'", "french": "Garçons" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Boys_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_21064&icid=search_page_clothing_shoes_and_accessories_reebok_boys_68820_RIQPLCXP3G",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Boys_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_21064&icid=search_page_clothing_shoes_and_accessories_reebok_boys_68820_RIQPLCXP3G",
+                  "altCopy": ""
+                }
+              }
+            }
+          ]
+        },
+        {
+          "categories": [
+            {
+              "name": { "english": "Shoes", "french": "Chaussures" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Shoes_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_21072&icid=search_page_clothing_shoes_and_accessories_reebok_shoes_68821_7H152SE3KC",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Shoes_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_21072&icid=search_page_clothing_shoes_and_accessories_reebok_shoes_68821_7H152SE3KC",
+                  "altCopy": ""
+                }
+              }
+            },
+            {
+              "name": { "english": "Accessories", "french": "Accessoires" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Accesories_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10017_6000205800339&icid=search_page_clothing_shoes_and_accessories_reebok_accessories_68822_QDGC9UO7F1",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Accesories_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10017_6000205800339&icid=search_page_clothing_shoes_and_accessories_reebok_accessories_68822_QDGC9UO7F1",
+                  "altCopy": ""
+                }
+              }
+            },
+            {
+              "name": { "english": "Sports & athletic gear", "french": "Équipement sportif" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_SportsAthleticGear_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/shop/reebok-sports-gear/8833081529256?catId=10010_21005&icid=search_page_clothing_shoes_and_accessories_reebok_team_sports_68823_MBVPUCNH92",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_SportsAthleticGear_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/shop/reebok-sports-gear/8833081529256?catId=10010_21005&icid=search_page_clothing_shoes_and_accessories_reebok_team_sports_68823_MBVPUCNH92",
+                  "altCopy": ""
+                }
+              }
+            },
+            {
+              "name": { "english": "Backpacks", "french": "Sacs à dos" },
+              "image": {
+                "english": {
+                  "searchText": "HSK_Backpacks_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/en/search?q=reebok&catId=10006_6000198538710",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HSK_Backpacks_CZ6969_Reebok-HilaryDuff_261001",
+                  "linkValue": "https://www.walmart.ca/fr/search?q=reebok&catId=10006_6000198538710",
+                  "altCopy": ""
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "povCard": {
+      "isCompletedForWeb": true,
+      "isCompletedForApp": true,
+      "title": {
+        "web": { "english": "", "french": "" },
+        "app": { "english": "", "french": "" }
+      },
+      "subTitle": {
+        "web": ""
+      },
+      "cards": [
+        {
+          "image": {
+            "web": {
+              "english": { "searchText": "POVC-BP-1_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-1_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            },
+            "app": {
+              "english": { "searchText": "POVC-BP-1_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-1_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            }
+          },
+          "heading": {
+            "web": { "english": "Legend status", "french": "Mode légendaire" },
+            "app": { "english": "Legend status", "french": "Mode légendaire" }
+          },
+          "subHeading": {
+            "app": { "english": "Reebok's top picks, all in one place.", "french": "Les coups de cœur Reebok, réunis au même endroit." }
+          },
+          "description": {
+            "web": { "english": "Reebok's top picks, all in one place.", "french": "Les coups de cœur Reebok, réunis au même endroit." }
+          },
+          "eyebrow": {
+            "web": { "english": "", "french": "" },
+            "app": ""
+          },
+          "textColor": {
+            "web": "001E60"
+          },
+          "cta": {
+            "web": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_BestSellers%3ABestSellers" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_BestSellers%3ABestSellers" }
+            },
+            "app": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_BestSellers%3ABestSellers" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_BestSellers%3ABestSellers" }
+            }
+          }
+        },
+        {
+          "image": {
+            "web": {
+              "english": { "searchText": "POVC-BP-2_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-2_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            },
+            "app": {
+              "english": { "searchText": "POVC-BP-2_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-2_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            }
+          },
+          "heading": {
+            "web": { "english": "Fresh finds", "french": "Découvertes du moment" },
+            "app": { "english": "Fresh finds", "french": "Découvertes du moment" }
+          },
+          "subHeading": {
+            "app": { "english": "Explore the latest from Reebok.", "french": "Explorez les dernières nouveautés Reebok." }
+          },
+          "description": {
+            "web": { "english": "Explore the latest from Reebok.", "french": "Explorez les dernières nouveautés Reebok." }
+          },
+          "eyebrow": {
+            "web": { "english": "", "french": "" },
+            "app": ""
+          },
+          "textColor": {
+            "web": "001E60"
+          },
+          "cta": {
+            "web": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" }
+            },
+            "app": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" }
+            }
+          }
+        },
+        {
+          "image": {
+            "web": {
+              "english": { "searchText": "POVC-BP-3_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-3_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            },
+            "app": {
+              "english": { "searchText": "POVC-BP-3_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" },
+              "french": { "searchText": "POVC-BP-3_CZ6969_Reebok-HilaryDuff_261001", "altCopy": "" }
+            }
+          },
+          "heading": {
+            "web": { "english": "Designed for motion", "french": "Faits pour bouger" },
+            "app": { "english": "Designed for motion", "french": "Faits pour bouger" }
+          },
+          "subHeading": {
+            "app": { "english": "Gear up the whole family with Reebok.", "french": "Équipez toute la famille avec les produits Reebok." }
+          },
+          "description": {
+            "web": { "english": "Gear up the whole family with Reebok.", "french": "Équipez toute la famille avec les produits Reebok." }
+          },
+          "eyebrow": {
+            "web": { "english": "", "french": "" },
+            "app": ""
+          },
+          "textColor": {
+            "web": "001E60"
+          },
+          "cta": {
+            "web": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" }
+            },
+            "app": {
+              "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH" },
+              "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/search?q=reebok&icid=cp_page_other_women_109507_5G9VT7UFUH&facet=facet_ss_NewArrivals%3ANew+Arrivals" }
             }
           }
         }
+      ]
+    },
+    "itemCarousel": [
+      {
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
+        "title": { "english": "Shop Hilary's looks", "french": "Magasinez les tenues de Hilary" },
+        "subTitle": { "english": "", "french": "" },
+        "skus": [
+          "5T4P4KEVJ4DJ",
+          "2W6YIR2WT0AG",
+          "4D3H2QABJ7OC",
+          "2SOX5KQI9WNT",
+          "205OQVL2B6D4",
+          "33FDVSX1HKXS",
+          "66YUPFSZ1UME",
+          "3OMRNY6TVUXX",
+          "45A4A7P7JO01",
+          "7IADWFQTQQ3Q"
+        ]
+      },
+      {
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
+        "title": { "english": "The Reebok edit", "french": "L'édit Reebok" },
+        "subTitle": { "english": "", "french": "" },
+        "skus": [
+          "29TT0VBG6YNP",
+          "4Z7WGKLJ4OJB",
+          "6000207224309",
+          "6000207228919",
+          "3Q52X9J4G7VN",
+          "4HMO5MHSCT6T",
+          "4MSVHT98BDWP",
+          "0VEAXGA8POER",
+          "6000208470259",
+          "3TS04UTPM71L"
+        ]
       }
     ]
   }

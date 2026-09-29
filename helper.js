@@ -12,13 +12,15 @@ class Helper {
   static waitForElement = (selector, timeout = 10000) => {
     return new Promise((resolve, reject) => {
       const existing = document.querySelector(selector);
-      console.log("elemnt exxist: ", existing, existing && existing.textContent)
-      if (existing) return resolve(existing);
+      if (existing) {
+        console.log('[Helper] interacting with selector:', selector, existing);
+        return resolve(existing);
+      }
 
       const observer = new MutationObserver(() => {
         const el = document.querySelector(selector);
         if (el) {
-          console.log("elemnt found: ", el, el.textContent)
+          console.log('[Helper] interacting with selector:', selector, el);
           observer.disconnect();
           resolve(el);
         }
@@ -33,6 +35,7 @@ class Helper {
   };
 
   static waitForElementGone = (selector, timeout = 10000) => {
+    console.log('[Helper] waiting for selector to disappear:', selector);
     return new Promise((resolve, reject) => {
       const existing = document.querySelector(selector);
       if (!existing) return resolve();
@@ -59,6 +62,7 @@ class Helper {
       const check = () => {
         const el = document.querySelector(selector);
         if (el && el.textContent.includes(text)) {
+          console.log('[Helper] interacting with selector:', selector, el);
           clearInterval(interval);
           clearTimeout(timer);
           resolve(el);
@@ -78,16 +82,21 @@ class Helper {
   // text content exactly equals `text` — needed when a selector matches
   // many elements (e.g. a list of search results) and only one is wanted.
   static waitForElementByText = (selector, text, exact = true, timeout = 10000) => {
-    console.log('waitForElementByText candidate selector:', selector);
+    console.log('[Helper] waiting for selector:', selector, 'with text:', text, 'exact:', exact);
     return new Promise((resolve, reject) => {
       let interval;
       let timer;
       const check = () => {
         const candidates = document.querySelectorAll(selector);
         for (const el of candidates) {
-          console.log('waitForElementByText candidate innerHTML:', el.innerHTML);
-          const matches = exact ? el.innerHTML.trim() === text : el.innerHTML.includes(text);
+          console.log('[Helper] candidate innerHTML:', el.innerHTML);
+          // Coerce to string defensively — el.innerHTML is always a string,
+          // so a caller passing a raw number (e.g. a column count) would
+          // otherwise never match under strict ===.
+          const textStr = String(text);
+          const matches = exact ? el.innerHTML.trim() === textStr : el.innerHTML.includes(textStr);
           if (matches) {
+            console.log('[Helper] interacting with selector:', selector, el);
             clearInterval(interval);
             clearTimeout(timer);
             resolve(el);
@@ -104,7 +113,17 @@ class Helper {
     });
   };
 
+  // Falls back to a generated alt copy (Brand + Device + Language + Module
+  // Type) when a brief leaves an image's altCopy field blank. Shared by
+  // skinny-banner.js and hero-pov.js.
+  static generateAltCopy = ({ brandName, deviceType, language, moduleType }) => {
+    const titleCase = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+    const moduleLabel = moduleType.split('-').map(titleCase).join(' ');
+    return `${brandName} ${titleCase(deviceType)} ${titleCase(language)} ${moduleLabel}`;
+  };
+
   static setInputValue = (el, value) => {
+    console.log('[Helper] setting value:', value, 'on element:', el);
     el.focus();
     el.value = value;
     el.dispatchEvent(new Event('input', { bubbles: true }));

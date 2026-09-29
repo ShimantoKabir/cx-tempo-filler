@@ -24,7 +24,7 @@ class PageIdFounder {
     // page type would need its own entries here rather than reusing these.
     brandPage: {
       pageTypeOption: {
-        web: 'div#dropdown-3>div>div#option-67',
+        web: 'div#dropdown-3>div>div#option-68',
         app: 'div#dropdown-3>div>div#option-52',
       },
       pageSuggestionRow: 'div#dropdown-4>div:last-child>div:first-child',
@@ -50,9 +50,12 @@ class PageIdFounder {
 
   // Builds the ordered list of modules the brief actually contains: each
   // Skinny Banner variant found (via SkinnyBanner's own order-aware
-  // detection), plus Hero POV if the brief has a non-empty heroPov array.
-  // Hero POV has no "order" field of its own, so it's simply processed
-  // after the Skinny Banners.
+  // detection), plus Hero POV if the brief has a non-empty heroPov array,
+  // plus Hub Spokes NxM if the brief has a hubSpokesNM entry, plus POV Card
+  // if the brief has a povCard entry, plus Item Carousel if the brief has
+  // an itemCarousel entry. None of these four has an "order" field of its
+  // own, so they're simply processed after the Skinny Banners, in that
+  // order.
   static buildModuleDescriptors = (brandPage) => {
     const descriptors = SkinnyBanner.detectBannerTypes(brandPage).map((bannerType) => ({
       moduleKey: SkinnyBanner.moduleKeyForBannerType(bannerType),
@@ -62,6 +65,25 @@ class PageIdFounder {
 
     if (Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0) {
       descriptors.push({ moduleKey: 'heroPov', kind: 'heroPov' });
+    }
+
+    if (brandPage.hubSpokesNM) {
+      descriptors.push({ moduleKey: 'hubSpokesNM', kind: 'hubSpokesNM' });
+    }
+
+    if (brandPage.povCard) {
+      descriptors.push({ moduleKey: 'povCard', kind: 'povCard' });
+    }
+
+    // itemCarousel is an array where each entry is a fully separate module
+    // instance (its own add/fill/save cycle), not a repeating sub-element
+    // within one module (unlike heroPov's cards) — so each entry gets its
+    // own descriptor, keyed by index so completion tracking and the popup
+    // checklist can address them independently.
+    if (Array.isArray(brandPage.itemCarousel)) {
+      brandPage.itemCarousel.forEach((_, index) => {
+        descriptors.push({ moduleKey: `itemCarousel-${index}`, kind: 'itemCarousel', index });
+      });
     }
 
     return descriptors;
@@ -101,6 +123,18 @@ class PageIdFounder {
         if (d.kind === 'heroPov') {
           await ModuleFinder.run(this.deviceType, 'HeroPov');
           await HeroPov.run(this.deviceType, brandPage);
+        } else if (d.kind === 'hubSpokesNM') {
+          await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
+          await HubSpoke.run(this.deviceType, brandPage);
+        } else if (d.kind === 'povCard') {
+          const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
+          await ModuleFinder.run(this.deviceType, moduleKey, 'POVCar');
+          await PovCard.run(this.deviceType, brandPage);
+        } else if (d.kind === 'itemCarousel') {
+          // "ItemCarousel" auto-derives to "item carousel", already
+          // matching scratch.txt's given search text — no override needed.
+          await ModuleFinder.run(this.deviceType, 'ItemCarousel');
+          await ItemCarousel.run(this.deviceType, brandPage, d.index);
         } else {
           await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
           await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
@@ -140,6 +174,19 @@ class PageIdFounder {
             card[completedKey] = isCompleted;
           });
         }
+        continue;
+      }
+
+      if (moduleKey.startsWith('itemCarousel-')) {
+        // Unlike heroPov, each itemCarousel array entry is an independent
+        // module instance — only the one this run actually processed
+        // (identified by index) gets its completion flag updated.
+        const index = Number(moduleKey.slice('itemCarousel-'.length));
+        const entry = Array.isArray(brandPage.itemCarousel) ? brandPage.itemCarousel[index] : null;
+        if (!entry) continue;
+        if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
+        if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
+        entry[completedKey] = isCompleted;
         continue;
       }
 

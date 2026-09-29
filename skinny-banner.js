@@ -279,14 +279,6 @@ class SkinnyBanner {
     await SkinnyBanner.setValue(sel.frLink, french.linkValue || '');
   };
 
-  // Falls back to a generated alt copy (Brand + Device + Language + Module
-  // Type) when the brief leaves an *AltCopy field blank.
-  static generateAltCopy = ({ brandName, deviceType, language, moduleType }) => {
-    const titleCase = (s) => s.charAt(0).toUpperCase() + s.slice(1);
-    const moduleLabel = moduleType.split('-').map(titleCase).join(' ');
-    return `${brandName} ${titleCase(deviceType)} ${titleCase(language)} ${moduleLabel}`;
-  };
-
   static fillImages = async (imageSel, bannerData, altCopyContext) => {
     for (const lang of Object.keys(imageSel)) {
       const langData = bannerData[lang];
@@ -297,7 +289,7 @@ class SkinnyBanner {
         const searchText = langData[slot];
         if (!searchText) continue;
         const altText =
-          langData[`${slot}AltCopy`] || SkinnyBanner.generateAltCopy({ ...altCopyContext, language: lang });
+          langData[`${slot}AltCopy`] || Helper.generateAltCopy({ ...altCopyContext, language: lang });
         const cfg = slots[slot];
 
         const openBtn = await Helper.waitForElement(cfg.open);

@@ -318,7 +318,7 @@ logo-image:
     fr alt text: input[data-e2eid="cards-cards-0-fr_logo-alt-text"]
 
 legal:
-    add button: button.add-group-button-right inner HTML includes "DISCLOSURE"
+    add button: button.add-group-button-right inner HTML includes "DISCLOSURE
     en discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-regularText"]
         max character: 21
     fr discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_regularText"]
@@ -353,7 +353,334 @@ in the selector like input[data-e2eid="cards-cards-0-........."]
 the integer 0 is the position of a card. in the tempo-brief.json
 object heroPov is a arrow of object. The same amount of object present
 in the heroPov need to create hero pov card.
+
+
+hub-spokes-nxm for web
+======================
+module name: input[id="../name"]
+module find key: HubSpokesNxM
+en heading: input[data-e2eid="heading"]
+fr heading: input[data-e2eid="fr_heading"]
+number of columns: button[data-e2eid="colNumber"]
+options: button[data-e2eid="colNumber"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "4" => "4"
+    "6" => "6"
+
+hub-spoke max row size 5[0-4] and max column size 6[0-5]
+ext need to decide it based on the input json
+
+add row button: div.add-group-button
+add column button: div[test-dataid="rows4-0,categories,0"] button.add-group-button-right inner HTML includes "ADD CATEGORIES" 
+note for add column button: div[test-dataid="rows{selected-colNumber}-{row-position},categories,{col-position}"]
+
+first the extension need to create the rows and columns based on the json
+
+category-container-position: div[test-dataid="rows{selected-colNumber}-{row-position},categories,{col-position}"]
+short form: ccp
+
+en name: div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-name"]
+note for name: ccp input[data-e2eid="rows{selected-colNumber}-rows4-{row-position}-name"]
+
+fr name: div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-fr_name"]
+note for name: ccp input[data-e2eid="rows{selected-colNumber}-rows4-{row-position}-fr_name"]
+
+images:
+    en search box opener button: 
+    - div[test-dataid="rows4-0,categories,0"] button[data-e2eid="rows4-rows4-0-image-clickable-image-dropdown-button"]
+    - ccp button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-dropdown-button"]
     
+    en search text: 
+    - input[data-e2eid="rows4-rows4-0-image-clickable-image-dropdown-input"]
+    - input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-dropdown-input"]
+
+    en search button: 
+    - button[data-e2eid="rows4-rows4-0-image-clickable-image-search-asset-button"]
+    - button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-search-asset-button"]
+
+    en founded image: div#searched-image
+
+    en link value: 
+    - div[test-dataid="rows4-0,categories,0"] textarea[data-e2eid="rows4-rows4-0-image-url-link"]
+    - ccp textarea[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-url-link"]
+
+    en alt text: 
+    - div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-image-alt-text"]
+    - ccp input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-alt-text"]
+
+    =======
+
+    fr search box opener button: 
+    - div[test-dataid="rows4-0,categories,0"] button[data-e2eid="rows4-rows4-0-fr_image-clickable-image-dropdown-button"]
+    - ccp button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-dropdown-button"]
+    
+    fr search text: 
+    - input[data-e2eid="rows4-rows4-0-fr_image-clickable-image-dropdown-input"]
+    - input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-dropdown-input"]
+
+    fr search button: 
+    - button[data-e2eid="rows4-rows4-0-fr_image-clickable-image-search-asset-button"]
+    - button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-search-asset-button"]
+
+    fr founded image: div#searched-image
+
+    fr link value: 
+    - div[test-dataid="rows4-0,categories,0"] textarea[data-e2eid="rows4-rows4-0-fr_image-url-link"]
+    - ccp textarea[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-url-link"]
+
+    fr alt text: 
+    - div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-fr_image-alt-text"]
+    - ccp input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-alt-text"]
+
+
+hub-spokes-nxm for app
+=======================
+module name: input[id="../name"]
+module find key: HubSpokesNxM
+en heading: input[data-e2eid="heading"]
+fr heading: input[data-e2eid="fr_heading"]
+number of columns: button[data-e2eid="colNumber"]
+options: button[data-e2eid="colNumber"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "4" => "4"
+    "6" => "6"
+
+hub-spoke max row size 5[0-4] and max column size 6[0-5]
+ext need to decide it based on the input json
+
+add row button: div.add-group-button
+add column button: div[test-dataid="rows4-0,categories,0"] button.add-group-button-right inner HTML includes "ADD CATEGORIES" 
+note for add column button: div[test-dataid="rows{selected-colNumber}-{row-position},categories,{col-position}"]
+
+first the extension need to create the rows and columns based on the json
+
+category-container-position: div[test-dataid="rows{selected-colNumber}-{row-position},categories,{col-position}"]
+short form: ccp
+
+en name: div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-name"]
+note for name: ccp input[data-e2eid="rows{selected-colNumber}-rows4-{row-position}-name"]
+
+fr name: div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-fr_name"]
+note for name: ccp input[data-e2eid="rows{selected-colNumber}-rows4-{row-position}-fr_name"]
+
+images:
+    en search box opener button: 
+    - div[test-dataid="rows4-0,categories,0"] button[data-e2eid="rows4-rows4-0-image-clickable-image-dropdown-button"]
+    - ccp button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-dropdown-button"]
+    
+    en search text: 
+    - input[data-e2eid="rows4-rows4-0-image-clickable-image-dropdown-input"]
+    - input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-dropdown-input"]
+
+    en search button: 
+    - button[data-e2eid="rows4-rows4-0-image-clickable-image-search-asset-button"]
+    - button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-clickable-image-search-asset-button"]
+
+    en founded image: div#searched-image
+
+    en link value: 
+    - div[test-dataid="rows4-0,categories,0"] textarea[data-e2eid="rows4-rows4-0-image-url-link"]
+    - ccp textarea[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-url-link"]
+
+    en alt text: 
+    - div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-image-alt-text"]
+    - ccp input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-image-alt-text"]
+
+    =======
+
+    fr search box opener button: 
+    - div[test-dataid="rows4-0,categories,0"] button[data-e2eid="rows4-rows4-0-fr_image-clickable-image-dropdown-button"]
+    - ccp button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-dropdown-button"]
+    
+    fr search text: 
+    - input[data-e2eid="rows4-rows4-0-fr_image-clickable-image-dropdown-input"]
+    - input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-dropdown-input"]
+
+    fr search button: 
+    - button[data-e2eid="rows4-rows4-0-fr_image-clickable-image-search-asset-button"]
+    - button[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-clickable-image-search-asset-button"]
+
+    fr founded image: div#searched-image
+
+    fr link value: 
+    - div[test-dataid="rows4-0,categories,0"] textarea[data-e2eid="rows4-rows4-0-fr_image-url-link"]
+    - ccp textarea[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-url-link"]
+
+    fr alt text: 
+    - div[test-dataid="rows4-0,categories,0"] input[data-e2eid="rows4-rows4-0-fr_image-alt-text"]
+    - ccp input[data-e2eid="rows{selected-colNumber}-rows{selected-colNumber}-{row-position}-fr_image-alt-text"]
+
+
+pov-card app
+=======================
+module search text: POVCar
+module find key: POVCarousel
+module name: input[id="../name"]
+
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+add pov card: div.add-group-button
+
+max 5 card can be added: [0-4]
+
+note: POVs-POVs-4 => POVs-POVs-{card-position}
+
+card:
+    en search box opener: button[data-e2eid="POVs-POVs-0-POVImage-dropdown-button"]
+    en search text: input[data-e2eid="POVs-POVs-0-POVImage-dropdown-input"]
+    en search button: button[data-e2eid="POVs-POVs-0-POVImage-search-asset-button"]
+    en founded image: div#searched-image
+    en all text: input[data-e2eid="POVs-POVs-0-POVImage-alt-text"]
+
+    fr search box opener: button[data-e2eid="POVs-POVs-0-fr_POVImage-dropdown-button"]
+    fr search text: input[data-e2eid="POVs-POVs-4-fr_POVImage-dropdown-input"]
+    fr search button: button[data-e2eid="POVs-POVs-4-fr_POVImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr all text: input[data-e2eid="POVs-POVs-4-fr_POVImage-alt-text"]
+
+    en heading: input[data-e2eid="POVs-POVs-4-POVHeading"]
+        max-character: 34
+
+    fr heading: input[data-e2eid="POVs-POVs-4-fr_POVHeading"]
+        max-character: 34
+
+    en sub-heading: input[data-e2eid="POVs-POVs-4-POVSubHeading"]
+        max-character: 85
+
+    fr sub-heading: input[data-e2eid="POVs-POVs-4-fr_POVSubHeading"]
+        max-character: 85
+
+    eyebrow: input[data-e2eid="POVs-POVs-4-eyeBrow"]
+        max-character: 35
+
+    en link text: input[data-e2eid="POVs-POVs-4-POVCtaLink-clickable-el"]
+    en like value: textarea[data-e2eid="POVs-POVs-4-POVCtaLink-url-link"]
+
+    fr link text: input[data-e2eid="POVs-POVs-4-fr_POVCtaLink-clickable-el"]
+    fr like value: textarea[data-e2eid="POVs-POVs-4-fr_POVCtaLink-url-link"]
+
+pov-card web
+=======================
+module search text: POVCar
+module find key: POVCards
+module name: input[id="../name"]
+
+en title: input[data-e2eid="headingText"]
+fr title: input[data-e2eid="fr_headingText"]
+sub-title: input[data-e2eid="subHeadingText"]
+add pov card: div.add-group-button
+
+max 5 card can be added: [0-4]
+
+note: cards-cards-0 => cards-cards-{card-position}
+
+data-e2eid="cards-cards-0-image-dropdown-button"
+
+card:
+    en search box opener: button[data-e2eid="cards-cards-0-image-dropdown-button"]
+    en search text: input[data-e2eid="cards-cards-0-image-dropdown-input"]
+    en search button: button[data-e2eid="cards-cards-0-image-search-asset-button"]
+    en founded image: div#searched-image
+    en all text: input[data-e2eid="cards-cards-0-image-alt-text"]
+
+    fr search box opener: button[data-e2eid="cards-cards-0-fr_image-dropdown-button"]
+    fr search text: input[data-e2eid="cards-cards-0-fr_image-dropdown-input"]
+    fr search button: button[data-e2eid="cards-cards-0-fr_image-search-asset-button"]
+    fr founded image: div#searched-image
+    fr all text: input[data-e2eid="cards-cards-0-fr_image-alt-text"]
+
+    en heading: input[data-e2eid="cards-cards-0-headingText"]
+        max-character: 24
+
+    fr heading: input[data-e2eid="cards-cards-0-fr_headingText"]
+        max-character: 24
+
+    en description: input[data-e2eid="cards-cards-0-descriptionText"]
+        max-character: 75
+
+    fr description: input[data-e2eid="cards-cards-0-fr_descriptionText"]
+        max-character: 75
+
+    en eyebrow: input[data-e2eid="cards-cards-0-eyeBrow"]
+        max-character: 50
+
+    en eyebrow: input[data-e2eid="cards-cards-0-fr_eyeBrow"]
+        max-character: 50
+
+    text color: input[cards-cards-0-textColor]
+        max-character: 7
+
+    en link text: input[data-e2eid="cards-cards-0-link-clickable-el"]
+    en like value: textarea[data-e2eid="cards-cards-0-link-url-link"]
+
+    fr link text: input[data-e2eid="cards-cards-0-fr_link-clickable-el"]
+    fr like value: textarea[data-e2eid="cards-cards-0-fr_link-url-link"]
+
+
+item-carousel web
+=================
+module search text: Item Carousel
+module find key: ItemCarousel
+module name: input[id="../name"]
+
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+
+fr sub-title: input[data-e2eid="subTitle"]
+fr sub-title: input[data-e2eid="fr_subTitle"]
+
+item selection: button[data-e2eid="itemsSelection"]
+options: button[data-e2eid="itemsSelection"] + div div[id^="option-"]
+    needed to check innerHtml: it includes "Items List" then select
+
+skus: input[data-testid="item-string-input"]
+    note: skus should be separated by comma like 29TT0VBG6YNP, 4Z7WGKLJ4OJB
+    in input.json it will be a array of string but when ext need to set it as a sting separated by comma
+
+add skus: button[data-testid="add-tags"]
+
+item-carousel app
+=================
+module search text: Item Carousel
+module find key: ItemCarousel
+module name: input[id="../name"]
+
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+
+fr sub-title: input[data-e2eid="subTitle"]
+fr sub-title: input[data-e2eid="fr_subTitle"]
+
+item selection: button[data-e2eid="itemSelection"]
+options: button[data-e2eid="itemSelection"] + div div[id^="option-"]
+    needed to check innerHtml: it includes "Items List" then select
+
+skus: input[data-testid="item-string-input"]
+    note: skus should be separated by comma like 29TT0VBG6YNP, 4Z7WGKLJ4OJB
+    in input.json it will be a array of string but when ext need to set it as a sting separated by comma
+
+add skus: button[data-testid="add-tags"]
+
+    
+
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
 
 
 

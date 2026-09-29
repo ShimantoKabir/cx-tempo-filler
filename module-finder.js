@@ -70,7 +70,7 @@ class ModuleFinder {
   // here — page-id-founder.js's runSkinnyBanner loop needs a failed module
   // to stop the loop instead of continuing on to a module that was never
   // actually added.
-  static run = async (deviceType, moduleKey = 'HeroPov') => {
+  static run = async (deviceType, moduleKey = 'HeroPov', searchQueryOverride) => {
     Helper.log('Looking for a free module zone...');
 
     const zone = await ModuleFinder.waitForFreeZone(deviceType);
@@ -88,8 +88,11 @@ class ModuleFinder {
 
     // Search the module explorer for the requested module and select it.
     // moduleKey is PascalCase (e.g. "HeroPov") matching the explorer item's
-    // text; the search box takes the same key space-separated and lowercased.
-    const searchQuery = moduleKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+    // text; the search box takes the same key space-separated and lowercased
+    // by default. That auto-split breaks for keys with short runs of
+    // lowercase between capitals (e.g. "HubSpokesNxM" -> "hub spokes nx m",
+    // splitting "NxM" wrongly) — pass searchQueryOverride to bypass it.
+    const searchQuery = searchQueryOverride || moduleKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
     const searchInput = await Helper.waitForElement(ModuleFinder.SELECTORS.moduleSearchInput);
     Helper.setInputValue(searchInput, searchQuery);
     Helper.log(`Searched for ${moduleKey} module.`);
