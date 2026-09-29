@@ -6,14 +6,25 @@ let selectedBriefFile = null;
 let selectedBriefData = null;
 
 // Single source of truth for module key -> display label, mirroring
-// SkinnyBanner.moduleKeyForBannerType on the content-script side.
+// page-id-founder.js's buildModuleDescriptors on the content-script side.
+// heroPov is an array, so its presence check differs from the plain-object
+// Skinny Banner modules.
 const MODULE_DEFS = [
   { key: 'imageAndTextSkinnyBanner', label: 'Image + Text Skinny Banner' },
   { key: 'textOnlySkinnyBanner', label: 'Text Only Skinny Banner' },
+  {
+    key: 'heroPov',
+    label: 'Hero POV',
+    isPresent: (brandPage) => Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0,
+  },
 ];
 
+function isModulePresent(def, brandPage) {
+  return def.isPresent ? def.isPresent(brandPage) : Boolean(brandPage[def.key]);
+}
+
 function detectBriefModules(brandPage) {
-  return MODULE_DEFS.filter((def) => brandPage[def.key]).map((def) => def.label);
+  return MODULE_DEFS.filter((def) => isModulePresent(def, brandPage)).map((def) => def.label);
 }
 
 // Renders one checkbox per module found in the brief (checked by default) so
@@ -22,7 +33,7 @@ function renderModuleChecklist(brandPage) {
   const container = document.getElementById('moduleChecklist');
   container.innerHTML = '';
 
-  const found = MODULE_DEFS.filter((def) => brandPage[def.key]);
+  const found = MODULE_DEFS.filter((def) => isModulePresent(def, brandPage));
   if (found.length === 0) return;
 
   const heading = document.createElement('label');

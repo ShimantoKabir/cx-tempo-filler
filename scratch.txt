@@ -216,7 +216,7 @@ legal:
         max character: 21
     fr discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_regularText"]
         max character: 21
-    legal light box opener button text color: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-textColor"]
+    legal discloser color: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-textColor"]
         max character: 7
     en popup title: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-legalBottomSheetTitle"]
         max character: 28
@@ -233,6 +233,8 @@ cta: if card with single cta clicked
 
     fr link text: input[data-e2eid="cards-cards-0-fr_button-clickable-el"]
     fr link value: textarea[data-e2eid="cards-cards-0-fr_button-url-link"]
+
+add card: div[data-e2eid="cards-left-nav-Cards-add-button"]
 
 hero pov web
 =============
@@ -340,6 +342,8 @@ cta: if card with single cta clicked
 
     fr link text: input[data-e2eid="cards-cards-0-fr_button-clickable-el"]
     fr link value: textarea[data-e2eid="cards-cards-0-fr_button-url-link"]
+
+add card: div[data-e2eid="cards-left-nav-Cards-add-button"]
 
 
 note for hero pov:

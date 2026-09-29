@@ -48,13 +48,31 @@ class PageIdFounder {
     this.selectedModules = selectedModules;
   }
 
-  // Adds and fills one Skinny Banner module per banner variant found in the
-  // brief AND checked by the user in the popup (image-and-text and/or
-  // text-only). With no brief uploaded — or nothing selected — falls back
-  // to adding a single blank module, matching the pre-brief behavior.
-  // Regardless of outcome, downloads output.json annotating every module
-  // found in the brief with whether it actually got completed.
-  runSkinnyBanner = async () => {
+  // Builds the ordered list of modules the brief actually contains: each
+  // Skinny Banner variant found (via SkinnyBanner's own order-aware
+  // detection), plus Hero POV if the brief has a non-empty heroPov array.
+  // Hero POV has no "order" field of its own, so it's simply processed
+  // after the Skinny Banners.
+  static buildModuleDescriptors = (brandPage) => {
+    const descriptors = SkinnyBanner.detectBannerTypes(brandPage).map((bannerType) => ({
+      moduleKey: SkinnyBanner.moduleKeyForBannerType(bannerType),
+      kind: 'skinnyBanner',
+      bannerType,
+    }));
+
+    if (Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0) {
+      descriptors.push({ moduleKey: 'heroPov', kind: 'heroPov' });
+    }
+
+    return descriptors;
+  };
+
+  // Adds and fills one module per entry found in the brief AND checked by
+  // the user in the popup. With no brief uploaded — or nothing selected —
+  // falls back to adding a single blank module, matching the pre-brief
+  // behavior. Regardless of outcome, downloads output.json annotating every
+  // module found in the brief with whether it actually got completed.
+  runModules = async () => {
     const brandPage = this.briefData && this.briefData.brandPage;
     if (!brandPage) {
       Helper.log('No brief JSON supplied — adding a blank module.');
@@ -62,27 +80,32 @@ class PageIdFounder {
       return;
     }
 
-    const allBannerTypes = SkinnyBanner.detectBannerTypes(brandPage);
-    const bannerTypes = this.selectedModules
-      ? allBannerTypes.filter((type) => this.selectedModules.includes(SkinnyBanner.moduleKeyForBannerType(type)))
-      : allBannerTypes;
+    const allDescriptors = PageIdFounder.buildModuleDescriptors(brandPage);
+    const descriptors = this.selectedModules
+      ? allDescriptors.filter((d) => this.selectedModules.includes(d.moduleKey))
+      : allDescriptors;
 
-    if (bannerTypes.length === 0) {
-      Helper.log('No Skinny Banner modules selected — adding a blank module.');
+    if (descriptors.length === 0) {
+      Helper.log('No modules selected — adding a blank module.');
       await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
       return;
     }
 
     const completion = {};
-    allBannerTypes.forEach((type) => {
-      completion[SkinnyBanner.moduleKeyForBannerType(type)] = false;
+    allDescriptors.forEach((d) => {
+      completion[d.moduleKey] = false;
     });
 
     try {
-      for (const bannerType of bannerTypes) {
-        await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
-        await SkinnyBanner.run(this.deviceType, bannerType, brandPage);
-        completion[SkinnyBanner.moduleKeyForBannerType(bannerType)] = true;
+      for (const d of descriptors) {
+        if (d.kind === 'heroPov') {
+          await ModuleFinder.run(this.deviceType, 'HeroPov');
+          await HeroPov.run(this.deviceType, brandPage);
+        } else {
+          await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+          await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
+        }
+        completion[d.moduleKey] = true;
       }
     } finally {
       this.downloadOutputJson(completion);
@@ -90,7 +113,7 @@ class PageIdFounder {
   };
 
   // Writes isCompletedForWeb/isCompletedForApp onto each module the brief
-  // contained (based on the completion map built in runSkinnyBanner) and
+  // contained (based on the completion map built in runModules) and
   // downloads the result as output.json, so a failed/partial run is
   // downloadable too. Only the field matching this run's device type is
   // updated — the other device's field (e.g. from a prior run whose
@@ -99,8 +122,28 @@ class PageIdFounder {
   downloadOutputJson = (completion) => {
     const output = JSON.parse(JSON.stringify(this.briefData));
     const completedKey = this.deviceType === 'web' ? 'isCompletedForWeb' : 'isCompletedForApp';
+    const brandPage = output.brandPage;
+
     for (const [moduleKey, isCompleted] of Object.entries(completion)) {
-      const module = output.brandPage && output.brandPage[moduleKey];
+      if (!brandPage) continue;
+
+      if (moduleKey === 'heroPov') {
+        // heroPov is an array, but each card in it is a plain object, so
+        // (unlike setting a property on the array itself, which
+        // JSON.stringify would silently drop) writing isCompletedForWeb/App
+        // onto every card serializes fine. Save is one action for the whole
+        // module, so every card gets the same outcome.
+        if (Array.isArray(brandPage.heroPov)) {
+          brandPage.heroPov.forEach((card) => {
+            if (typeof card.isCompletedForWeb !== 'boolean') card.isCompletedForWeb = false;
+            if (typeof card.isCompletedForApp !== 'boolean') card.isCompletedForApp = false;
+            card[completedKey] = isCompleted;
+          });
+        }
+        continue;
+      }
+
+      const module = brandPage[moduleKey];
       if (!module) continue;
       if (typeof module.isCompletedForWeb !== 'boolean') module.isCompletedForWeb = false;
       if (typeof module.isCompletedForApp !== 'boolean') module.isCompletedForApp = false;
@@ -205,12 +248,12 @@ class PageIdFounder {
       if (this.autoSubmit) {
         submitBtn.click();
         Helper.log('Form filled and submitted automatically.');
-        await this.runSkinnyBanner();
+        await this.runModules();
       } else {
         submitBtn.addEventListener(
           'click',
           async () => {
-            await this.runSkinnyBanner();
+            await this.runModules();
           },
           { once: true }
         );

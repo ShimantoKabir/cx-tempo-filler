@@ -4,8 +4,8 @@
     "brandName": "Reebok",
     "imageAndTextSkinnyBanner": {
       "order": 1,
-      "isCompletedForWeb": false,
-      "isCompletedForApp": false,
+      "isCompletedForWeb": true,
+      "isCompletedForApp": true,
       "bannerType": "image-and-text",
       "bannerHeight": "220",
       "banner": {
@@ -74,8 +74,8 @@
     },
     "textOnlySkinnyBanner": {
       "order": 2,
-      "isCompletedForWeb": false,
-      "isCompletedForApp": false,
+      "isCompletedForWeb": true,
+      "isCompletedForApp": true,
       "bannerType": "text-only",
       "bannerHeight": "100",
       "bannerBgColor": "",
@@ -127,80 +127,165 @@
     },
     "heroPov": [
       {
-        "povStyle": "cart-with-no-cta",
+        "povStyle": "card-with-no-cta",
         "order": 3,
         "isCompletedForWeb": false,
         "isCompletedForApp": false,
-        "banner": {
-          "web": {
-            "english": {
-              "desktop": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_260727-D_E",
-              "desktopAltCopy": "",
-              "mobile": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_260727-M_E",
-              "mobileAltCopy": ""
-            },
-            "french": {
-              "desktop": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_260727-D_F",
-              "desktopAltCopy": "",
-              "mobile": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_260727-M_F",
-              "mobileAltCopy": ""
-            }
-          },
-          "app": "same-as-web"
+        "backgroundColor" : {
+          "app": "",
+          "web": ""
         },
-        "logo": {
+        "image": {
           "web": {
             "english": {
-              "desktop": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_Logo_260727",
-              "desktopAltCopy": "",
-              "mobile": "same-as-desktop",
-              "mobileAltCopy": ""
+              "desktop": "",
+              "desktopAltCopy": ""
             },
             "french": {
-              "desktop": "HPOV-BP_CI9605_PeaceTea-Onsite-Banners_Logo_260727",
-              "desktopAltCopy": "",
-              "mobile": "same-as-desktop",
+              "mobile": "",
               "mobileAltCopy": ""
-            }
-          },
-          "app": "same-as-web"
-        },
-        "copy": {
-          "web": {
-            "english": {
-              "headline": "Peace out studying!",
-              "subHeadline": "You could win a vacation to Aruba & more*"
-            },
-            "french": {
-              "headline": "La paix de lécole!",
-              "subHeadline": "Tu pourrais gagner un voyage à Aruba et plus encore*"
             }
           },
           "app": {
             "english": {
-              "headline": "Peace out studying!",
-              "subHeadline": "You could win a vacation to Aruba & more*"
+              "mobile": "",
+              "mobileAltCopy": ""
             },
             "french": {
-              "headline": "La paix de lécole!",
-              "subHeadline": "Tu pourrais gagner un voyage à Aruba et plus encore*."
+              "tablet": "",
+              "tabletAltCopy": ""
+            }
+          }
+        },
+        "logo": {
+          "web": {
+            "english": {
+              "searchText": "",
+              "altCopy": ""
+            },
+            "french": {
+              "searchText": "",
+              "altCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "searchText": "",
+              "altCopy": ""
+            },
+            "french": {
+              "searchText": "",
+              "altCopy": ""
             }
           }
         },
         "legal": {
           "web": {
             "english": {
-              "bannerCopy": "Legal",
-              "popUpTitle": "Legal",
-              "popUpBody": "NO PURCHASE NECESSARY. Open to legal residents of Canada, who are 18 years or older at the time of entry. Grand Prize (1): Trip, ARV: CAD$14,790; First Prizes (15): A CAD$500 gift card & prize pack, ARV: CAD$672. Ends 11:59 pm ET on 2026/10/31. Odds depend on number of eligible entries received. Math skill test required. For Official Rules, visit here. Contest is hosted by Coca-Cola Ltd. and is in no way sponsored, endorsed, administered by, or associated with Wal-Mart Canada Corp. Contest website is hosted by a third party and is not associated with walmart.ca"
+              "discloser": "",
+              "title": "",
+              "description": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             },
             "french": {
-              "bannerCopy": "Mention légale",
-              "popUpTitle": "Mention légale",
-              "popUpBody": "AUCUN ACHAT REQUIS. Sadresse aux résidents autorisés du Canada dau moins 18 ans. Grand prix (1) : voyage (VDA de 14 970 $ CA); premiers prix (15) : une carte-cadeau (500 $ CA) et un ensemble-cadeau (VDA de 672 $ CA). Jusquau 31 octobre 2026 à 23 h 59 HE. Les chances de gagner dépendent du nombre de participations admissibles reçues. Question mathématique obligatoire. Voir le règlement complet. Organisé par Coca-Cola Ltée et en aucun cas commandité, approuvé ou administré par La Compagnie Walmart du Canada ni associé à cette dernière. Hébergé par un tiers et non associé au site walmart.ca"
+              "discloser": "",
+              "title": "",
+              "description": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             }
           },
-          "app": "same-as-web"
+          "app": {
+            "english": {
+              "discloser": "",
+              "title": "",
+              "description": "",
+              "textColor": ""
+            },
+            "french": {
+              "discloser": "",
+              "title": "",
+              "description": "",
+              "textColor": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            },
+            "french": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            }
+          },
+          "app": {
+            "english": { "text": "", "textColor": "" },
+            "french": { "text": "", "textColor": "" }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            },
+            "french": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            }
+          },
+          "app": {
+            "english": { "text": "", "textColor": "" },
+            "french": { "text": "", "textColor": "" }
+          }
+        },
+        "eyebrow": {
+          "web": {
+            "english": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            },
+            "french": { 
+              "text": "", 
+              "desktopTextColor": "",
+              "mobileTextColor": ""
+            }
+          },
+          "app": {
+            "english": { "text": "", "textColor": "" },
+            "french": { "text": "", "textColor": "" }
+          }
+        },
+        "cta": {
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
         }
       }
     ]
