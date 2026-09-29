@@ -126,6 +126,14 @@ class SkinnyBanner {
           color: 'div[id="bannerCta,0"] input[data-e2eid="campaigns-campaigns-0-textColor"]',
         },
       },
+      // App-only — no "add" button, always visible. Required for the
+      // module to be publishable on app.
+      clickThroughUrl: {
+        enText: 'input[data-e2eid="campaigns-campaigns-0-destination-clickable-el"]',
+        enLink: 'textarea[data-e2eid="campaigns-campaigns-0-destination-url-link"]',
+        frText: 'input[data-e2eid="campaigns-campaigns-0-fr_destination-clickable-el"]',
+        frLink: 'textarea[data-e2eid="campaigns-campaigns-0-fr_destination-url-link"]',
+      },
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
     },
   };
@@ -257,6 +265,20 @@ class SkinnyBanner {
     await SkinnyBanner.setColor(ctaSel.color, linkColor);
   };
 
+  static hasClickThroughContent = (localeData) => {
+    const { english, french } = localeData || {};
+    return Boolean(english?.linkText || english?.linkValue || french?.linkText || french?.linkValue);
+  };
+
+  // App-only, required for the module to be publishable — see scratch.txt.
+  static fillClickThroughUrl = async (sel, localeData) => {
+    const { english, french } = localeData;
+    await SkinnyBanner.setValue(sel.enText, english.linkText || '');
+    await SkinnyBanner.setValue(sel.enLink, english.linkValue || '');
+    await SkinnyBanner.setValue(sel.frText, french.linkText || '');
+    await SkinnyBanner.setValue(sel.frLink, french.linkValue || '');
+  };
+
   // Falls back to a generated alt copy (Brand + Device + Language + Module
   // Type) when the brief leaves an *AltCopy field blank.
   static generateAltCopy = ({ brandName, deviceType, language, moduleType }) => {
@@ -371,6 +393,21 @@ class SkinnyBanner {
       Helper.log('Filled banner CTA.');
     } else {
       Helper.log('No banner CTA content in brief — skipping CTA section.');
+    }
+
+    // App-only, required for the module to be publishable (see scratch.txt) —
+    // warn if the brief is missing it rather than silently leaving it blank.
+    if (deviceType === 'app') {
+      const clickThroughData = banner.bannerClickThoughURL && banner.bannerClickThoughURL.app;
+      if (!SkinnyBanner.hasClickThroughContent(clickThroughData)) {
+        const msg = 'bannerClickThoughURL is required for app modules to be publishable but is missing/empty in the brief.';
+        console.warn(`[SkinnyBanner] ${msg}`);
+        Helper.notify(msg, true);
+      }
+      if (clickThroughData) {
+        await SkinnyBanner.fillClickThroughUrl(SEL.clickThroughUrl, clickThroughData);
+        Helper.log('Filled banner click-through URL.');
+      }
     }
 
     // Per scratch.txt: never auto-click Save — hand off for review, and

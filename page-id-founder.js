@@ -25,7 +25,7 @@ class PageIdFounder {
     brandPage: {
       pageTypeOption: {
         web: 'div#dropdown-3>div>div#option-67',
-        app: 'div#dropdown-3>div>div#option-50',
+        app: 'div#dropdown-3>div>div#option-52',
       },
       pageSuggestionRow: 'div#dropdown-4>div:last-child>div:first-child',
     },
@@ -89,15 +89,22 @@ class PageIdFounder {
     }
   };
 
-  // Writes isCompleted: true/false onto each module the brief contained
-  // (based on the completion map built in runSkinnyBanner) and downloads the
-  // result as output.json, so a failed/partial run is downloadable too.
+  // Writes isCompletedForWeb/isCompletedForApp onto each module the brief
+  // contained (based on the completion map built in runSkinnyBanner) and
+  // downloads the result as output.json, so a failed/partial run is
+  // downloadable too. Only the field matching this run's device type is
+  // updated — the other device's field (e.g. from a prior run whose
+  // output.json was re-uploaded as this run's brief) is preserved as-is,
+  // defaulting to false the first time a module is seen.
   downloadOutputJson = (completion) => {
     const output = JSON.parse(JSON.stringify(this.briefData));
+    const completedKey = this.deviceType === 'web' ? 'isCompletedForWeb' : 'isCompletedForApp';
     for (const [moduleKey, isCompleted] of Object.entries(completion)) {
-      if (output.brandPage && output.brandPage[moduleKey]) {
-        output.brandPage[moduleKey].isCompleted = isCompleted;
-      }
+      const module = output.brandPage && output.brandPage[moduleKey];
+      if (!module) continue;
+      if (typeof module.isCompletedForWeb !== 'boolean') module.isCompletedForWeb = false;
+      if (typeof module.isCompletedForApp !== 'boolean') module.isCompletedForApp = false;
+      module[completedKey] = isCompleted;
     }
 
     const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });

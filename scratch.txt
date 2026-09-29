@@ -13,25 +13,25 @@ banner height: input[data-e2eid="desktopBannerHeight"]
 
 only for image+text skinny banner: [
     en desktop banner search box opener button: button[data-e2eid="bannerImage-dropdown-button"]
-    en desktop image search text: input[data-e2eid="bannerImage-dropdown-input"] placeholder="Search"
+    en desktop image search text: input[data-e2eid="bannerImage-dropdown-input"] 
     en search button: button[data-e2eid="bannerImage-search-asset-button"]
     en founded image: div#searched-image
     en alt text: input[data-e2eid="bannerImage-alt-text"]
 
     fr desktop banner search box opener button: button[data-e2eid="fr_bannerImage-dropdown-button"]
-    fr desktop image search text: input[data-e2eid="fr_bannerImage-dropdown-input"] placeholder="Search"
+    fr desktop image search text: input[data-e2eid="fr_bannerImage-dropdown-input"] 
     fr search button: button[data-e2eid="fr_bannerImage-search-asset-button"]
     fr founded image: div#searched-image
     fr alt text: input[data-e2eid="fr_bannerImage-alt-text"]
 
     en mobile banner search box opener button button: button[data-e2eid="mobileImage-dropdown-button"]
-    en mobile image search text: input[data-e2eid="mobileImage-dropdown-input"] placeholder="Search"
+    en mobile image search text: input[data-e2eid="mobileImage-dropdown-input"] 
     en search button: button[data-e2eid="mobileImage-search-asset-button"]
     en founded image: div#searched-image
     en alt text: input[data-e2eid="mobileImage-alt-text"]
 
     fr mobile banner search box opener button button fr: button[data-e2eid="fr_mobileImage-dropdown-button"]
-    fr mobile image search text: input[data-e2eid="fr_mobileImage-dropdown-input"] placeholder="Search"
+    fr mobile image search text: input[data-e2eid="fr_mobileImage-dropdown-input"] 
     fr search button: button[data-e2eid="fr_mobileImage-search-asset-button"]
     fr founded image: div#searched-image
     fr alt text: input[data-e2eid="fr_mobileImage-alt-text"]
@@ -60,7 +60,7 @@ banner cta: image+text and text-only both
     en link text: input[data-e2eid="bannerCta-bannerCta-0-ctaLink-clickable-el"]
     en link value: textarea[data-e2eid="bannerCta-bannerCta-0-ctaLink-url-link"]
 
-    en link text: input[data-e2eid="bannerCta-bannerCta-0-fr_ctaLink-clickable-el"]
+    fr link text: input[data-e2eid="bannerCta-bannerCta-0-fr_ctaLink-clickable-el"]
     fr link value: textarea[data-e2eid="bannerCta-bannerCta-0-fr_ctaLink-url-link"]
     
     text color: input[data-e2eid="bannerCta-bannerCta-0-textColor"]
@@ -85,13 +85,13 @@ banner height: input[data-e2eid="campaigns-campaigns-0-bannerHeight"]
 
 only for image+text skinny banner: [
     en banner search box opener button: button[data-e2eid="campaigns-campaigns-0-image-dropdown-button"]
-    en image search text: input[data-e2eid="campaigns-campaigns-0-image-dropdown-input"] placeholder="Search"
+    en image search text: input[data-e2eid="campaigns-campaigns-0-image-dropdown-input"] 
     en search button: button[data-e2eid="campaigns-campaigns-0-image-search-asset-button"]
     en founded image: div#searched-image
     en alt text fr: input[data-e2eid="campaigns-campaigns-0-image-alt-text"]
 
     fr banner search box opener button: button[data-e2eid="campaigns-campaigns-0-fr_image-dropdown-button"]
-    fr image search text: input[data-e2eid="campaigns-campaigns-0-fr_image-dropdown-input"] placeholder="Search"
+    fr image search text: input[data-e2eid="campaigns-campaigns-0-fr_image-dropdown-input"] 
     fr search button: button[data-e2eid="campaigns-campaigns-0-fr_image-search-asset-button"]
     fr founded image: div#searched-image
     fr alt text fr: input[data-e2eid="campaigns-campaigns-0-fr_image-alt-text"]
@@ -126,9 +126,236 @@ banner cta: image+text and text-only both
     
     text color: div[id="bannerCta,0"] input[data-e2eid="campaigns-campaigns-0-textColor"]
 
+banner click-though-url:
+    en link text: data-e2eid="campaigns-campaigns-0-destination-clickable-el"
+    en link value: textarea[data-e2eid="campaigns-campaigns-0-destination-url-link"]
+
+    fr link text: input[data-e2eid="campaigns-campaigns-0-fr_destination-clickable-el"]
+    fr link value: textarea[data-e2eid="campaigns-campaigns-0-fr_destination-url-link"]
+
 save button: 
     ask permission before click save button
     button[type="button"] inner html should includes "SAVE"
+
+
+hero pov app
+=============
+module name: input[id="../name"]
+pov style type selection: button[data-e2eid="cards-cards-0-povStyle"]
+options: button[data-e2eid="cards-cards-0-povStyle"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "Card with single CTA button" => "card-with-single-cta"
+    "Card with no CTA" => "card-with-no-cta"
+
+images:
+    en mobile banner search box opener button button: button[data-e2eid="cards-cards-0-regularImage-dropdown-button"]
+    en mobile image search text: input[data-e2eid="cards-cards-0-regularImage-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-regularImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-regularImage-alt-text"]
+
+    en tablet banner search box opener button: button[data-e2eid="cards-cards-0-largeImage-dropdown-button"]
+    en tablet image search text: input[data-e2eid="cards-cards-0-largeImage-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-largeImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-largeImage-alt-text"]
+
+    fr add button: button.add-group-button-right inner HTML includes "FR IMAGE"
+    fr mobile banner search box opener button button: div[test-dataid="cards-0,fr_image"] button[data-e2eid="cards-cards-0-regularImage-dropdown-button"]
+    fr mobile image search text: input[data-e2eid="cards-cards-0-regularImage-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-regularImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: div[test-dataid="cards-0,fr_image"] input[data-e2eid="cards-cards-0-regularImage-alt-text"]
+
+    fr tablet banner search box opener button: div[test-dataid="cards-0,fr_image"] button[data-e2eid="cards-cards-0-largeImage-dropdown-button"]
+    fr tablet image search text: input[data-e2eid="cards-cards-0-largeImage-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-largeImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: div[test-dataid="cards-0,fr_image"] input[data-e2eid="cards-cards-0-largeImage-alt-text"]
+
+background color: input[data-e2eid="cards-cards-0-backgroundColor"]
+
+heading: 
+    en heading: input[data-e2eid="cards-cards-0-text"]
+        max character: 29
+    fr heading: input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 29 
+    font color: input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+
+sub-heading:
+    add button: button.add-group-button-right inner HTML includes "SUBHEADING"
+    en heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-text"]
+        max character: 70
+    fr heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 70
+
+eyebrow:
+    add button: button.add-group-button-right inner HTML includes "EYEBROW"
+    en heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-text"]
+        max character: 30
+    fr heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 30
+
+logo-image:
+    en logo search box opener button button: button[data-e2eid="cards-cards-0-logo-dropdown-button"]
+    en logo image search text: input[data-e2eid="cards-cards-0-logo-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-logo-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-logo-alt-text"]
+
+    fr logo search box opener button button: button[data-e2eid="cards-cards-0-fr_logo-dropdown-button"]
+    fr logo image search text: input[data-e2eid="cards-cards-0-fr_logo-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-fr_logo-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="cards-cards-0-fr_logo-alt-text"]
+
+legal:
+    add button: button.add-group-button-right inner HTML includes "LEGAL DISCLOSURE"
+    en discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-regularText"]
+        max character: 21
+    fr discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_regularText"]
+        max character: 21
+    legal light box opener button text color: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+    en popup title: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-legalBottomSheetTitle"]
+        max character: 28
+    fr popup title: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_legalBottomSheetTitle"]
+        max character: 28
+    en popup description: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-legalBottomSheetDescription"]
+        max character: 1000
+    fr popup description: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_legalBottomSheetDescription"]
+        max character: 1000
+
+cta: if card with single cta clicked
+    en link text: input[data-e2eid="cards-cards-0-button-clickable-el"]
+    en link value: textarea[data-e2eid="cards-cards-0-button-url-link"]
+
+    fr link text: input[data-e2eid="cards-cards-0-fr_button-clickable-el"]
+    fr link value: textarea[data-e2eid="cards-cards-0-fr_button-url-link"]
+
+hero pov web
+=============
+module name: input[id="../name"]
+pov style type selection: button[data-e2eid="cards-cards-0-povStyle"]
+options: button[data-e2eid="cards-cards-0-povStyle"] + div div[id^="option-"]
+    needed to check innerHtml: 
+    "Card with single CTA button" => "card-with-single-cta"
+    "Card with no CTA" => "card-with-no-cta"
+
+images:
+    en mobile banner search box opener button button: button[data-e2eid="cards-cards-0-mobileImage-dropdown-button"]
+    en mobile image search text: input[data-e2eid="cards-cards-0-mobileImage-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-mobileImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-mobileImage-alt-text"]
+
+    en desktop banner search box opener button: button[data-e2eid="cards-cards-0-desktopImage-dropdown-button"]
+    en desktop image search text: input[data-e2eid="cards-cards-0-desktopImage-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-desktopImage-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-desktopImage-alt-text"]
+
+    fr mobile banner search box opener button button: button[data-e2eid="cards-cards-0-fr_mobileImage-dropdown-button"]
+    fr mobile image search text: input[data-e2eid="cards-cards-0-fr_mobileImage-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-fr_mobileImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="cards-cards-0-fr_mobileImage-alt-text"]
+
+    fr desktop banner search box opener button: button[data-e2eid="cards-cards-0-fr_desktopImage-dropdown-button"]
+    fr desktop image search text: input[data-e2eid="cards-cards-0-fr_desktopImage-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-fr_desktopImage-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="cards-cards-0-fr_desktopImage-alt-text"]
+
+background color: input[data-e2eid="cards-cards-0-backgroundColor"]
+
+heading: 
+    en heading: input[data-e2eid="cards-cards-0-text"]
+        max character: 50
+    fr heading: input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 50 
+    desktop font color: input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+    mobile font color: input[data-e2eid="cards-cards-0-textColorMobile"]
+        max character: 7
+
+sub-heading:
+    add button: button.add-group-button-right inner HTML includes "SUBHEADING"
+    en heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-text"]
+        max character: 70
+    fr heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 70
+    desktop font color: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+    mobile font color: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-textColorMobile"]
+        max character: 7
+
+eyebrow:
+    add button: button.add-group-button-right inner HTML includes "EYEBROW"
+    en heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-text"]
+        max character: 30
+    fr heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-fr_text"]
+        max character: 30
+    desktop font color: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+    mobile font color: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-textColorMobile"]
+        max character: 7
+
+logo-image:
+    en logo search box opener button button: button[data-e2eid="cards-cards-0-logo-dropdown-button"]
+    en logo image search text: input[data-e2eid="cards-cards-0-logo-dropdown-input"] 
+    en search button: button[data-e2eid="cards-cards-0-logo-search-asset-button"]
+    en founded image: div#searched-image
+    en alt text: input[data-e2eid="cards-cards-0-logo-alt-text"]
+
+    fr logo search box opener button button: button[data-e2eid="cards-cards-0-fr_logo-dropdown-button"]
+    fr logo image search text: input[data-e2eid="cards-cards-0-fr_logo-dropdown-input"] 
+    fr search button: button[data-e2eid="cards-cards-0-fr_logo-search-asset-button"]
+    fr founded image: div#searched-image
+    fr alt text: input[data-e2eid="cards-cards-0-fr_logo-alt-text"]
+
+legal:
+    add button: button.add-group-button-right inner HTML includes "DISCLOSURE"
+    en discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-regularText"]
+        max character: 21
+    fr discloser: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_regularText"]
+        max character: 21
+    desktop discloser color: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-textColor"]
+        max character: 7
+    mobile discloser color: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-textColorMobile"]
+        max character: 7
+    en popup title: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-legalBottomSheetTitle"]
+        max character: 28
+    fr popup title: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_legalBottomSheetTitle"]
+        max character: 28
+    en popup description: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-legalBottomSheetDescription"]
+        max character: 1000
+    fr popup description: div[test-dataid="cards-0,legalDisclosure"] input[data-e2eid="cards-cards-0-fr_legalBottomSheetDescription"]
+        max character: 1000
+
+cta: if card with single cta clicked
+    en link text: input[data-e2eid="cards-cards-0-button-clickable-el"]
+    en link value: textarea[data-e2eid="cards-cards-0-button-url-link"]
+
+    fr link text: input[data-e2eid="cards-cards-0-fr_button-clickable-el"]
+    fr link value: textarea[data-e2eid="cards-cards-0-fr_button-url-link"]
+
+
+note for hero pov:
+======================
+in one hero pov max 5 card can be added.
+in the selector like input[data-e2eid="cards-cards-0-........."]
+the integer 0 is the position of a card. in the tempo-brief.json
+object heroPov is a arrow of object. The same amount of object present
+in the heroPov need to create hero pov card.
+    
+
+
+
+
+
+
 
 
 
