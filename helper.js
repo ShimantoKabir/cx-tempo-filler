@@ -113,6 +113,38 @@ class Helper {
     });
   };
 
+  // Per scratch.txt: never auto-click Save — hand off for review, and block
+  // here until the user actually clicks Save or Discard Changes, so a
+  // brief with more modules doesn't try to add the next one while this one
+  // is still open. Discard sits right next to Save (same button shape,
+  // distinguished only by its text) in every module — this is shared by
+  // skinny-banner.js/hero-pov.js/hub-spoke.js/pov-card.js/item-carousel.js.
+  // Returns true if Save was clicked, false if Discard Changes was clicked
+  // — the caller uses this to decide whether to mark the module completed.
+  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel) => {
+    const saveBtn = await Helper.waitForElementByText(saveButtonSel.selector, saveButtonSel.text, saveButtonSel.exact);
+    const discardBtn = await Helper.waitForElementByText(
+      discardButtonSel.selector,
+      discardButtonSel.text,
+      discardButtonSel.exact
+    );
+    saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const saved = await new Promise((resolve) => {
+      saveBtn.addEventListener('click', () => resolve(true), { once: true });
+      discardBtn.addEventListener('click', () => resolve(false), { once: true });
+    });
+
+    Helper.log(
+      saved
+        ? 'Save clicked — going back to find the next module.'
+        : 'Discard Changes clicked — going back without marking this module completed.'
+    );
+    window.history.back();
+    await Helper.sleep(1000);
+    return saved;
+  };
+
   // Falls back to a generated alt copy (Brand + Device + Language + Module
   // Type) when a brief leaves an image's altCopy field blank. Shared by
   // skinny-banner.js and hero-pov.js.
@@ -122,10 +154,29 @@ class Helper {
     return `${brandName} ${titleCase(deviceType)} ${titleCase(language)} ${moduleLabel}`;
   };
 
+  // This site is a React app. Setting el.value directly goes through
+  // React's per-instance overridden setter, which updates React's internal
+  // value tracker as a side effect — so when the input/change events are
+  // dispatched next, React sees "no change" and never fires onChange or
+  // updates its own state. The DOM shows the typed value, but React's state
+  // (what actually gets saved) never learns about it — matching the bug
+  // where a field only "sticks" once a real user clicks into it (which goes
+  // through the native setter instead). Using the native prototype setter
+  // here bypasses React's tracker so the dispatched events are seen as a
+  // real change.
+  //
+  // Deliberately no el.blur() here: this helper is also used for the
+  // image-search inputs (type -> click search button -> click result), and
+  // blurring right after typing risks closing that search popover before
+  // the next click can happen. Add blur only at specific call sites if a
+  // field still doesn't stick after this fix — not globally here.
   static setInputValue = (el, value) => {
     console.log('[Helper] setting value:', value, 'on element:', el);
+    const proto = el.tagName === 'TEXTAREA' ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+    const nativeSetter = Object.getOwnPropertyDescriptor(proto, 'value').set;
+
     el.focus();
-    el.value = value;
+    nativeSetter.call(el, value);
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
   };

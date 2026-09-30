@@ -21,6 +21,7 @@ class ItemCarousel {
       skusInput: 'input[data-testid="item-string-input"]',
       addSkusButton: 'button[data-testid="add-tags"]',
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
     },
     app: {
       moduleName: 'input[id="../name"]',
@@ -33,6 +34,7 @@ class ItemCarousel {
       skusInput: 'input[data-testid="item-string-input"]',
       addSkusButton: 'button[data-testid="add-tags"]',
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
     },
   };
 
@@ -59,7 +61,14 @@ class ItemCarousel {
 
     Helper.log('Filling Item Carousel module...');
 
-    const moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'item-carousel', deviceType);
+    // When the brief has more than one Item Carousel, append a 1-based
+    // sequence number so the generated names aren't all identical — a
+    // single instance keeps the plain name with no trailing number.
+    const total = Array.isArray(brandPage.itemCarousel) ? brandPage.itemCarousel.length : 1;
+    let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'item-carousel', deviceType);
+    if (total > 1) {
+      moduleName += ` ${index + 1}`;
+    }
     await ItemCarousel.setValue(SEL.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 
@@ -88,24 +97,7 @@ class ItemCarousel {
       await Helper.sleep(300);
     }
 
-    // Per scratch.txt convention (see skinny-banner.js/hero-pov.js/
-    // hub-spoke.js/pov-card.js): never auto-click Save — hand off for
-    // review, and block here until the user actually clicks it, so a brief
-    // with more modules doesn't try to add the next one while this one is
-    // still open and unsaved.
-    const saveBtn = await Helper.waitForElementByText(
-      SEL.saveButton.selector,
-      SEL.saveButton.text,
-      SEL.saveButton.exact
-    );
-    saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    Helper.log('Item Carousel filled — review and click Save to continue.');
-
-    await new Promise((resolve) => {
-      saveBtn.addEventListener('click', () => resolve(), { once: true });
-    });
-    Helper.log('Save clicked — going back to find the next module.');
-    window.history.back();
-    await Helper.sleep(1000);
+    Helper.log('Item Carousel filled — review and click Save (or Discard Changes) to continue.');
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
   };
 }

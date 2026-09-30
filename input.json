@@ -1,0 +1,62 @@
+{
+  "brandPage": {
+    "pageId": "6000210080323",
+    "brandName": "General Mills",
+    "heroPov": [
+      {
+        "povStyle": "card-with-no-cta",
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
+        "order": 1,
+        "backgroundColor": "",
+        "image": {
+          "web": {
+            "english": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E" },
+            "french": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F" }
+          },
+          "app": {
+            "english": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E" },
+            "french": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F" }
+          }
+        },
+        "logo": {
+          "web": { "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E" }, "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F" } },
+          "app": { "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E" }, "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F" } }
+        },
+        "legal": { "english": "", "french": "" },
+        "eyebrow": { "english": "", "french": "", "textColor": "" },
+        "headline": {
+          "english": "Create unforgettable moments",
+          "french": "Pour des moments inoubliables",
+          "textColor": "001E60"
+        },
+        "subHeadline": {
+          "english": "Cozy recipes that bring your loved ones together.",
+          "french": "Créez des recettes réconfortantes qui donnent envie de se rassembler.",
+          "textColor": "001E60"
+        },
+        "cta": {
+          "web": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } },
+          "app": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } }
+        }
+      }
+    ],
+    "itemCarousel": [
+      {
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
+        "order": 2,
+        "title": { "english": "Shop ingredients", "french": "Magasiner les ingrédients" },
+        "subTitle": { "english": "", "french": "" },
+        "skus": [
+          "5RYBQ0AAXN0P",
+          "6000188964399",
+          "6000188958471",
+          "2W91ECZJPPOY",
+          "5BFW29FQEPIE",
+          "29IKLTUD1E0G"
+        ]
+      }
+    ]
+  }
+}

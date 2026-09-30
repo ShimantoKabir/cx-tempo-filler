@@ -1,11 +1,11 @@
 {
   "brandPage": {
-    "pageId": "6000208631151",
+    "pageId": "6000210080323",
     "brandName": "Reebok",
     "imageAndTextSkinnyBanner": {
-      "order": 1,
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "order": 2,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "bannerType": "image-and-text",
       "bannerHeight": "220",
       "banner": {
@@ -73,9 +73,9 @@
       }
     },
     "textOnlySkinnyBanner": {
-      "order": 2,
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "order": 1,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "bannerType": "text-only",
       "bannerHeight": "100",
       "bannerBgColor": "",
@@ -129,8 +129,8 @@
       {
         "povStyle": "card-with-no-cta",
         "order": 3,
-        "isCompletedForWeb": true,
-        "isCompletedForApp": true,
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
         "backgroundColor": {
           "app": "",
           "web": ""
@@ -287,8 +287,8 @@
       }
     ],
     "hubSpokesNM": {
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "columns": 4,
       "heading": { "english": "hub-spoke", "french": "hub-spoke" },
       "rows": [
@@ -423,8 +423,9 @@
       ]
     },
     "povCard": {
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
+      "order": 5,
       "title": {
         "web": { "english": "", "french": "" },
         "app": { "english": "", "french": "" }
@@ -556,6 +557,7 @@
       {
         "isCompletedForWeb": false,
         "isCompletedForApp": false,
+        "order": 6,
         "title": { "english": "Shop Hilary's looks", "french": "Magasinez les tenues de Hilary" },
         "subTitle": { "english": "", "french": "" },
         "skus": [
@@ -574,6 +576,7 @@
       {
         "isCompletedForWeb": false,
         "isCompletedForApp": false,
+        "order": 7,
         "title": { "english": "The Reebok edit", "french": "L'édit Reebok" },
         "subTitle": { "english": "", "french": "" },
         "skus": [

@@ -29,6 +29,7 @@ class HubSpoke {
     colNumberOption: 'button[data-e2eid="colNumber"] + div div[id^="option-"]',
     addRowButton: 'div.add-group-button',
     saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+    discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
   };
 
   static addColumnButton = (colNumber, row) => ({
@@ -179,23 +180,7 @@ class HubSpoke {
       }
     }
 
-    // Per scratch.txt convention (see skinny-banner.js/hero-pov.js): never
-    // auto-click Save — hand off for review, and block here until the user
-    // actually clicks it, so a brief with more modules doesn't try to add
-    // the next one while this one is still open and unsaved.
-    const saveBtn = await Helper.waitForElementByText(
-      HubSpoke.SELECTORS.saveButton.selector,
-      HubSpoke.SELECTORS.saveButton.text,
-      HubSpoke.SELECTORS.saveButton.exact
-    );
-    saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    Helper.log('Hub Spokes NxM filled — review and click Save to continue.');
-
-    await new Promise((resolve) => {
-      saveBtn.addEventListener('click', () => resolve(), { once: true });
-    });
-    Helper.log('Save clicked — going back to find the next module.');
-    window.history.back();
-    await Helper.sleep(1000);
+    Helper.log('Hub Spokes NxM filled — review and click Save (or Discard Changes) to continue.');
+    return await Helper.waitForSaveOrDiscard(HubSpoke.SELECTORS.saveButton, HubSpoke.SELECTORS.discardButton);
   };
 }

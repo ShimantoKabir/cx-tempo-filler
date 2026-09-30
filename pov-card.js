@@ -58,6 +58,7 @@ class PovCard {
         },
       }),
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
     },
     web: {
       moduleName: 'input[id="../name"]',
@@ -104,6 +105,7 @@ class PovCard {
         },
       }),
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
     },
   };
 
@@ -236,24 +238,7 @@ class PovCard {
       Helper.log(`Filled card ${i + 1} of ${cards.length}.`);
     }
 
-    // Per scratch.txt convention (see skinny-banner.js/hero-pov.js/
-    // hub-spoke.js): never auto-click Save — hand off for review, and block
-    // here until the user actually clicks it, so a brief with more modules
-    // doesn't try to add the next one while this one is still open and
-    // unsaved.
-    const saveBtn = await Helper.waitForElementByText(
-      SEL.saveButton.selector,
-      SEL.saveButton.text,
-      SEL.saveButton.exact
-    );
-    saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    Helper.log('POV Card filled — review and click Save to continue.');
-
-    await new Promise((resolve) => {
-      saveBtn.addEventListener('click', () => resolve(), { once: true });
-    });
-    Helper.log('Save clicked — going back to find the next module.');
-    window.history.back();
-    await Helper.sleep(1000);
+    Helper.log('POV Card filled — review and click Save (or Discard Changes) to continue.');
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
   };
 }

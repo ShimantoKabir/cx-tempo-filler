@@ -16,7 +16,7 @@ class PageIdFounder {
     pageTypeButton: 'button[data-testid="Select-page-type"]',
     pageIdButton: 'button[data-e2eid="seconday-page-selector"]',
     pageIdInput: 'div#dropdown-4>div>input',
-    submitButton: 'button[data-testid="submit-page-type"]',
+    go: 'button[data-testid="submit-page-type"]',
 
     // Selectors below are specific to whichever "page type" is being filled.
     // This extension currently only automates the Brand Page flow
@@ -48,31 +48,32 @@ class PageIdFounder {
     this.selectedModules = selectedModules;
   }
 
-  // Builds the ordered list of modules the brief actually contains: each
-  // Skinny Banner variant found (via SkinnyBanner's own order-aware
-  // detection), plus Hero POV if the brief has a non-empty heroPov array,
-  // plus Hub Spokes NxM if the brief has a hubSpokesNM entry, plus POV Card
-  // if the brief has a povCard entry, plus Item Carousel if the brief has
-  // an itemCarousel entry. None of these four has an "order" field of its
-  // own, so they're simply processed after the Skinny Banners, in that
-  // order.
+  // Builds the ordered list of modules the brief actually contains, sorted
+  // by each module's own "order" field so creation follows the brief's
+  // intent rather than a hardcoded module-type sequence. A module with no
+  // "order" field sorts after every module that has one (see the warning
+  // logged below) rather than silently defaulting to some guessed position.
   static buildModuleDescriptors = (brandPage) => {
-    const descriptors = SkinnyBanner.detectBannerTypes(brandPage).map((bannerType) => ({
-      moduleKey: SkinnyBanner.moduleKeyForBannerType(bannerType),
-      kind: 'skinnyBanner',
-      bannerType,
-    }));
+    const descriptors = [];
+
+    SkinnyBanner.detectBannerTypes(brandPage).forEach((bannerType) => {
+      const moduleKey = SkinnyBanner.moduleKeyForBannerType(bannerType);
+      descriptors.push({ moduleKey, kind: 'skinnyBanner', bannerType, order: brandPage[moduleKey]?.order });
+    });
 
     if (Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0) {
-      descriptors.push({ moduleKey: 'heroPov', kind: 'heroPov' });
+      // heroPov has no separate module-level order field — the first
+      // card's order (also used to sort cards within the module) doubles
+      // as the module's position, per how briefs have used it so far.
+      descriptors.push({ moduleKey: 'heroPov', kind: 'heroPov', order: brandPage.heroPov[0]?.order });
     }
 
     if (brandPage.hubSpokesNM) {
-      descriptors.push({ moduleKey: 'hubSpokesNM', kind: 'hubSpokesNM' });
+      descriptors.push({ moduleKey: 'hubSpokesNM', kind: 'hubSpokesNM', order: brandPage.hubSpokesNM.order });
     }
 
     if (brandPage.povCard) {
-      descriptors.push({ moduleKey: 'povCard', kind: 'povCard' });
+      descriptors.push({ moduleKey: 'povCard', kind: 'povCard', order: brandPage.povCard.order });
     }
 
     // itemCarousel is an array where each entry is a fully separate module
@@ -81,10 +82,24 @@ class PageIdFounder {
     // own descriptor, keyed by index so completion tracking and the popup
     // checklist can address them independently.
     if (Array.isArray(brandPage.itemCarousel)) {
-      brandPage.itemCarousel.forEach((_, index) => {
-        descriptors.push({ moduleKey: `itemCarousel-${index}`, kind: 'itemCarousel', index });
+      brandPage.itemCarousel.forEach((entry, index) => {
+        descriptors.push({ moduleKey: `itemCarousel-${index}`, kind: 'itemCarousel', index, order: entry?.order });
       });
     }
+
+    descriptors.forEach((d) => {
+      if (typeof d.order !== 'number') {
+        console.warn(`[PageIdFounder] Module "${d.moduleKey}" has no "order" field — it will run last.`);
+      }
+    });
+
+    // Modules with no order (undefined) sort after every ordered module,
+    // rather than being treated as 0 and jumping to the front.
+    descriptors.sort((a, b) => {
+      const orderA = typeof a.order === 'number' ? a.order : Infinity;
+      const orderB = typeof b.order === 'number' ? b.order : Infinity;
+      return orderA - orderB;
+    });
 
     return descriptors;
   };
@@ -120,26 +135,31 @@ class PageIdFounder {
 
     try {
       for (const d of descriptors) {
+        // Each module's run() blocks until the user clicks either Save or
+        // Discard Changes, and returns true only for Save — Discard still
+        // navigates back to continue the loop, but must NOT mark the
+        // module as completed.
+        let completed;
         if (d.kind === 'heroPov') {
           await ModuleFinder.run(this.deviceType, 'HeroPov');
-          await HeroPov.run(this.deviceType, brandPage);
+          completed = await HeroPov.run(this.deviceType, brandPage);
         } else if (d.kind === 'hubSpokesNM') {
           await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
-          await HubSpoke.run(this.deviceType, brandPage);
+          completed = await HubSpoke.run(this.deviceType, brandPage);
         } else if (d.kind === 'povCard') {
           const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
           await ModuleFinder.run(this.deviceType, moduleKey, 'POVCar');
-          await PovCard.run(this.deviceType, brandPage);
+          completed = await PovCard.run(this.deviceType, brandPage);
         } else if (d.kind === 'itemCarousel') {
           // "ItemCarousel" auto-derives to "item carousel", already
           // matching scratch.txt's given search text — no override needed.
           await ModuleFinder.run(this.deviceType, 'ItemCarousel');
-          await ItemCarousel.run(this.deviceType, brandPage, d.index);
+          completed = await ItemCarousel.run(this.deviceType, brandPage, d.index);
         } else {
           await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
-          await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
+          completed = await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
         }
-        completion[d.moduleKey] = true;
+        completion[d.moduleKey] = completed;
       }
     } finally {
       this.downloadOutputJson(completion);
@@ -288,23 +308,23 @@ class PageIdFounder {
       await Helper.sleep(300);
 
       // Step 9: submit (or hand off for manual review)
-      const submitBtn = await Helper.waitForElement(PageIdFounder.SELECTORS.submitButton);
+      const goBtn = await Helper.waitForElement(PageIdFounder.SELECTORS.go);
       // Submitting is an in-place SPA transition, not a page reload, so the
       // module container can just be called directly in this same script
       // context once submission actually happens.
       if (this.autoSubmit) {
-        submitBtn.click();
+        goBtn.click();
         Helper.log('Form filled and submitted automatically.');
         await this.runModules();
       } else {
-        submitBtn.addEventListener(
+        goBtn.addEventListener(
           'click',
           async () => {
             await this.runModules();
           },
           { once: true }
         );
-        submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        goBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
         Helper.log('All fields filled — review and click Submit yourself.');
       }
     } catch (err) {

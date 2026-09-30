@@ -75,6 +75,7 @@ class SkinnyBanner {
         },
       },
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: true },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: true },
     },
     app: {
       moduleName: 'input[id="../name"]',
@@ -135,6 +136,7 @@ class SkinnyBanner {
         frLink: 'textarea[data-e2eid="campaigns-campaigns-0-fr_destination-url-link"]',
       },
       saveButton: { selector: 'button[type="button"]', text: 'SAVE', exact: false },
+      discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
     },
   };
 
@@ -402,23 +404,7 @@ class SkinnyBanner {
       }
     }
 
-    // Per scratch.txt: never auto-click Save — hand off for review, and
-    // (per user decision) block here until the user actually clicks it, so
-    // a brief with multiple banners doesn't try to add the next module
-    // while this one is still open and unsaved.
-    const saveBtn = await Helper.waitForElementByText(
-      SEL.saveButton.selector,
-      SEL.saveButton.text,
-      SEL.saveButton.exact
-    );
-    saveBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    Helper.log('Skinny Banner filled — review and click Save to continue.');
-
-    await new Promise((resolve) => {
-      saveBtn.addEventListener('click', () => resolve(), { once: true });
-    });
-    Helper.log('Save clicked — going back to find the next module.');
-    window.history.back();
-    await Helper.sleep(1000);
+    Helper.log('Skinny Banner filled — review and click Save (or Discard Changes) to continue.');
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
   };
 }
