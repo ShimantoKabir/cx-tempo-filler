@@ -87,6 +87,17 @@ class PageIdFounder {
       });
     }
 
+    // hubSpokeCard is app-only (see scratch.txt — no web variant is
+    // documented) but shares itemCarousel's "array of independent module
+    // instances" shape. The popup checklist doesn't know the run's
+    // deviceType, so an app-only module can still be checked for a web
+    // run — runModules() skips it in that case rather than erroring.
+    if (Array.isArray(brandPage.hubSpokeCard)) {
+      brandPage.hubSpokeCard.forEach((entry, index) => {
+        descriptors.push({ moduleKey: `hubSpokeCard-${index}`, kind: 'hubSpokeCard', index, order: entry?.order });
+      });
+    }
+
     descriptors.forEach((d) => {
       if (typeof d.order !== 'number') {
         console.warn(`[PageIdFounder] Module "${d.moduleKey}" has no "order" field — it will run last.`);
@@ -155,6 +166,18 @@ class PageIdFounder {
           // matching scratch.txt's given search text — no override needed.
           await ModuleFinder.run(this.deviceType, 'ItemCarousel');
           completed = await ItemCarousel.run(this.deviceType, brandPage, d.index);
+        } else if (d.kind === 'hubSpokeCard') {
+          // App-only — skip rather than error if somehow selected on a web
+          // run (the popup checklist doesn't filter by deviceType).
+          if (this.deviceType !== 'app') {
+            Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
+            continue;
+          }
+          // Module find key is "Hubspoke" (exact case per scratch.txt);
+          // the auto-derived search query would be close enough, but the
+          // given search text "HubSpoke" is passed explicitly to be safe.
+          await ModuleFinder.run(this.deviceType, 'Hubspoke', 'HubSpoke');
+          completed = await HubSpokeCard.run(this.deviceType, brandPage, d.index);
         } else {
           await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
           completed = await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
@@ -203,6 +226,19 @@ class PageIdFounder {
         // (identified by index) gets its completion flag updated.
         const index = Number(moduleKey.slice('itemCarousel-'.length));
         const entry = Array.isArray(brandPage.itemCarousel) ? brandPage.itemCarousel[index] : null;
+        if (!entry) continue;
+        if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
+        if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
+        entry[completedKey] = isCompleted;
+        continue;
+      }
+
+      if (moduleKey.startsWith('hubSpokeCard-')) {
+        // Same independent-instance handling as itemCarousel-. isCompleted
+        // stays false here on a web run too, since runModules() skips
+        // this app-only module entirely rather than attempting it.
+        const index = Number(moduleKey.slice('hubSpokeCard-'.length));
+        const entry = Array.isArray(brandPage.hubSpokeCard) ? brandPage.hubSpokeCard[index] : null;
         if (!entry) continue;
         if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
         if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;

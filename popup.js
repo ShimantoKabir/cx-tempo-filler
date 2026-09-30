@@ -31,6 +31,10 @@ const MODULE_DEFS = [
   { key: 'hubSpokesNM', label: 'Hub Spokes NxM' },
   { key: 'povCard', label: 'POV Card' },
   { key: 'itemCarousel', label: 'Item Carousel', multi: true },
+  // App-only (no web variant per scratch.txt), but the checklist doesn't
+  // know the run's deviceType — runModules() skips it rather than erroring
+  // if it's left checked on a web run.
+  { key: 'hubSpokeCard', label: 'Hub Spoke Card (app only)', multi: true },
 ];
 
 function isModulePresent(def, brandPage) {

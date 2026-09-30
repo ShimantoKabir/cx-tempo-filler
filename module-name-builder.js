@@ -4,6 +4,7 @@ class ModuleNameBuilder {
     'hero-pov': (p) => `${p.prefix}${p.brandName} Brand CP Hero POV ${p.timeSuffix}`,
     'hub-spokes-4x1': (p) => `${p.prefix}${p.brandName} Brand CP HubSpokes 4x1 ${p.timeSuffix}`,
     'hub-spokes-nxm': (p) => `${p.prefix}${p.brandName} Brand CP HubSpokes ${p.gridLayout} ${p.timeSuffix}`,
+    'hub-spoke-card': (p) => `${p.prefix}${p.brandName} Brand CP Hub Spoke Card ${p.timeSuffix}`,
     'item-carousel': (p) => `${p.prefix}${p.brandName} Brand CP Carousel ${p.timeSuffix}`,
     'pov-cards': (p) => `${p.prefix}${p.brandName} Brand CP POV Cards ${p.timeSuffix}`,
     'skinny-banner': (p) => `${p.prefix}${p.brandName} Brand CP Skinny Banner ${p.timeSuffix}`,

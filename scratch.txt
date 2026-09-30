@@ -661,6 +661,58 @@ skus: input[data-testid="item-string-input"]
 
 add skus: button[data-testid="add-tags"]
 
+
+hub-spoke-card app
+=======================
+module search text: HubSpoke
+module find key: Hubspoke
+module name: input[id="../name"]
+
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+add pov card: div.add-group-button
+
+max 6 card can be added: [0-5]
+
+note: categoryCards-categoryCards-0 => categoryCards-categoryCards-{card-position}
+
+card:
+    en search box opener: button[data-e2eid="categoryCards-categoryCards-0-image-clickable-image-dropdown-button"]
+    en search text: input[data-e2eid="categoryCards-categoryCards-0-image-clickable-image-dropdown-input"]
+    en search button: button[data-e2eid="categoryCards-categoryCards-0-image-clickable-image-search-asset-button"]
+    en founded image: div#searched-image
+    en all text: input[data-e2eid="categoryCards-categoryCards-0-image-alt-text"]
+
+    fr search box opener: button[data-e2eid="categoryCards-categoryCards-0-fr_image-clickable-image-dropdown-button"]
+    fr search text: input[data-e2eid="categoryCards-categoryCards-0-fr_image-clickable-image-dropdown-input"]
+    fr search button: button[data-e2eid="categoryCards-categoryCards-0-fr_image-clickable-image-search-asset-button"]
+    fr founded image: div#searched-image
+    fr all text: input[data-e2eid="categoryCards-categoryCards-0-fr_image-alt-text"]
+
+    en heading: input[data-e2eid="categoryCards-categoryCards-0-title"]
+        max-character: 41
+
+    fr heading: input[data-e2eid="categoryCards-categoryCards-0-fr_title"]
+        max-character: 41
+
+    en link value: textarea[data-e2eid="categoryCards-categoryCards-0-image-url-link"]
+    fr like value: textarea[data-e2eid="categoryCards-categoryCards-0-fr_image-url-link"]
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
     
 
 
