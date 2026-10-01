@@ -94,7 +94,7 @@ class ModuleFinder {
     // splitting "NxM" wrongly) — pass searchQueryOverride to bypass it.
     const searchQuery = searchQueryOverride || moduleKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
     const searchInput = await Helper.waitForElement(ModuleFinder.SELECTORS.moduleSearchInput);
-    Helper.setInputValue(searchInput, searchQuery);
+    await Helper.setInputValue(searchInput, searchQuery);
     Helper.log(`Searched for ${moduleKey} module.`);
 
     const moduleLabel = await Helper.waitForElementByText(
@@ -134,7 +134,7 @@ class ModuleFinder {
     await Helper.sleep(500);
 
     const priorityInput = await Helper.waitForElement(ModuleFinder.SELECTORS.priorityInput);
-    Helper.setInputValue(priorityInput, 30);
+    await Helper.setInputValue(priorityInput, 30);
     Helper.log('Set priority to 30.');
     await Helper.sleep(500);
 

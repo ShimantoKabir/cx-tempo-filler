@@ -180,32 +180,20 @@ class Helper {
     return `${brandName} ${titleCase(deviceType)} ${titleCase(language)} ${moduleLabel}`;
   };
 
-  // This site is a React app. Setting el.value directly goes through
-  // React's per-instance overridden setter, which updates React's internal
-  // value tracker as a side effect — so when the input/change events are
-  // dispatched next, React sees "no change" and never fires onChange or
-  // updates its own state. The DOM shows the typed value, but React's state
-  // (what actually gets saved) never learns about it — matching the bug
-  // where a field only "sticks" once a real user clicks into it (which goes
-  // through the native setter instead). Using the native prototype setter
-  // here bypasses React's tracker so the dispatched events are seen as a
-  // real change.
-  //
-  // Deliberately no el.blur() here: this helper is also used for the
-  // image-search inputs (type -> click search button -> click result), and
-  // blurring right after typing risks closing that search popover before
-  // the next click can happen. Add blur only at specific call sites if a
-  // field still doesn't stick after this fix — not globally here.
-  static setInputValue = (el, value) => {
+  // Deliberately no el.blur() here by default: this helper is also used for
+  // the image-search inputs (type -> click search button -> click result),
+  // and blurring right after typing risks closing that search popover
+  // before the next click can happen — so blurAfter defaults false and is
+  // only passed true at call sites where that risk doesn't apply (plain
+  // text fields, not the image search input).
+  static setInputValue = (el, value, blurAfter = false) => {
     console.log('[Helper] setting value:', value, 'on element:', el, 'tagName:', el.tagName);
 
     // Some inline-editable fields (seen in Edit mode, after the Edit-button
     // unlock) only swap into a real editable control on an actual click —
     // a programmatic .focus() alone doesn't trigger that. Dispatching a
     // realistic mousedown/mouseup/click sequence first mimics a genuine
-    // user click; this is a hypothesis for the "only sticks when I click
-    // it myself" symptom, not confirmed — harmless for fields that don't
-    // need it (Create mode's fields worked fine before this was added).
+    // user click.
     el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
     el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -226,6 +214,7 @@ class Helper {
       el.value = value;
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
+      if (blurAfter) el.blur();
       return;
     }
 
@@ -234,6 +223,7 @@ class Helper {
     nativeSetter.call(el, value);
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
+    if (blurAfter) el.blur();
   };
 
   static notify = (message, isError = false) => {

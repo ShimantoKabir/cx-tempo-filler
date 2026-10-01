@@ -40,7 +40,7 @@ class ItemCarousel {
 
   static setValue = async (selector, value) => {
     const el = await Helper.waitForElement(selector);
-    Helper.setInputValue(el, value);
+    await Helper.setInputValue(el, value);
     return el;
   };
 

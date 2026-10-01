@@ -115,7 +115,7 @@ class HubSpoke {
 
   static setValue = async (selector, value) => {
     const el = await Helper.waitForElement(selector);
-    Helper.setInputValue(el, value);
+    await Helper.setInputValue(el, value, true);
     return el;
   };
 
@@ -127,7 +127,7 @@ class HubSpoke {
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
-    Helper.setInputValue(searchInput, data.searchText);
+    await Helper.setInputValue(searchInput, data.searchText);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
     searchBtn.click();
@@ -203,6 +203,19 @@ class HubSpoke {
     const colNumber = hub.columns;
     const maxColumnsForRow = Math.min(colNumber, HubSpoke.MAX_COLUMNS);
 
+    // Two clean phases, not interleaved: (1) click every "add row"/"ADD
+    // CATEGORIES" button for the WHOLE module first — no field writes at
+    // all yet — then (2) go back and fill every already-created slot.
+    // Reasoning: card 0 (pre-existing, never touched by an "add" click)
+    // keeps its data reliably; every dynamically-added card's TEXT fields
+    // (name/alt/link) were observed getting wiped while its already-
+    // selected IMAGE survived — consistent with a later "add" click
+    // triggering a re-render that remounts earlier cards' DOM (resetting
+    // whatever only the DOM, not the app's own state, ever captured) while
+    // image-selection state is tracked properly and survives. Making sure
+    // no "add" click EVER happens after a field is filled should prevent
+    // that remount from catching anything.
+    const rowCategoryCounts = [];
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       if (rowIndex > 0 || !rowsPreExist) {
         const addRowBtn = await Helper.waitForElement(HubSpoke.SELECTORS.addRowButton);
@@ -213,15 +226,22 @@ class HubSpoke {
       const categories = Array.isArray(rows[rowIndex].categories)
         ? rows[rowIndex].categories.slice(0, maxColumnsForRow)
         : [];
+      rowCategoryCounts.push(categories.length);
+
+      for (let colIndex = 1; colIndex < categories.length; colIndex++) {
+        const addColBtn = HubSpoke.addColumnButton(colNumber, rowIndex);
+        const btn = await Helper.waitForElementByText(addColBtn.selector, addColBtn.text, addColBtn.exact);
+        btn.click();
+        await Helper.sleep(300);
+      }
+    }
+
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      const categories = Array.isArray(rows[rowIndex].categories)
+        ? rows[rowIndex].categories.slice(0, rowCategoryCounts[rowIndex])
+        : [];
 
       for (let colIndex = 0; colIndex < categories.length; colIndex++) {
-        if (colIndex > 0) {
-          const addColBtn = HubSpoke.addColumnButton(colNumber, rowIndex);
-          const btn = await Helper.waitForElementByText(addColBtn.selector, addColBtn.text, addColBtn.exact);
-          btn.click();
-          await Helper.sleep(300);
-        }
-
         const altCopyContextFor = (language) => ({
           brandName: brandPage.brandName,
           deviceType,

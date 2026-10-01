@@ -342,7 +342,7 @@ class PageIdFounder {
 
       // Step 8: type the page ID
       const pageIdInput = await Helper.waitForElement(PageIdFounder.SELECTORS.pageIdInput);
-      Helper.setInputValue(pageIdInput, this.pageId);
+      await Helper.setInputValue(pageIdInput, this.pageId);
       await Helper.sleep(300);
 
       // Step 8b: wait for the suggestion row's text to match the typed page ID

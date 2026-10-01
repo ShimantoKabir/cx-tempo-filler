@@ -171,7 +171,7 @@ class SkinnyBanner {
 
   static setValue = async (selector, value) => {
     const el = await Helper.waitForElement(selector);
-    Helper.setInputValue(el, value);
+    await Helper.setInputValue(el, value);
     return el;
   };
 
@@ -184,7 +184,7 @@ class SkinnyBanner {
   static setColor = async (selector, color) => {
     const el = await Helper.waitForElement(selector);
     if (color) {
-      Helper.setInputValue(el, SkinnyBanner.normalizeColor(color));
+      await Helper.setInputValue(el, SkinnyBanner.normalizeColor(color));
     }
 
     const finalValue = el.value;
@@ -291,7 +291,7 @@ class SkinnyBanner {
         await Helper.sleep(300);
 
         const searchInput = await Helper.waitForElement(cfg.search);
-        Helper.setInputValue(searchInput, searchText);
+        await Helper.setInputValue(searchInput, searchText);
 
         const searchBtn = await Helper.waitForElement(cfg.searchBtn);
         searchBtn.click();

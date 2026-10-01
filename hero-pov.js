@@ -232,7 +232,7 @@ class HeroPov {
 
   static setValue = async (selector, value) => {
     const el = await Helper.waitForElement(selector);
-    Helper.setInputValue(el, value);
+    await Helper.setInputValue(el, value);
     return el;
   };
 
@@ -278,7 +278,7 @@ class HeroPov {
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
-    Helper.setInputValue(searchInput, data.image);
+    await Helper.setInputValue(searchInput, data.image);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
     searchBtn.click();

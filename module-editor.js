@@ -54,7 +54,7 @@ class ModuleEditor {
     for (const selector of Object.values(ModuleEditor.SELECTORS.genericFields)) {
       try {
         const el = await Helper.waitForElement(selector, 2000);
-        Helper.setInputValue(el, '');
+        await Helper.setInputValue(el, '');
       } catch {
         // Field doesn't exist for this module kind — skip it.
       }
