@@ -155,24 +155,38 @@ class ModuleEditor {
       );
       if (!descriptor) throw new Error(`Module "${this.moduleKey}" not found in brief.`);
 
-      // Edit mode only supports Hub Spokes NxM so far — other kinds haven't
-      // had a "clear existing content before refill" step built yet, and
-      // without one their fill functions would leave stale rows/cards from
-      // the module's current content mixed in with the brief's new one.
-      if (descriptor.kind !== 'hubSpokesNM') {
-        throw new Error(`Edit mode only supports Hub Spokes NxM for now (got "${descriptor.kind}").`);
-      }
-
-      await HubSpoke.deleteExistingRows();
-
+      // Edit mode only supports Hub Spokes NxM and Hub Spoke Card so far —
+      // other kinds haven't had a "clear existing content before refill"
+      // step built yet, and without one their fill functions would leave
+      // stale rows/cards from the module's current content mixed in with
+      // the brief's new one.
       // Called directly (not via PageIdFounder.FILL_BY_KIND, which Create
-      // mode also uses and must keep its rowsPreExist/navigateBackAfterSave
-      // defaults) — deleteExistingRows() just wiped out row 0 too, so
-      // run() needs to add every row itself instead of assuming the first
-      // one exists, and there's no next module to go back and find after
-      // saving.
-      const completed = await HubSpoke.run(this.deviceType, brandPage, this.addGbo, false, false);
-      Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      // mode also uses and must keep its rowsPreExist/cardsPreExist and
+      // navigateBackAfterSave defaults) — deleting existing content wipes
+      // out the pre-existing first row/cards too, so run() needs to add
+      // every one itself instead of assuming they exist, and there's no
+      // next module to go back and find after saving.
+      if (descriptor.kind === 'hubSpokesNM') {
+        await HubSpoke.deleteExistingRows();
+        const completed = await HubSpoke.run(this.deviceType, brandPage, this.addGbo, false, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'hubSpokeCard') {
+        if (this.deviceType !== 'app') {
+          throw new Error('Hub Spoke Card is app-only — cannot be edited on a web run.');
+        }
+        await HubSpokeCard.deleteExistingCards();
+        const completed = await HubSpokeCard.run(
+          this.deviceType,
+          brandPage,
+          descriptor.index,
+          this.addGbo,
+          false,
+          false
+        );
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else {
+        throw new Error(`Edit mode only supports Hub Spokes NxM and Hub Spoke Card for now (got "${descriptor.kind}").`);
+      }
     } catch (err) {
       Helper.fail(err);
     }

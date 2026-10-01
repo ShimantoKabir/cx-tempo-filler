@@ -104,10 +104,11 @@ function renderModuleChecklist(brandPage) {
 
   const deviceType = document.getElementById('deviceType').value;
   const isEditMode = document.getElementById('mode').value === 'edit';
-  // Edit mode only supports Hub Spokes NxM so far (see module-editor.js) —
-  // restrict the picker itself rather than letting the user select an
-  // unsupported kind and hit an error mid-run.
-  const defs = isEditMode ? MODULE_DEFS.filter((def) => def.key === 'hubSpokesNM') : MODULE_DEFS;
+  // Edit mode only supports Hub Spokes NxM and Hub Spoke Card so far (see
+  // module-editor.js) — restrict the picker itself rather than letting the
+  // user select an unsupported kind and hit an error mid-run.
+  const EDIT_SUPPORTED_KEYS = ['hubSpokesNM', 'hubSpokeCard'];
+  const defs = isEditMode ? MODULE_DEFS.filter((def) => EDIT_SUPPORTED_KEYS.includes(def.key)) : MODULE_DEFS;
   const instances = defs.flatMap((def) => getModuleInstances(def, brandPage, deviceType));
   if (instances.length === 0) return;
 

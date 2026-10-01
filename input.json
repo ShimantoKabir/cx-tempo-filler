@@ -1,123 +1,98 @@
 {
   "brandPage": {
-    "pageId": "6000210080323",
-    "brandName": "General Mills",
-    "heroPov": [
+    "pageId": "6000210080438",
+    "brandName": "Wonder",
+    "hubSpokeCard": [
       {
-        "povStyle": "card-with-no-cta",
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
         "order": 1,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "backgroundColor": {
-          "app": "",
-          "web": ""
-        },
-        "image": {
-          "web": {
-            "english": {
-              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E",
-              "mobileAltCopy": "",
-              "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E",
-              "desktopAltCopy": ""
+        "title": { "english": "", "french": "" },
+        "cards": [
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-1_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "Wonder AirCrisp" },
+              "french": { "searchText": "HSK-BP-1_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Pains à détacher AirCrisp de Wonder" }
             },
-            "french": {
-              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F",
-              "mobileAltCopy": "",
-              "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F",
-              "desktopAltCopy": ""
+            "heading": {
+              "english": "Wonder AirCrisp",
+              "french": "Pains à détacher AirCrisp de Wonder"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
             }
           },
-          "app": {
-            "english": {
-              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E",
-              "mobileAltCopy": "",
-              "tablet": "",
-              "tabletAltCopy": ""
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-2_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "Sliced breads" },
+              "french": { "searchText": "HSK-BP-2_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Pains tranchés" }
             },
-            "french": {
-              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F",
-              "mobileAltCopy": "",
-              "tablet": "",
-              "tabletAltCopy": ""
+            "heading": {
+              "english": "Sliced breads",
+              "french": "Pains tranchés"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
+            }
+          },
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-3_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "Buns" },
+              "french": { "searchText": "HSK-BP-3_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Petits pains" }
+            },
+            "heading": {
+              "english": "Buns",
+              "french": "Petits pains"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
+            }
+          },
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-4_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "Wraps" },
+              "french": { "searchText": "HSK-BP-4_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Tortillas" }
+            },
+            "heading": {
+              "english": "Wraps",
+              "french": "Tortillas"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
+            }
+          },
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-5_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "English muffins" },
+              "french": { "searchText": "HSK-BP-5_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Muffins anglais" }
+            },
+            "heading": {
+              "english": "English muffins",
+              "french": "Muffins anglais"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
+            }
+          },
+          {
+            "image": {
+              "english": { "searchText": "HSK-BP-6_CE9739_Wonderbrands-Air-Fryer_261001_E", "altCopy": "Shop all" },
+              "french": { "searchText": "HSK-BP-6_CE9739_Wonderbrands-Air-Fryer_261001_F", "altCopy": "Voir tout" }
+            },
+            "heading": {
+              "english": "Shop all",
+              "french": "Voir tout"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=wonder%20bread",
+              "french": "https://www.walmart.ca/fr/search?q=wonder%20bread"
             }
           }
-        },
-        "logo": {
-          "web": {
-            "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E", "altCopy": "" },
-            "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F", "altCopy": "" }
-          },
-          "app": {
-            "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E", "altCopy": "" },
-            "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F", "altCopy": "" }
-          }
-        },
-        "legal": {
-          "web": {
-            "english": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" },
-            "french": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" }
-          },
-          "app": {
-            "english": { "discloser": "", "title": "", "description": "", "textColor": "" },
-            "french": { "discloser": "", "title": "", "description": "", "textColor": "" }
-          }
-        },
-        "headline": {
-          "web": {
-            "english": { "text": "Create unforgettable moments", "desktopTextColor": "001E60", "mobileTextColor": "001E60" },
-            "french": { "text": "Pour des moments inoubliables", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }
-          },
-          "app": {
-            "english": { "text": "Create unforgettable moments", "textColor": "001E60" },
-            "french": { "text": "Pour des moments inoubliables", "textColor": "001E60" }
-          }
-        },
-        "subHeadline": {
-          "web": {
-            "english": { "text": "Cozy recipes that bring your loved ones together.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" },
-            "french": { "text": "Créez des recettes réconfortantes qui donnent envie de se rassembler.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }
-          },
-          "app": {
-            "english": { "text": "Cozy recipes that bring your loved ones together.", "textColor": "001E60" },
-            "french": { "text": "Créez des recettes réconfortantes qui donnent envie de se rassembler.", "textColor": "001E60" }
-          }
-        },
-        "eyebrow": {
-          "web": {
-            "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" },
-            "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }
-          },
-          "app": {
-            "english": { "text": "", "textColor": "" },
-            "french": { "text": "", "textColor": "" }
-          }
-        },
-        "cta": {
-          "web": {
-            "english": { "linkText": "Shop", "linkValue": "" },
-            "french": { "linkText": "Magasiner", "linkValue": "" }
-          },
-          "app": {
-            "english": { "linkText": "Shop", "linkValue": "" },
-            "french": { "linkText": "Magasiner", "linkValue": "" }
-          }
-        }
-      }
-    ],
-    "itemCarousel": [
-      {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "order": 2,
-        "title": { "english": "Shop ingredients", "french": "Magasiner les ingrédients" },
-        "subTitle": { "english": "", "french": "" },
-        "skus": [
-          "5RYBQ0AAXN0P",
-          "6000188964399",
-          "6000188958471",
-          "2W91ECZJPPOY",
-          "5BFW29FQEPIE",
-          "29IKLTUD1E0G"
         ]
       }
     ]

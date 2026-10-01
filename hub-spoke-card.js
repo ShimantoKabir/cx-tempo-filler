@@ -56,6 +56,56 @@ class HubSpokeCard {
     discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
   };
 
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have cards with real data, which run()'s "first 4 cards already exist,
+  // empty" assumption doesn't account for. Same generic "delete repeatable
+  // group" component HubSpoke uses for rows (dragElementWrapper +
+  // deleteGroupButton + confirmDeleteGroupButton) — confirmed via console on
+  // the live page. Unlike Hub Spokes NxM, this module has no nested row
+  // structure, so every dragElementWrapper on the page IS a card — no
+  // label/field filter needed (confirmed via console: querying
+  // div.dragElementWrapper directly returned exactly the 6 "Category Cards
+  // N" groups, each with a resolvable deleteGroupButton).
+  static CARD_DELETE_SELECTORS = {
+    wrapper: 'div.dragElementWrapper',
+    deleteIcon: 'svg.deleteGroupButton',
+    confirmButton: 'button.confirmDeleteGroupButton',
+  };
+
+  static findCardWrappers = () => [...document.querySelectorAll(HubSpokeCard.CARD_DELETE_SELECTORS.wrapper)];
+
+  static deleteExistingCards = async () => {
+    // Count up front (confirmed via console against the live page: every
+    // "Category Cards N" wrapper resolves a deleteGroupButton) rather than
+    // looping on an arbitrary safety cap — gives a real expected count to
+    // log progress against and to break early on if fewer cards delete
+    // successfully than were actually found.
+    const count = HubSpokeCard.findCardWrappers().length;
+    Helper.log(`Found ${count} existing card(s) to delete.`);
+
+    for (let i = 0; i < count; i++) {
+      const cards = HubSpokeCard.findCardWrappers();
+      if (cards.length === 0) break;
+
+      const card = cards[0];
+      ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+        card.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+      });
+      await Helper.sleep(200);
+
+      const deleteBtn = card.querySelector(HubSpokeCard.CARD_DELETE_SELECTORS.deleteIcon);
+      if (!deleteBtn) break;
+      Helper.log(`Deleting existing card ${i + 1} of ${count}: ${card.textContent}`);
+      // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
+      // .click() method, so a real click must be dispatched instead.
+      deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      const confirmBtn = await Helper.waitForElement(HubSpokeCard.CARD_DELETE_SELECTORS.confirmButton);
+      confirmBtn.click();
+      await Helper.sleep(500);
+    }
+  };
+
   static setValue = async (selector, value) => {
     const el = await Helper.waitForElement(selector);
     await Helper.setInputValue(el, value);
@@ -125,7 +175,16 @@ class HubSpokeCard {
   // Errors intentionally propagate to the caller — same convention as every
   // other module — so a failure stops the loop instead of continuing on to
   // fill a module that was never actually added.
-  static run = async (deviceType, brandPage, index, addGbo) => {
+  // cardsPreExist defaults true (a freshly-created module already has cards
+  // 0-3 sitting there empty, same assumption the rest of this function
+  // makes). ModuleEditor passes false after deleteExistingCards() wipes
+  // every card — so every index needs its own "add" click, not just cards
+  // beyond PRE_EXISTING_CARDS.
+  // navigateBackAfterSave defaults true (Create mode's multi-instance loop
+  // needs to go back and find the next hubSpokeCard entry/module) —
+  // ModuleEditor passes false, since Edit mode is done with exactly one
+  // module and there's nothing to go back to find.
+  static run = async (deviceType, brandPage, index, addGbo, cardsPreExist = true, navigateBackAfterSave = true) => {
     if (deviceType !== 'app') {
       throw new Error('HubSpokeCard is app-only — page-id-founder.js should never call this for web.');
     }
@@ -153,7 +212,7 @@ class HubSpokeCard {
     await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleFr, entry.title?.french || '');
 
     for (let i = 0; i < cards.length; i++) {
-      if (i >= HubSpokeCard.PRE_EXISTING_CARDS) {
+      if (i >= HubSpokeCard.PRE_EXISTING_CARDS || !cardsPreExist) {
         const addBtn = await Helper.waitForElement(HubSpokeCard.SELECTORS.addCardButton);
         addBtn.click();
         await Helper.sleep(300);
@@ -184,6 +243,10 @@ class HubSpokeCard {
     }
 
     Helper.log('Hub Spoke Card filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(HubSpokeCard.SELECTORS.saveButton, HubSpokeCard.SELECTORS.discardButton);
+    return await Helper.waitForSaveOrDiscard(
+      HubSpokeCard.SELECTORS.saveButton,
+      HubSpokeCard.SELECTORS.discardButton,
+      navigateBackAfterSave
+    );
   };
 }
