@@ -92,7 +92,7 @@ class HubSpokeCard {
     await HubSpokeCard.setValue(cfg.altText, altText);
   };
 
-  static fillCard = async (cardSel, cardData, brandName) => {
+  static fillCard = async (cardSel, cardData, brandName, addGbo) => {
     const altCopyContext = (language) => ({ brandName, deviceType: 'app', language, moduleType: 'hub-spoke-card' });
 
     await HubSpokeCard.fillImage(cardSel.image.en, cardData.image?.english, altCopyContext('english'));
@@ -101,14 +101,16 @@ class HubSpokeCard {
     await HubSpokeCard.setTruncated(cardSel.headingEn, cardData.heading?.english, cardSel.headingMaxLen);
     await HubSpokeCard.setTruncated(cardSel.headingFr, cardData.heading?.french, cardSel.headingMaxLen);
 
-    await HubSpokeCard.setValue(cardSel.linkValueEn, cardData.linkValue?.english || '');
-    await HubSpokeCard.setValue(cardSel.linkValueFr, cardData.linkValue?.french || '');
+    // Always app (this module is app-only), so addGbo alone decides.
+    const linkValue = (url) => (addGbo ? Helper.appendGboParam(url) : url || '');
+    await HubSpokeCard.setValue(cardSel.linkValueEn, linkValue(cardData.linkValue?.english));
+    await HubSpokeCard.setValue(cardSel.linkValueFr, linkValue(cardData.linkValue?.french));
   };
 
   // Errors intentionally propagate to the caller — same convention as every
   // other module — so a failure stops the loop instead of continuing on to
   // fill a module that was never actually added.
-  static run = async (deviceType, brandPage, index) => {
+  static run = async (deviceType, brandPage, index, addGbo) => {
     if (deviceType !== 'app') {
       throw new Error('HubSpokeCard is app-only — page-id-founder.js should never call this for web.');
     }
@@ -141,7 +143,7 @@ class HubSpokeCard {
         addBtn.click();
         await Helper.sleep(300);
       }
-      await HubSpokeCard.fillCard(HubSpokeCard.SELECTORS.card(i), cards[i], brandPage.brandName);
+      await HubSpokeCard.fillCard(HubSpokeCard.SELECTORS.card(i), cards[i], brandPage.brandName, addGbo);
       Helper.log(`Filled card ${i + 1} of ${cards.length}.`);
     }
 

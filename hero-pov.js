@@ -302,7 +302,7 @@ class HeroPov {
     return data === 'same-as-web' ? section.web : data;
   };
 
-  static fillCard = async (cardSel, cardData, deviceType, brandName) => {
+  static fillCard = async (cardSel, cardData, deviceType, brandName, addGbo) => {
     // POV style — determines whether the CTA fields apply at all.
     const styleBtn = await Helper.waitForElement(cardSel.povStyleButton);
     styleBtn.click();
@@ -495,10 +495,11 @@ class HeroPov {
     if (cardData.povStyle === 'card-with-single-cta') {
       const ctaData = HeroPov.resolveDeviceSection(cardData.cta, deviceType);
       if (ctaData) {
+        const linkValue = (url) => (deviceType === 'app' && addGbo ? Helper.appendGboParam(url) : url || '');
         await HeroPov.setValue(cardSel.cta.enText, ctaData.english?.linkText || '');
-        await HeroPov.setValue(cardSel.cta.enLink, ctaData.english?.linkValue || '');
+        await HeroPov.setValue(cardSel.cta.enLink, linkValue(ctaData.english?.linkValue));
         await HeroPov.setValue(cardSel.cta.frText, ctaData.french?.linkText || '');
-        await HeroPov.setValue(cardSel.cta.frLink, ctaData.french?.linkValue || '');
+        await HeroPov.setValue(cardSel.cta.frLink, linkValue(ctaData.french?.linkValue));
         Helper.log('Filled CTA.');
       }
     }
@@ -507,7 +508,7 @@ class HeroPov {
   // Errors intentionally propagate to the caller — same convention as
   // ModuleFinder.run/SkinnyBanner.run — so a failure stops the loop instead
   // of continuing on to a module that was never actually added.
-  static run = async (deviceType, brandPage) => {
+  static run = async (deviceType, brandPage, addGbo) => {
     const SEL = HeroPov.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Hero POV selectors for device type: ${deviceType}`);
 
@@ -530,7 +531,7 @@ class HeroPov {
       if (i > 0) {
         await HeroPov.addSection({ selector: HeroPov.ADD_CARD_SELECTOR });
       }
-      await HeroPov.fillCard(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
+      await HeroPov.fillCard(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
       Helper.log(`Filled card ${i + 1} of ${sortedCards.length}.`);
     }
 

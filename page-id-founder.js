@@ -31,19 +31,34 @@ class PageIdFounder {
     },
   };
 
-  // If the page reloaded mid-automation (tenant selection destroys this
-  // script's execution context), pick up at step 5 using the saved state.
-  static resumeIfNeeded = async () => {
-    const state = Helper.loadResumeState();
-    if (state) {
-      await new PageIdFounder(state).runFromPageType();
-    }
+  // Maps a descriptor's "kind" to the function that fills that module's
+  // content (ModuleFinder is deliberately not called here — this is only the
+  // "fill" half). Shared by runModules (which calls ModuleFinder.run first,
+  // to search/add a brand-new module) and ModuleEditor (which skips
+  // ModuleFinder entirely since it's editing a module that already exists
+  // at a known URL).
+  static FILL_BY_KIND = {
+    heroPov: (deviceType, brandPage, d, addGbo) => HeroPov.run(deviceType, brandPage, addGbo),
+    hubSpokesNM: (deviceType, brandPage, d, addGbo) => HubSpoke.run(deviceType, brandPage, addGbo),
+    povCard: (deviceType, brandPage, d, addGbo) => PovCard.run(deviceType, brandPage, addGbo),
+    itemCarousel: (deviceType, brandPage, d) => ItemCarousel.run(deviceType, brandPage, d.index),
+    hubSpokeCard: (deviceType, brandPage, d, addGbo) => {
+      if (deviceType !== 'app') {
+        throw new Error('HubSpokeCard is app-only — cannot be edited on a web run.');
+      }
+      return HubSpokeCard.run(deviceType, brandPage, d.index, addGbo);
+    },
+    skinnyBanner: (deviceType, brandPage, d, addGbo) => SkinnyBanner.run(deviceType, d.bannerType, brandPage, addGbo),
   };
 
-  constructor({ deviceType, pageId, autoSubmit, briefData, selectedModules }) {
+  constructor({ deviceType, pageId, autoSubmit, gboModules, briefData, selectedModules }) {
     this.deviceType = deviceType;
     this.pageId = pageId;
     this.autoSubmit = autoSubmit;
+    // Array of moduleKeys the user opted to add gbo=1 to — a per-module
+    // decision, since different modules' app links may need different
+    // in-app-vs-external behavior.
+    this.gboModules = gboModules;
     this.briefData = briefData;
     this.selectedModules = selectedModules;
   }
@@ -150,39 +165,36 @@ class PageIdFounder {
         // Discard Changes, and returns true only for Save — Discard still
         // navigates back to continue the loop, but must NOT mark the
         // module as completed.
-        let completed;
+        const addGbo = this.gboModules?.includes(d.moduleKey) ?? false;
+
+        // App-only — skip rather than error if somehow selected on a web
+        // run (the popup checklist doesn't filter by deviceType).
+        if (d.kind === 'hubSpokeCard' && this.deviceType !== 'app') {
+          Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
+          continue;
+        }
+
         if (d.kind === 'heroPov') {
           await ModuleFinder.run(this.deviceType, 'HeroPov');
-          completed = await HeroPov.run(this.deviceType, brandPage);
         } else if (d.kind === 'hubSpokesNM') {
           await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
-          completed = await HubSpoke.run(this.deviceType, brandPage);
         } else if (d.kind === 'povCard') {
           const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
           await ModuleFinder.run(this.deviceType, moduleKey, 'POVCar');
-          completed = await PovCard.run(this.deviceType, brandPage);
         } else if (d.kind === 'itemCarousel') {
           // "ItemCarousel" auto-derives to "item carousel", already
           // matching scratch.txt's given search text — no override needed.
           await ModuleFinder.run(this.deviceType, 'ItemCarousel');
-          completed = await ItemCarousel.run(this.deviceType, brandPage, d.index);
         } else if (d.kind === 'hubSpokeCard') {
-          // App-only — skip rather than error if somehow selected on a web
-          // run (the popup checklist doesn't filter by deviceType).
-          if (this.deviceType !== 'app') {
-            Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
-            continue;
-          }
           // Module find key is "Hubspoke" (exact case per scratch.txt);
           // the auto-derived search query would be close enough, but the
           // given search text "HubSpoke" is passed explicitly to be safe.
           await ModuleFinder.run(this.deviceType, 'Hubspoke', 'HubSpoke');
-          completed = await HubSpokeCard.run(this.deviceType, brandPage, d.index);
         } else {
           await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
-          completed = await SkinnyBanner.run(this.deviceType, d.bannerType, brandPage);
         }
-        completion[d.moduleKey] = completed;
+
+        completion[d.moduleKey] = await PageIdFounder.FILL_BY_KIND[d.kind](this.deviceType, brandPage, d, addGbo);
       }
     } finally {
       this.downloadOutputJson(completion);
@@ -293,6 +305,7 @@ class PageIdFounder {
         deviceType: this.deviceType,
         pageId: this.pageId,
         autoSubmit: this.autoSubmit,
+        gboModules: this.gboModules,
         briefData: this.briefData,
         selectedModules: this.selectedModules,
       });
@@ -368,5 +381,3 @@ class PageIdFounder {
     }
   };
 }
-
-PageIdFounder.resumeIfNeeded();

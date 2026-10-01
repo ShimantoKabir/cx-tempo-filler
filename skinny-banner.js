@@ -245,17 +245,9 @@ class SkinnyBanner {
     await SkinnyBanner.setColor(sectionSel.color, color);
   };
 
-  // App CTA links need a "gbo=1" param appended — as a new query param if
-  // the URL has none yet, otherwise chained on with "&".
-  static appendGboParam = (url) => {
-    if (!url) return '';
-    if (/[?&]gbo=1(&|$)/.test(url)) return url;
-    return url.includes('?') ? `${url}&gbo=1` : `${url}?gbo=1`;
-  };
-
-  static fillCta = async (ctaSel, localeData, linkColor, deviceType) => {
+  static fillCta = async (ctaSel, localeData, linkColor, deviceType, addGbo) => {
     const { english, french } = localeData;
-    const linkValue = (url) => (deviceType === 'app' ? SkinnyBanner.appendGboParam(url) : url || '');
+    const linkValue = (url) => (deviceType === 'app' && addGbo ? Helper.appendGboParam(url) : url || '');
 
     await SkinnyBanner.setValue(ctaSel.enText, english.linkText || '');
     await SkinnyBanner.setValue(ctaSel.enLink, linkValue(english.linkValue));
@@ -316,7 +308,7 @@ class SkinnyBanner {
   // Errors intentionally propagate to the caller — page-id-founder.js's
   // runSkinnyBanner loop needs a failed module to stop the loop instead of
   // continuing on to fill a module that was never actually added.
-  static run = async (deviceType, bannerType, brandPage) => {
+  static run = async (deviceType, bannerType, brandPage, addGbo) => {
     const SEL = SkinnyBanner.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Skinny Banner selectors for device type: ${deviceType}`);
 
@@ -383,7 +375,7 @@ class SkinnyBanner {
     const ctaData = banner.bannerCta[deviceType];
     if (SkinnyBanner.hasCtaContent(ctaData)) {
       await SkinnyBanner.addSection(SEL.sections.cta);
-      await SkinnyBanner.fillCta(SEL.sections.cta, ctaData, banner.bannerCta.linkColor, deviceType);
+      await SkinnyBanner.fillCta(SEL.sections.cta, ctaData, banner.bannerCta.linkColor, deviceType, addGbo);
       Helper.log('Filled banner CTA.');
     } else {
       Helper.log('No banner CTA content in brief — skipping CTA section.');

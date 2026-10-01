@@ -27,13 +27,22 @@
   #moduleChecklist {
     margin-top: 6px; font-size: 12px;
   }
+  #moduleChecklist .module-group { margin-top: 6px; }
   #moduleChecklist .row { margin-top: 4px; }
   #moduleChecklist .row label { font-weight: 400; }
+  #moduleChecklist .gbo-row { margin-left: 20px; margin-top: 2px; }
+  #moduleChecklist .gbo-row label { font-size: 11px; color: #555; }
 </style>
 </head>
 <body>
   <h3>CX Tempo Page Filler</h3>
   <div style="font-size:11px; color:#888;">Fills the Page Selection form</div>
+
+  <label for="mode">Mode</label>
+  <select id="mode">
+    <option value="create">Create Page</option>
+    <option value="edit">Edit Module</option>
+  </select>
 
   <label for="deviceType">Device Type</label>
   <select id="deviceType">
@@ -41,13 +50,20 @@
     <option value="web">Web</option>
   </select>
 
-  <label for="pageId">Page ID</label>
-  <input type="text" id="pageId" placeholder="e.g. 44545454545" />
+  <div id="pageIdRow">
+    <label for="pageId">Page ID</label>
+    <input type="text" id="pageId" placeholder="e.g. 44545454545" />
+  </div>
+
+  <div id="editUrlRow" style="display:none;">
+    <label for="editUrl">Edit Module URL</label>
+    <input type="text" id="editUrl" placeholder="https://v2.tempo.cxtools.walmart.com/module/..." />
+  </div>
 
   <label for="briefFile">Brief File (optional, .xlsx or .json)</label>
   <input type="file" id="briefFile" accept=".xlsx,.xls,.json" />
 
-  <div class="row">
+  <div class="row" id="autoSubmitRow">
     <input type="checkbox" id="autoSubmit" />
     <label for="autoSubmit">Auto-submit (skips manual review)</label>
   </div>

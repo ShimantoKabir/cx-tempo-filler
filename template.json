@@ -4,8 +4,8 @@
     "brandName": "Reebok",
     "imageAndTextSkinnyBanner": {
       "order": 2,
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "bannerType": "image-and-text",
       "bannerHeight": "220",
       "banner": {
@@ -74,8 +74,8 @@
     },
     "textOnlySkinnyBanner": {
       "order": 1,
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "bannerType": "text-only",
       "bannerHeight": "100",
       "bannerBgColor": "",
@@ -129,8 +129,8 @@
       {
         "povStyle": "card-with-no-cta",
         "order": 3,
-        "isCompletedForWeb": true,
-        "isCompletedForApp": true,
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
         "backgroundColor": {
           "app": "",
           "web": ""
@@ -138,30 +138,30 @@
         "image": {
           "web": {
             "english": {
-              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobile": "",
               "mobileAltCopy": "",
-              "desktop": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "desktop": "",
               "desktopAltCopy": ""
 
             },
             "french": {
-              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobile": "",
               "mobileAltCopy": "",
-              "desktop": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "desktop": "",
               "desktopAltCopy": ""
             }
           },
           "app": {
             "english": {
-              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobile": "",
               "mobileAltCopy": "",
-              "tablet": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "tablet": "",
               "tabletAltCopy": ""
             },
             "french": {
-              "mobile": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-M",
+              "mobile": "",
               "mobileAltCopy": "",
-              "tablet": "HPOV-BP_CZ6969_Reebok-HilaryDuff_261001-D",
+              "tablet": "",
               "tabletAltCopy": ""
             }
           }
@@ -211,48 +211,48 @@
         "headline": {
           "web": {
             "english": {
-              "text": "Hilary Duff for Reebok",
-              "desktopTextColor": "001E60",
-              "mobileTextColor": "001E60"
+              "text": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             },
             "french": {
-              "text": "Hilary Duff pour Reebok",
-              "desktopTextColor": "001E60",
-              "mobileTextColor": "001E60"
+              "text": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             }
           },
           "app": {
             "english": {
-              "text": "Hilary Duff for Reebok",
-              "textColor": "001E60"
+              "text": "",
+              "textColor": ""
             },
             "french": {
-              "text": "Hilary Duff pour Reebok",
-              "textColor": "001E60"
+              "text": "",
+              "textColor": ""
             }
           }
         },
         "subHeadline": {
           "web": {
             "english": {
-              "text": "Unfiltered & unstoppable.",
-              "desktopTextColor": "001E60",
-              "mobileTextColor": "001E60"
+              "text": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             },
             "french": {
-              "text": "Sans filtre et inarrêtable.",
-              "desktopTextColor": "001E60",
-              "mobileTextColor": "001E60"
+              "text": "",
+              "desktopTextColor": "",
+              "mobileTextColor": ""
             }
           },
           "app": {
             "english": {
-              "text": "Unfiltered & unstoppable.",
-              "textColor": "001E60"
+              "text": "",
+              "textColor": ""
             },
             "french": {
-              "text": "Sans filtre et inarrêtable.",
-              "textColor": "001E60"
+              "text": "",
+              "textColor": ""
             }
           }
         },
@@ -287,8 +287,8 @@
       }
     ],
     "hubSpokesNM": {
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "columns": 4,
       "heading": { "english": "hub-spoke", "french": "hub-spoke" },
       "rows": [
@@ -423,8 +423,8 @@
       ]
     },
     "povCard": {
-      "isCompletedForWeb": true,
-      "isCompletedForApp": true,
+      "isCompletedForWeb": false,
+      "isCompletedForApp": false,
       "order": 5,
       "title": {
         "web": { "english": "", "french": "" },
@@ -555,8 +555,8 @@
     },
     "itemCarousel": [
       {
-        "isCompletedForWeb": true,
-        "isCompletedForApp": true,
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
         "order": 6,
         "title": { "english": "Shop Hilary's looks", "french": "Magasinez les tenues de Hilary" },
         "subTitle": { "english": "", "french": "" },
@@ -574,8 +574,8 @@
         ]
       },
       {
-        "isCompletedForWeb": true,
-        "isCompletedForApp": true,
+        "isCompletedForWeb": false,
+        "isCompletedForApp": false,
         "order": 7,
         "title": { "english": "The Reebok edit", "french": "L'édit Reebok" },
         "subTitle": { "english": "", "french": "" },

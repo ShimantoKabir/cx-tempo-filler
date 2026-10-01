@@ -32,6 +32,47 @@ class HubSpoke {
     discardButton: { selector: 'button[type="button"]', text: 'DISCARD CHANGES', exact: false },
   };
 
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have rows/categories with real data, which run()'s "row/category 0
+  // already exists, empty" assumption below doesn't account for. These
+  // delete every existing row (and, with it, every category inside that
+  // row — deleting a row removes its nested categories too) so run() starts
+  // from the same clean slate a freshly-created module would have.
+  static ROW_DELETE_SELECTORS = {
+    wrapper: 'div.dragElementWrapper',
+    deleteIcon: 'svg.deleteGroupButton',
+    rowLabelMatch: 'Rows Of Categories',
+    confirmButton: 'button.confirmDeleteGroupButton',
+  };
+
+  static deleteExistingRows = async () => {
+    // Loop bound is a safety cap against an infinite loop (e.g. if a delete
+    // click doesn't actually remove the row), not a real expected count.
+    for (let i = 0; i < HubSpoke.MAX_ROWS + 1; i++) {
+      const rows = [...document.querySelectorAll(HubSpoke.ROW_DELETE_SELECTORS.wrapper)].filter((el) =>
+        el.textContent.includes(HubSpoke.ROW_DELETE_SELECTORS.rowLabelMatch)
+      );
+      if (rows.length === 0) break;
+
+      const row = rows[0];
+      ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+        row.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+      });
+      await Helper.sleep(200);
+
+      const deleteBtn = row.querySelector(HubSpoke.ROW_DELETE_SELECTORS.deleteIcon);
+      if (!deleteBtn) break;
+      Helper.log(`Deleting existing row: ${row.textContent}`);
+      // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
+      // .click() method, so a real click must be dispatched instead.
+      deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      const confirmBtn = await Helper.waitForElement(HubSpoke.ROW_DELETE_SELECTORS.confirmButton);
+      confirmBtn.click();
+      await Helper.sleep(500);
+    }
+  };
+
   static addColumnButton = (colNumber, row) => ({
     selector: `div[test-dataid="rows${colNumber}-${row},categories,0"] button.add-group-button-right`,
     text: 'ADD CATEGORIES',
@@ -78,7 +119,7 @@ class HubSpoke {
     return el;
   };
 
-  static fillImage = async (cfg, data, altCopyContext) => {
+  static fillImage = async (cfg, data, altCopyContext, applyGbo) => {
     if (!data || !data.searchText) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
@@ -96,29 +137,41 @@ class HubSpoke {
     Helper.log(`Selected image: ${data.searchText}`);
 
     if (data.linkValue) {
-      await HubSpoke.setValue(cfg.linkValue, data.linkValue);
+      const linkValue = applyGbo ? Helper.appendGboParam(data.linkValue) : data.linkValue;
+      await HubSpoke.setValue(cfg.linkValue, linkValue);
     }
 
     const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
     await HubSpoke.setValue(cfg.altText, altText);
   };
 
-  static fillCategory = async (colNumber, row, col, categoryData, altCopyContextFor) => {
+  static fillCategory = async (colNumber, row, col, categoryData, altCopyContextFor, applyGbo) => {
     if (!categoryData) return;
     const sel = HubSpoke.categorySelectors(colNumber, row, col);
 
     await HubSpoke.setValue(sel.nameEn, categoryData.name?.english || '');
     await HubSpoke.setValue(sel.nameFr, categoryData.name?.french || '');
 
-    await HubSpoke.fillImage(sel.image.en, categoryData.image?.english, altCopyContextFor('english'));
-    await HubSpoke.fillImage(sel.image.fr, categoryData.image?.french, altCopyContextFor('french'));
+    await HubSpoke.fillImage(sel.image.en, categoryData.image?.english, altCopyContextFor('english'), applyGbo);
+    await HubSpoke.fillImage(sel.image.fr, categoryData.image?.french, altCopyContextFor('french'), applyGbo);
   };
 
   // Errors intentionally propagate to the caller — same convention as
   // ModuleFinder.run/SkinnyBanner.run/HeroPov.run — so a failure stops the
   // loop instead of continuing on to a module that was never actually
   // added.
-  static run = async (deviceType, brandPage) => {
+  // rowsPreExist defaults true (a freshly-created module already has row 0
+  // sitting there empty, same assumption the rest of this function makes).
+  // ModuleEditor passes false after deleteExistingRows() wipes every row
+  // including row 0 — so row 0 needs its own "add row" click too, not just
+  // rows beyond the first.
+  // navigateBackAfterSave defaults true (Create mode needs to go back to
+  // find the next module) — ModuleEditor passes false, since Edit mode is
+  // done with exactly one module and there's nothing to go back to find.
+  static run = async (deviceType, brandPage, addGbo, rowsPreExist = true, navigateBackAfterSave = true) => {
+    // Category image linkValue isn't device-split in the brief (same value
+    // used for web and app runs), so gbo=1 only applies on an app run.
+    const applyGbo = deviceType === 'app' && Boolean(addGbo);
     const hub = brandPage.hubSpokesNM;
     if (!hub) throw new Error('Brief is missing hubSpokesNM data');
 
@@ -151,7 +204,7 @@ class HubSpoke {
     const maxColumnsForRow = Math.min(colNumber, HubSpoke.MAX_COLUMNS);
 
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-      if (rowIndex > 0) {
+      if (rowIndex > 0 || !rowsPreExist) {
         const addRowBtn = await Helper.waitForElement(HubSpoke.SELECTORS.addRowButton);
         addRowBtn.click();
         await Helper.sleep(300);
@@ -175,12 +228,16 @@ class HubSpoke {
           language,
           moduleType: 'hub-spokes-nxm',
         });
-        await HubSpoke.fillCategory(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor);
+        await HubSpoke.fillCategory(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor, applyGbo);
         Helper.log(`Filled row ${rowIndex + 1}, column ${colIndex + 1}.`);
       }
     }
 
     Helper.log('Hub Spokes NxM filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(HubSpoke.SELECTORS.saveButton, HubSpoke.SELECTORS.discardButton);
+    return await Helper.waitForSaveOrDiscard(
+      HubSpoke.SELECTORS.saveButton,
+      HubSpoke.SELECTORS.discardButton,
+      navigateBackAfterSave
+    );
   };
 }

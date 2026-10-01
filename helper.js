@@ -81,7 +81,7 @@ class Helper {
   // every element matching the selector and returns the one whose trimmed
   // text content exactly equals `text` — needed when a selector matches
   // many elements (e.g. a list of search results) and only one is wanted.
-  static waitForElementByText = (selector, text, exact = true, timeout = 10000) => {
+  static waitForElementByText = (selector, text, exact = true, timeout = 10000, caseInsensitive = false) => {
     console.log('[Helper] waiting for selector:', selector, 'with text:', text, 'exact:', exact);
     return new Promise((resolve, reject) => {
       let interval;
@@ -94,7 +94,13 @@ class Helper {
           // so a caller passing a raw number (e.g. a column count) would
           // otherwise never match under strict ===.
           const textStr = String(text);
-          const matches = exact ? el.innerHTML.trim() === textStr : el.innerHTML.includes(textStr);
+          const html = exact ? el.innerHTML.trim() : el.innerHTML;
+          // caseInsensitive defaults off so every existing caller keeps its
+          // current (case-sensitive) behavior — only opt in where a
+          // button's actual casing ("Edit" vs "EDIT") isn't known for sure.
+          const a = caseInsensitive ? html.toLowerCase() : html;
+          const b = caseInsensitive ? textStr.toLowerCase() : textStr;
+          const matches = exact ? a === b : a.includes(b);
           if (matches) {
             console.log('[Helper] interacting with selector:', selector, el);
             clearInterval(interval);
@@ -121,7 +127,11 @@ class Helper {
   // skinny-banner.js/hero-pov.js/hub-spoke.js/pov-card.js/item-carousel.js.
   // Returns true if Save was clicked, false if Discard Changes was clicked
   // — the caller uses this to decide whether to mark the module completed.
-  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel) => {
+  // navigateBack defaults true (every Create-mode module's final save needs
+  // to return to the module-zone list to find the next module) — Edit mode
+  // passes false, since there's no next module to find and nothing to go
+  // back to.
+  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel, navigateBack = true) => {
     const saveBtn = await Helper.waitForElementByText(saveButtonSel.selector, saveButtonSel.text, saveButtonSel.exact);
     const discardBtn = await Helper.waitForElementByText(
       discardButtonSel.selector,
@@ -135,6 +145,11 @@ class Helper {
       discardBtn.addEventListener('click', () => resolve(false), { once: true });
     });
 
+    if (!navigateBack) {
+      Helper.log(saved ? 'Save clicked.' : 'Discard Changes clicked.');
+      return saved;
+    }
+
     Helper.log(
       saved
         ? 'Save clicked — going back to find the next module.'
@@ -143,6 +158,17 @@ class Helper {
     window.history.back();
     await Helper.sleep(1000);
     return saved;
+  };
+
+  // App links can need a "gbo=1" param appended — as a new query param if
+  // the URL has none yet, otherwise chained on with "&" — to force opening
+  // externally instead of staying in-app. Off by default per module (see
+  // popup's per-module checkbox); callers only invoke this when the user
+  // opted in for that specific module's app links.
+  static appendGboParam = (url) => {
+    if (!url) return '';
+    if (/[?&]gbo=1(&|$)/.test(url)) return url;
+    return url.includes('?') ? `${url}&gbo=1` : `${url}?gbo=1`;
   };
 
   // Falls back to a generated alt copy (Brand + Device + Language + Module
@@ -171,11 +197,40 @@ class Helper {
   // the next click can happen. Add blur only at specific call sites if a
   // field still doesn't stick after this fix — not globally here.
   static setInputValue = (el, value) => {
-    console.log('[Helper] setting value:', value, 'on element:', el);
-    const proto = el.tagName === 'TEXTAREA' ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
-    const nativeSetter = Object.getOwnPropertyDescriptor(proto, 'value').set;
+    console.log('[Helper] setting value:', value, 'on element:', el, 'tagName:', el.tagName);
+
+    // Some inline-editable fields (seen in Edit mode, after the Edit-button
+    // unlock) only swap into a real editable control on an actual click —
+    // a programmatic .focus() alone doesn't trigger that. Dispatching a
+    // realistic mousedown/mouseup/click sequence first mimics a genuine
+    // user click; this is a hypothesis for the "only sticks when I click
+    // it myself" symptom, not confirmed — harmless for fields that don't
+    // need it (Create mode's fields worked fine before this was added).
+    el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+    el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+    el.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
     el.focus();
+
+    // The native-setter trick only applies to real <input>/<textarea>
+    // elements. A field that's actually a contenteditable div (e.g. a
+    // Quill rich-text editor — confirmed loaded on this page) isn't one,
+    // and calling HTMLInputElement's native setter on it would throw
+    // "Illegal invocation". Fall back to a plain assignment for anything
+    // else rather than crash — it won't fix a contenteditable field, but
+    // it surfaces as "value didn't take" instead of a hard error.
+    const isTextarea = el instanceof HTMLTextAreaElement;
+    const isInput = el instanceof HTMLInputElement;
+    if (!isTextarea && !isInput) {
+      console.warn('[Helper] setInputValue target is not an <input>/<textarea> — native setter skipped:', el);
+      el.value = value;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return;
+    }
+
+    const proto = isTextarea ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+    const nativeSetter = Object.getOwnPropertyDescriptor(proto, 'value').set;
     nativeSetter.call(el, value);
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));

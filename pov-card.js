@@ -162,7 +162,7 @@ class PovCard {
     await PovCard.setValue(cfg.altText, altText);
   };
 
-  static fillCard = async (cardSel, cardData, deviceType, brandName) => {
+  static fillCard = async (cardSel, cardData, deviceType, brandName, addGbo) => {
     const altCopyContext = (language) => ({ brandName, deviceType, language, moduleType: 'pov-cards' });
 
     const imageData = cardData.image?.[deviceType];
@@ -193,10 +193,11 @@ class PovCard {
 
     const ctaData = cardData.cta?.[deviceType];
     if (ctaData) {
+      const linkValue = (url) => (deviceType === 'app' && addGbo ? Helper.appendGboParam(url) : url || '');
       await PovCard.setValue(cardSel.cta.enText, ctaData.english?.linkText || '');
-      await PovCard.setValue(cardSel.cta.enLink, ctaData.english?.linkValue || '');
+      await PovCard.setValue(cardSel.cta.enLink, linkValue(ctaData.english?.linkValue));
       await PovCard.setValue(cardSel.cta.frText, ctaData.french?.linkText || '');
-      await PovCard.setValue(cardSel.cta.frLink, ctaData.french?.linkValue || '');
+      await PovCard.setValue(cardSel.cta.frLink, linkValue(ctaData.french?.linkValue));
     }
   };
 
@@ -204,7 +205,7 @@ class PovCard {
   // ModuleFinder.run/SkinnyBanner.run/HeroPov.run/HubSpoke.run — so a
   // failure stops the loop instead of continuing on to a module that was
   // never actually added.
-  static run = async (deviceType, brandPage) => {
+  static run = async (deviceType, brandPage, addGbo) => {
     const SEL = PovCard.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No POV Card selectors for device type: ${deviceType}`);
 
@@ -234,7 +235,7 @@ class PovCard {
         addBtn.click();
         await Helper.sleep(300);
       }
-      await PovCard.fillCard(SEL.card(i), cards[i], deviceType, brandPage.brandName);
+      await PovCard.fillCard(SEL.card(i), cards[i], deviceType, brandPage.brandName, addGbo);
       Helper.log(`Filled card ${i + 1} of ${cards.length}.`);
     }
 

@@ -5,39 +5,102 @@
     "heroPov": [
       {
         "povStyle": "card-with-no-cta",
+        "order": 1,
         "isCompletedForWeb": false,
         "isCompletedForApp": false,
-        "order": 1,
-        "backgroundColor": "",
+        "backgroundColor": {
+          "app": "",
+          "web": ""
+        },
         "image": {
           "web": {
-            "english": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E" },
-            "french": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F" }
+            "english": {
+              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E",
+              "mobileAltCopy": "",
+              "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E",
+              "desktopAltCopy": ""
+            },
+            "french": {
+              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F",
+              "mobileAltCopy": "",
+              "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F",
+              "desktopAltCopy": ""
+            }
           },
           "app": {
-            "english": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_E", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E" },
-            "french": { "desktop": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-D_F", "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F" }
+            "english": {
+              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_E",
+              "mobileAltCopy": "",
+              "tablet": "",
+              "tabletAltCopy": ""
+            },
+            "french": {
+              "mobile": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001-M_F",
+              "mobileAltCopy": "",
+              "tablet": "",
+              "tabletAltCopy": ""
+            }
           }
         },
         "logo": {
-          "web": { "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E" }, "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F" } },
-          "app": { "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E" }, "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F" } }
+          "web": {
+            "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E", "altCopy": "" },
+            "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F", "altCopy": "" }
+          },
+          "app": {
+            "english": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_E", "altCopy": "" },
+            "french": { "searchText": "HPOV-BP_LEXM44630_General_Mills_Fall_&_Holiday_Recipes_251001_LOGO_F", "altCopy": "" }
+          }
         },
-        "legal": { "english": "", "french": "" },
-        "eyebrow": { "english": "", "french": "", "textColor": "" },
+        "legal": {
+          "web": {
+            "english": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" },
+            "french": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" }
+          },
+          "app": {
+            "english": { "discloser": "", "title": "", "description": "", "textColor": "" },
+            "french": { "discloser": "", "title": "", "description": "", "textColor": "" }
+          }
+        },
         "headline": {
-          "english": "Create unforgettable moments",
-          "french": "Pour des moments inoubliables",
-          "textColor": "001E60"
+          "web": {
+            "english": { "text": "Create unforgettable moments", "desktopTextColor": "001E60", "mobileTextColor": "001E60" },
+            "french": { "text": "Pour des moments inoubliables", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }
+          },
+          "app": {
+            "english": { "text": "Create unforgettable moments", "textColor": "001E60" },
+            "french": { "text": "Pour des moments inoubliables", "textColor": "001E60" }
+          }
         },
         "subHeadline": {
-          "english": "Cozy recipes that bring your loved ones together.",
-          "french": "Créez des recettes réconfortantes qui donnent envie de se rassembler.",
-          "textColor": "001E60"
+          "web": {
+            "english": { "text": "Cozy recipes that bring your loved ones together.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" },
+            "french": { "text": "Créez des recettes réconfortantes qui donnent envie de se rassembler.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }
+          },
+          "app": {
+            "english": { "text": "Cozy recipes that bring your loved ones together.", "textColor": "001E60" },
+            "french": { "text": "Créez des recettes réconfortantes qui donnent envie de se rassembler.", "textColor": "001E60" }
+          }
+        },
+        "eyebrow": {
+          "web": {
+            "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" },
+            "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }
+          },
+          "app": {
+            "english": { "text": "", "textColor": "" },
+            "french": { "text": "", "textColor": "" }
+          }
         },
         "cta": {
-          "web": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } },
-          "app": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } }
+          "web": {
+            "english": { "linkText": "Shop", "linkValue": "" },
+            "french": { "linkText": "Magasiner", "linkValue": "" }
+          },
+          "app": {
+            "english": { "linkText": "Shop", "linkValue": "" },
+            "french": { "linkText": "Magasiner", "linkValue": "" }
+          }
         }
       }
     ],
