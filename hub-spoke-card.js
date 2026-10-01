@@ -71,33 +71,48 @@ class HubSpokeCard {
     await HubSpokeCard.setValue(selector, v);
   };
 
-  static fillImage = async (cfg, data, altCopyContext) => {
+  // Split select-only / alt-text-only (same two-stage pattern as every
+  // other module with images): opening the image search popup was found to
+  // wipe sibling fields filled beforehand, and alt text only saves once an
+  // image is actually selected — so run() selects every card's image
+  // after everything else is saved, then fills alt text.
+  static selectImage = async (cfg, data) => {
     if (!data || !data.searchText) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
-    openBtn.click();
+    await Helper.clickTrusted(openBtn);
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
     await Helper.setInputValue(searchInput, data.searchText);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
-    searchBtn.click();
+    await Helper.clickTrusted(searchBtn);
 
     const result = await Helper.waitForElement(cfg.result);
-    result.click();
+    await Helper.clickTrusted(result);
     Helper.log(`Selected image: ${data.searchText}`);
+  };
 
+  static fillImageAlt = async (cfg, data, altCopyContext) => {
+    if (!data || !data.searchText) return;
     const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
     await HubSpokeCard.setValue(cfg.altText, altText);
   };
 
-  static fillCard = async (cardSel, cardData, brandName, addGbo) => {
+  static selectCardImages = async (cardSel, cardData) => {
+    await HubSpokeCard.selectImage(cardSel.image.en, cardData.image?.english);
+    await HubSpokeCard.selectImage(cardSel.image.fr, cardData.image?.french);
+  };
+
+  static fillCardImageAlts = async (cardSel, cardData, brandName) => {
     const altCopyContext = (language) => ({ brandName, deviceType: 'app', language, moduleType: 'hub-spoke-card' });
+    await HubSpokeCard.fillImageAlt(cardSel.image.en, cardData.image?.english, altCopyContext('english'));
+    await HubSpokeCard.fillImageAlt(cardSel.image.fr, cardData.image?.french, altCopyContext('french'));
+  };
 
-    await HubSpokeCard.fillImage(cardSel.image.en, cardData.image?.english, altCopyContext('english'));
-    await HubSpokeCard.fillImage(cardSel.image.fr, cardData.image?.french, altCopyContext('french'));
-
+  // Everything except image — deferred to run()'s later stage (see above).
+  static fillCardNonImage = async (cardSel, cardData, addGbo) => {
     await HubSpokeCard.setTruncated(cardSel.headingEn, cardData.heading?.english, cardSel.headingMaxLen);
     await HubSpokeCard.setTruncated(cardSel.headingFr, cardData.heading?.french, cardSel.headingMaxLen);
 
@@ -143,8 +158,29 @@ class HubSpokeCard {
         addBtn.click();
         await Helper.sleep(300);
       }
-      await HubSpokeCard.fillCard(HubSpokeCard.SELECTORS.card(i), cards[i], brandPage.brandName, addGbo);
-      Helper.log(`Filled card ${i + 1} of ${cards.length}.`);
+      await HubSpokeCard.fillCardNonImage(HubSpokeCard.SELECTORS.card(i), cards[i], addGbo);
+      Helper.log(`Filled non-image fields for card ${i + 1} of ${cards.length}.`);
+    }
+
+    // Intermediate save of everything except image — auto-clicked (not
+    // handed off, since there's nothing meaningful to review here yet),
+    // then re-enter Edit (no-op in Create mode, where nothing locked the
+    // form), then select every card's image and fill its alt text.
+    Helper.log('Non-image fields filled — saving automatically before filling images...');
+    const intermediateSaveBtn = await Helper.waitForElementByText(
+      HubSpokeCard.SELECTORS.saveButton.selector,
+      HubSpokeCard.SELECTORS.saveButton.text,
+      HubSpokeCard.SELECTORS.saveButton.exact
+    );
+    intermediateSaveBtn.click();
+    await Helper.sleep(1500);
+
+    await ModuleEditor.clickEditButtonIfPresent();
+
+    for (let i = 0; i < cards.length; i++) {
+      await HubSpokeCard.selectCardImages(HubSpokeCard.SELECTORS.card(i), cards[i]);
+      await HubSpokeCard.fillCardImageAlts(HubSpokeCard.SELECTORS.card(i), cards[i], brandPage.brandName);
+      Helper.log(`Filled image for card ${i + 1} of ${cards.length}.`);
     }
 
     Helper.log('Hub Spoke Card filled — review and click Save (or Discard Changes) to continue.');

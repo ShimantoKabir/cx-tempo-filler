@@ -180,14 +180,83 @@ class Helper {
     return `${brandName} ${titleCase(deviceType)} ${titleCase(language)} ${moduleLabel}`;
   };
 
+  // Polls el.getBoundingClientRect() until two consecutive reads match
+  // (handles an element still mid-animation/transition when clicked too
+  // early — e.g. a popup sliding/fading into its final position), or gives
+  // up after timeout and returns the last reading anyway.
+  static waitForStableRect = async (el, { interval = 100, timeout = 2000 } = {}) => {
+    const start = Date.now();
+    let last = el.getBoundingClientRect();
+    while (Date.now() - start < timeout) {
+      await Helper.sleep(interval);
+      const next = el.getBoundingClientRect();
+      if (next.x === last.x && next.y === last.y && next.width === last.width && next.height === last.height) {
+        return next;
+      }
+      last = next;
+    }
+    console.warn('[Helper] waitForStableRect timed out — using last reading:', last);
+    return last;
+  };
+
+  // Scrolls the element into view, waits for its on-screen position to
+  // stabilize, and asks background.js (the only context with
+  // chrome.debugger access) to click there via CDP. Returns false (never
+  // throws) on any failure so the caller can fall back cleanly.
+  static clickViaCDP = async (el) => {
+    try {
+      el.scrollIntoView({ block: 'center' });
+      await Helper.sleep(150);
+      const rect = await Helper.waitForStableRect(el);
+      if (rect.width === 0 && rect.height === 0) return false;
+
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      console.log('[Helper] CDP click at', x, y, 'on element:', el);
+
+      const resp = await chrome.runtime.sendMessage({ action: 'cdpClick', payload: { x, y } });
+      if (resp?.status === 'ok') return true;
+      console.warn('[Helper] CDP click responded with an error:', resp?.message);
+      return false;
+    } catch (err) {
+      console.warn('[Helper] CDP click threw:', err);
+      return false;
+    }
+  };
+
+  // Real trusted click via CDP first, falling back to a plain el.click()
+  // if CDP isn't available/fails. Confirmed necessary (not just
+  // defensive): removing CDP reintroduced the failure, alongside the
+  // two-stage save split in hub-spoke.js.
+  static clickTrusted = async (el) => {
+    const ok = await Helper.clickViaCDP(el);
+    if (!ok) el.click();
+  };
+
   // Deliberately no el.blur() here by default: this helper is also used for
   // the image-search inputs (type -> click search button -> click result),
   // and blurring right after typing risks closing that search popover
   // before the next click can happen — so blurAfter defaults false and is
   // only passed true at call sites where that risk doesn't apply (plain
   // text fields, not the image search input).
-  static setInputValue = (el, value, blurAfter = false) => {
+  //
+  // Routes through chrome.debugger (CDP) first — element.dispatchEvent can
+  // only ever produce isTrusted: false events. CDP's Input.dispatch*
+  // commands are synthesized by Chrome itself (same mechanism Puppeteer/
+  // WebdriverIO use), so they come through as isTrusted: true. Falls back
+  // to the native-setter approach if the CDP round-trip fails for any
+  // reason (e.g. real DevTools already attached to this tab, which blocks
+  // chrome.debugger from attaching too).
+  static setInputValue = async (el, value, blurAfter = false) => {
     console.log('[Helper] setting value:', value, 'on element:', el, 'tagName:', el.tagName);
+
+    const cdpSucceeded = await Helper.setInputValueViaCDP(el, value);
+    if (cdpSucceeded) {
+      if (blurAfter) el.blur();
+      return;
+    }
+
+    console.warn('[Helper] CDP setValue unavailable/failed — falling back to native-setter approach.');
 
     // Some inline-editable fields (seen in Edit mode, after the Edit-button
     // unlock) only swap into a real editable control on an actual click —
@@ -224,6 +293,34 @@ class Helper {
     el.dispatchEvent(new Event('input', { bubbles: true }));
     el.dispatchEvent(new Event('change', { bubbles: true }));
     if (blurAfter) el.blur();
+  };
+
+  // Scrolls the element into view, waits for its on-screen position to
+  // stabilize, and asks background.js to click there and type via CDP.
+  // Returns false (never throws) on any failure so the caller can fall
+  // back cleanly.
+  static setInputValueViaCDP = async (el, value) => {
+    try {
+      el.scrollIntoView({ block: 'center' });
+      await Helper.sleep(150);
+      const rect = await Helper.waitForStableRect(el);
+      if (rect.width === 0 && rect.height === 0) return false;
+
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      console.log('[Helper] CDP setValue at', x, y, 'on element:', el);
+
+      const resp = await chrome.runtime.sendMessage({
+        action: 'cdpSetValue',
+        payload: { x, y, value },
+      });
+      if (resp?.status === 'ok') return true;
+      console.warn('[Helper] CDP setValue responded with an error:', resp?.message);
+      return false;
+    } catch (err) {
+      console.warn('[Helper] CDP setValue threw:', err);
+      return false;
+    }
   };
 
   static notify = (message, isError = false) => {

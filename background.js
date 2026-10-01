@@ -32,6 +32,94 @@ function openAndRun(url, messageAction, payload) {
   });
 }
 
+// CDP-based input dispatch — a content script can only dispatch synthetic
+// DOM events (element.dispatchEvent / el.click()), which always have
+// isTrusted: false. chrome.debugger gives this extension access to the
+// same Input.dispatch* commands real automation tools (Puppeteer,
+// WebdriverIO's Chrome driver) use under the hood, which Chrome
+// synthesizes at the browser-process level — those come through as
+// isTrusted: true. Only callable from here (background), not from a
+// content script — chrome.debugger isn't exposed there. Confirmed via
+// testing: removing this reintroduces the failure, so it's needed
+// alongside the two-stage save split in hub-spoke.js, not instead of it.
+const attachedTabs = new Set();
+
+function ensureDebuggerAttached(tabId) {
+  if (attachedTabs.has(tabId)) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    chrome.debugger.attach({ tabId }, '1.3', () => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message));
+      } else {
+        attachedTabs.add(tabId);
+        resolve();
+      }
+    });
+  });
+}
+
+function sendDebuggerCommand(tabId, method, params) {
+  return new Promise((resolve, reject) => {
+    chrome.debugger.sendCommand({ tabId }, method, params, (result) => {
+      if (chrome.runtime.lastError) {
+        reject(new Error(chrome.runtime.lastError.message));
+      } else {
+        resolve(result);
+      }
+    });
+  });
+}
+
+// Attachment is per-tab and survives same-tab reloads/navigations on its
+// own (this flow reloads several times — tenant select, module URL nav) —
+// only cleared here if something else detaches it (e.g. the user manually
+// closes the "is debugging this browser" banner).
+chrome.debugger.onDetach.addListener(({ tabId }) => {
+  attachedTabs.delete(tabId);
+});
+
+async function cdpClick(tabId, x, y) {
+  await ensureDebuggerAttached(tabId);
+  await sendDebuggerCommand(tabId, 'Input.dispatchMouseEvent', { type: 'mouseMoved', x, y });
+  await sendDebuggerCommand(tabId, 'Input.dispatchMouseEvent', {
+    type: 'mousePressed',
+    x,
+    y,
+    button: 'left',
+    clickCount: 1,
+  });
+  await sendDebuggerCommand(tabId, 'Input.dispatchMouseEvent', {
+    type: 'mouseReleased',
+    x,
+    y,
+    button: 'left',
+    clickCount: 1,
+  });
+}
+
+async function cdpSetValue(tabId, x, y, value) {
+  await cdpClick(tabId, x, y);
+
+  // Select any existing value (Ctrl+A) so the inserted text replaces it
+  // instead of inserting at whatever cursor position the click landed on.
+  await sendDebuggerCommand(tabId, 'Input.dispatchKeyEvent', {
+    type: 'keyDown',
+    key: 'a',
+    code: 'KeyA',
+    modifiers: 2,
+    windowsVirtualKeyCode: 65,
+  });
+  await sendDebuggerCommand(tabId, 'Input.dispatchKeyEvent', {
+    type: 'keyUp',
+    key: 'a',
+    code: 'KeyA',
+    modifiers: 2,
+    windowsVirtualKeyCode: 65,
+  });
+
+  await sendDebuggerCommand(tabId, 'Input.insertText', { text: String(value) });
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === 'startAutomation') {
     openAndRun(TARGET_URL, 'runAutomation', msg.payload);
@@ -42,5 +130,27 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     // is only navigated to afterwards, by the content script itself.
     openAndRun(TARGET_URL, 'runEditAutomation', msg.payload);
     sendResponse({ status: 'ok' });
+  } else if (msg.action === 'cdpClick') {
+    const tabId = sender.tab?.id;
+    if (!tabId) {
+      sendResponse({ status: 'error', message: 'No tab id on sender.' });
+      return;
+    }
+    const { x, y } = msg.payload;
+    cdpClick(tabId, x, y)
+      .then(() => sendResponse({ status: 'ok' }))
+      .catch((err) => sendResponse({ status: 'error', message: err.message }));
+    return true; // keep the message channel open for the async response
+  } else if (msg.action === 'cdpSetValue') {
+    const tabId = sender.tab?.id;
+    if (!tabId) {
+      sendResponse({ status: 'error', message: 'No tab id on sender.' });
+      return;
+    }
+    const { x, y, value } = msg.payload;
+    cdpSetValue(tabId, x, y, value)
+      .then(() => sendResponse({ status: 'ok' }))
+      .catch((err) => sendResponse({ status: 'error', message: err.message }));
+    return true; // keep the message channel open for the async response
   }
 });

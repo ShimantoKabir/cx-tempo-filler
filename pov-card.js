@@ -141,34 +141,50 @@ class PovCard {
     }
   };
 
-  static fillImage = async (cfg, data, altCopyContext) => {
+  // Split select-only / alt-text-only (same two-stage pattern as HubSpoke/
+  // SkinnyBanner/HeroPov): opening the image search popup was found to
+  // wipe sibling fields filled beforehand, and alt text only saves once an
+  // image is actually selected — so run() selects every card's image
+  // after everything else is saved, then fills alt text.
+  static selectImage = async (cfg, data) => {
     if (!data || !data.searchText) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
-    openBtn.click();
+    await Helper.clickTrusted(openBtn);
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
     await Helper.setInputValue(searchInput, data.searchText);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
-    searchBtn.click();
+    await Helper.clickTrusted(searchBtn);
 
     const result = await Helper.waitForElement(cfg.result);
-    result.click();
+    await Helper.clickTrusted(result);
     Helper.log(`Selected image: ${data.searchText}`);
+  };
 
+  static fillImageAltText = async (cfg, data, altCopyContext) => {
+    if (!data || !data.searchText) return;
     const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
     await PovCard.setValue(cfg.altText, altText);
   };
 
-  static fillCard = async (cardSel, cardData, deviceType, brandName, addGbo) => {
-    const altCopyContext = (language) => ({ brandName, deviceType, language, moduleType: 'pov-cards' });
-
+  static selectCardImages = async (cardSel, cardData, deviceType) => {
     const imageData = cardData.image?.[deviceType];
-    await PovCard.fillImage(cardSel.image.en, imageData?.english, altCopyContext('english'));
-    await PovCard.fillImage(cardSel.image.fr, imageData?.french, altCopyContext('french'));
+    await PovCard.selectImage(cardSel.image.en, imageData?.english);
+    await PovCard.selectImage(cardSel.image.fr, imageData?.french);
+  };
 
+  static fillCardImageAlts = async (cardSel, cardData, deviceType, brandName) => {
+    const altCopyContext = (language) => ({ brandName, deviceType, language, moduleType: 'pov-cards' });
+    const imageData = cardData.image?.[deviceType];
+    await PovCard.fillImageAltText(cardSel.image.en, imageData?.english, altCopyContext('english'));
+    await PovCard.fillImageAltText(cardSel.image.fr, imageData?.french, altCopyContext('french'));
+  };
+
+  // Everything except image — deferred to run()'s later stage (see above).
+  static fillCardNonImage = async (cardSel, cardData, deviceType, addGbo) => {
     const headingData = cardData.heading?.[deviceType];
     await PovCard.setTruncated(cardSel.headingEn, headingData?.english, cardSel.headingMaxLen);
     await PovCard.setTruncated(cardSel.headingFr, headingData?.french, cardSel.headingMaxLen);
@@ -235,8 +251,25 @@ class PovCard {
         addBtn.click();
         await Helper.sleep(300);
       }
-      await PovCard.fillCard(SEL.card(i), cards[i], deviceType, brandPage.brandName, addGbo);
-      Helper.log(`Filled card ${i + 1} of ${cards.length}.`);
+      await PovCard.fillCardNonImage(SEL.card(i), cards[i], deviceType, addGbo);
+      Helper.log(`Filled non-image fields for card ${i + 1} of ${cards.length}.`);
+    }
+
+    // Intermediate save of everything except image — auto-clicked (not
+    // handed off, since there's nothing meaningful to review here yet),
+    // then re-enter Edit (no-op in Create mode, where nothing locked the
+    // form), then select every card's image and fill its alt text.
+    Helper.log('Non-image fields filled — saving automatically before filling images...');
+    const intermediateSaveBtn = await Helper.waitForElementByText(SEL.saveButton.selector, SEL.saveButton.text, SEL.saveButton.exact);
+    intermediateSaveBtn.click();
+    await Helper.sleep(1500);
+
+    await ModuleEditor.clickEditButtonIfPresent();
+
+    for (let i = 0; i < cards.length; i++) {
+      await PovCard.selectCardImages(SEL.card(i), cards[i], deviceType);
+      await PovCard.fillCardImageAlts(SEL.card(i), cards[i], deviceType, brandPage.brandName);
+      Helper.log(`Filled image for card ${i + 1} of ${cards.length}.`);
     }
 
     Helper.log('POV Card filled — review and click Save (or Discard Changes) to continue.');

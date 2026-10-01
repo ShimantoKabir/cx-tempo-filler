@@ -50,6 +50,24 @@ class ModuleEditor {
     await Helper.sleep(500);
   };
 
+  // Best-effort variant for the two-stage (non-image fields -> save ->
+  // image+alt fields) fill pattern every module now uses. Edit mode always
+  // has this lock to re-open after an intermediate save; a freshly-added
+  // Create-mode module was never locked in the first place, so this button
+  // may simply not exist there — a short timeout here just means "nothing
+  // to unlock," not a real failure, so the caller can keep going either way.
+  static clickEditButtonIfPresent = async () => {
+    try {
+      const span = await Helper.waitForElementByText(ModuleEditor.SELECTORS.editButton, 'edit', false, 2000, true);
+      const btn = span.closest('button') || span;
+      btn.click();
+      Helper.log('Clicked Edit.');
+      await Helper.sleep(500);
+    } catch {
+      // No lock to re-open (e.g. Create mode) — nothing to do.
+    }
+  };
+
   static clearGenericFields = async () => {
     for (const selector of Object.values(ModuleEditor.SELECTORS.genericFields)) {
       try {

@@ -270,23 +270,31 @@ class HeroPov {
     await Helper.sleep(300);
   };
 
-  static fillImageSlot = async (cfg, data, altCopyContext) => {
+  // Split select-only / alt-text-only (same two-stage pattern as HubSpoke
+  // and SkinnyBanner): opening the image search popup was found to wipe
+  // sibling fields filled beforehand, and alt text only saves once an
+  // image is actually selected — so run() selects every image (across
+  // every card) after everything else is saved, then fills alt text.
+  static selectImageSlot = async (cfg, data) => {
     if (!data || !data.image) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
-    openBtn.click();
+    await Helper.clickTrusted(openBtn);
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
     await Helper.setInputValue(searchInput, data.image);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
-    searchBtn.click();
+    await Helper.clickTrusted(searchBtn);
 
     const result = await Helper.waitForElement(cfg.result);
-    result.click();
+    await Helper.clickTrusted(result);
     Helper.log(`Selected image: ${data.image}`);
+  };
 
+  static fillImageSlotAlt = async (cfg, data, altCopyContext) => {
+    if (!data || !data.image) return;
     const altText = data.altCopy || (altCopyContext ? Helper.generateAltCopy(altCopyContext) : '');
     if (altText) {
       await HeroPov.setValue(cfg.altText, altText);
@@ -302,7 +310,113 @@ class HeroPov {
     return data === 'same-as-web' ? section.web : data;
   };
 
-  static fillCard = async (cardSel, cardData, deviceType, brandName, addGbo) => {
+  // image/logo data resolution shared by selectCardImages and
+  // fillCardImageAlts below, so the two stages stay in sync without
+  // duplicating the device-branching logic.
+  static resolveCardImageSlots = (cardSel, cardData, deviceType) => {
+    const altCopyContext = (language, moduleType) => ({
+      brandName: cardData.__brandName,
+      deviceType,
+      language,
+      moduleType,
+    });
+    const slots = [];
+
+    const imageData = HeroPov.resolveDeviceSection(cardData.image, deviceType);
+    if (imageData) {
+      if (deviceType === 'app') {
+        slots.push({
+          cfg: cardSel.images.en.mobile,
+          data: { image: imageData.english?.mobile, altCopy: imageData.english?.mobileAltCopy },
+          altCopyContext: altCopyContext('english', 'hero-pov'),
+        });
+        slots.push({
+          cfg: cardSel.images.en.tablet,
+          data: { image: imageData.english?.tablet, altCopy: imageData.english?.tabletAltCopy },
+          altCopyContext: altCopyContext('english', 'hero-pov'),
+        });
+
+        const hasFrImages = imageData.french?.mobile || imageData.french?.tablet;
+        if (hasFrImages) {
+          slots.push({ addButton: cardSel.images.fr.addButton });
+          slots.push({
+            cfg: cardSel.images.fr.mobile,
+            data: { image: imageData.french?.mobile, altCopy: imageData.french?.mobileAltCopy },
+            altCopyContext: altCopyContext('french', 'hero-pov'),
+          });
+          slots.push({
+            cfg: cardSel.images.fr.tablet,
+            data: { image: imageData.french?.tablet, altCopy: imageData.french?.tabletAltCopy },
+            altCopyContext: altCopyContext('french', 'hero-pov'),
+          });
+        }
+      } else {
+        slots.push({
+          cfg: cardSel.images.en.mobile,
+          data: { image: imageData.english?.mobile, altCopy: imageData.english?.mobileAltCopy },
+          altCopyContext: altCopyContext('english', 'hero-pov'),
+        });
+        slots.push({
+          cfg: cardSel.images.en.desktop,
+          data: { image: imageData.english?.desktop, altCopy: imageData.english?.desktopAltCopy },
+          altCopyContext: altCopyContext('english', 'hero-pov'),
+        });
+        slots.push({
+          cfg: cardSel.images.fr.mobile,
+          data: { image: imageData.french?.mobile, altCopy: imageData.french?.mobileAltCopy },
+          altCopyContext: altCopyContext('french', 'hero-pov'),
+        });
+        slots.push({
+          cfg: cardSel.images.fr.desktop,
+          data: { image: imageData.french?.desktop, altCopy: imageData.french?.desktopAltCopy },
+          altCopyContext: altCopyContext('french', 'hero-pov'),
+        });
+      }
+    }
+
+    const logoData = HeroPov.resolveDeviceSection(cardData.logo, deviceType);
+    if (logoData) {
+      slots.push({
+        cfg: cardSel.logo.en,
+        data: { image: logoData.english?.searchText, altCopy: logoData.english?.altCopy },
+        altCopyContext: altCopyContext('english', 'hero-pov-logo'),
+      });
+      slots.push({
+        cfg: cardSel.logo.fr,
+        data: { image: logoData.french?.searchText, altCopy: logoData.french?.altCopy },
+        altCopyContext: altCopyContext('french', 'hero-pov-logo'),
+      });
+    }
+
+    return slots;
+  };
+
+  static selectCardImages = async (cardSel, cardData, deviceType, brandName) => {
+    const slots = HeroPov.resolveCardImageSlots(cardSel, { ...cardData, __brandName: brandName }, deviceType);
+    for (const slot of slots) {
+      if (slot.addButton) {
+        await HeroPov.addSection(slot.addButton);
+        continue;
+      }
+      await HeroPov.selectImageSlot(slot.cfg, slot.data);
+    }
+    if (slots.length > 0) Helper.log('Selected card images/logo.');
+  };
+
+  static fillCardImageAlts = async (cardSel, cardData, deviceType, brandName) => {
+    const slots = HeroPov.resolveCardImageSlots(cardSel, { ...cardData, __brandName: brandName }, deviceType);
+    for (const slot of slots) {
+      if (slot.addButton) continue;
+      await HeroPov.fillImageSlotAlt(slot.cfg, slot.data, slot.altCopyContext);
+    }
+    if (slots.length > 0) Helper.log('Filled card image/logo alt text.');
+  };
+
+  // Everything except image/logo — those are deferred to a later stage
+  // (see run()): opening the image search popup was found to wipe sibling
+  // fields filled beforehand, so every card's non-image fields get saved
+  // first, then every card's images get selected and alt-texted.
+  static fillCardNonImage = async (cardSel, cardData, deviceType, brandName, addGbo) => {
     // POV style — determines whether the CTA fields apply at all.
     const styleBtn = await Helper.waitForElement(cardSel.povStyleButton);
     styleBtn.click();
@@ -315,81 +429,6 @@ class HeroPov {
     await Helper.sleep(300);
 
     await HeroPov.setColor(cardSel.backgroundColor, cardData.backgroundColor?.[deviceType]);
-
-    const altCopyContext = (language, moduleType) => ({ brandName, deviceType, language, moduleType });
-
-    // Main image. web fields are desktop/mobile; app fields are
-    // mobile/tablet (see the images selector for the regularImage/
-    // largeImage mapping).
-    const imageData = HeroPov.resolveDeviceSection(cardData.image, deviceType);
-    if (imageData) {
-      if (deviceType === 'app') {
-        await HeroPov.fillImageSlot(
-          cardSel.images.en.mobile,
-          { image: imageData.english?.mobile, altCopy: imageData.english?.mobileAltCopy },
-          altCopyContext('english', 'hero-pov')
-        );
-        await HeroPov.fillImageSlot(
-          cardSel.images.en.tablet,
-          { image: imageData.english?.tablet, altCopy: imageData.english?.tabletAltCopy },
-          altCopyContext('english', 'hero-pov')
-        );
-
-        const hasFrImages = imageData.french?.mobile || imageData.french?.tablet;
-        if (hasFrImages) {
-          await HeroPov.addSection(cardSel.images.fr.addButton);
-          await HeroPov.fillImageSlot(
-            cardSel.images.fr.mobile,
-            { image: imageData.french?.mobile, altCopy: imageData.french?.mobileAltCopy },
-            altCopyContext('french', 'hero-pov')
-          );
-          await HeroPov.fillImageSlot(
-            cardSel.images.fr.tablet,
-            { image: imageData.french?.tablet, altCopy: imageData.french?.tabletAltCopy },
-            altCopyContext('french', 'hero-pov')
-          );
-        }
-      } else {
-        await HeroPov.fillImageSlot(
-          cardSel.images.en.mobile,
-          { image: imageData.english?.mobile, altCopy: imageData.english?.mobileAltCopy },
-          altCopyContext('english', 'hero-pov')
-        );
-        await HeroPov.fillImageSlot(
-          cardSel.images.en.desktop,
-          { image: imageData.english?.desktop, altCopy: imageData.english?.desktopAltCopy },
-          altCopyContext('english', 'hero-pov')
-        );
-        await HeroPov.fillImageSlot(
-          cardSel.images.fr.mobile,
-          { image: imageData.french?.mobile, altCopy: imageData.french?.mobileAltCopy },
-          altCopyContext('french', 'hero-pov')
-        );
-        await HeroPov.fillImageSlot(
-          cardSel.images.fr.desktop,
-          { image: imageData.french?.desktop, altCopy: imageData.french?.desktopAltCopy },
-          altCopyContext('french', 'hero-pov')
-        );
-      }
-      Helper.log('Filled image.');
-    }
-
-    // Logo — single flat searchText/altCopy per language (one control
-    // regardless of device, per scratch.txt).
-    const logoData = HeroPov.resolveDeviceSection(cardData.logo, deviceType);
-    if (logoData) {
-      await HeroPov.fillImageSlot(
-        cardSel.logo.en,
-        { image: logoData.english?.searchText, altCopy: logoData.english?.altCopy },
-        altCopyContext('english', 'hero-pov-logo')
-      );
-      await HeroPov.fillImageSlot(
-        cardSel.logo.fr,
-        { image: logoData.french?.searchText, altCopy: logoData.french?.altCopy },
-        altCopyContext('french', 'hero-pov-logo')
-      );
-      Helper.log('Filled logo.');
-    }
 
     // Headline (required, no add button). Both device types have a color
     // control here.
@@ -531,8 +570,26 @@ class HeroPov {
       if (i > 0) {
         await HeroPov.addSection({ selector: HeroPov.ADD_CARD_SELECTOR });
       }
-      await HeroPov.fillCard(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
-      Helper.log(`Filled card ${i + 1} of ${sortedCards.length}.`);
+      await HeroPov.fillCardNonImage(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
+      Helper.log(`Filled non-image fields for card ${i + 1} of ${sortedCards.length}.`);
+    }
+
+    // Intermediate save of everything except image/logo — auto-clicked
+    // (not handed off, since there's nothing meaningful to review here
+    // yet), then re-enter Edit (no-op in Create mode, where nothing locked
+    // the form), then select every card's images/logo and fill their alt
+    // text.
+    Helper.log('Non-image fields filled — saving automatically before filling images...');
+    const intermediateSaveBtn = await Helper.waitForElementByText(SEL.saveButton.selector, SEL.saveButton.text, SEL.saveButton.exact);
+    intermediateSaveBtn.click();
+    await Helper.sleep(1500);
+
+    await ModuleEditor.clickEditButtonIfPresent();
+
+    for (let i = 0; i < sortedCards.length; i++) {
+      await HeroPov.selectCardImages(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
+      await HeroPov.fillCardImageAlts(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
+      Helper.log(`Filled images for card ${i + 1} of ${sortedCards.length}.`);
     }
 
     Helper.log('Hero POV filled — review and click Save (or Discard Changes) to continue.');

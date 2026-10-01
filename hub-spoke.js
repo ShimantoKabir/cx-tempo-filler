@@ -119,38 +119,63 @@ class HubSpoke {
     return el;
   };
 
+  // Confirmed via testing: with image open/search/select skipped entirely,
+  // name + link value stuck correctly for every category — but alt text
+  // still didn't save, even with no image interaction at all. So alt text
+  // has its own, separate problem (plausibly: the field may only be truly
+  // "live" once a real image exists for that category, per the AI-suggested
+  // alt text seen in the captured GraphQL payload).
+  static fillLinkValue = async (cfg, data, applyGbo) => {
+    if (!data || !data.linkValue) return;
+    const linkValue = applyGbo ? Helper.appendGboParam(data.linkValue) : data.linkValue;
+    await HubSpoke.setValue(cfg.linkValue, linkValue);
+  };
+
   static fillImage = async (cfg, data, altCopyContext, applyGbo) => {
     if (!data || !data.searchText) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
-    openBtn.click();
+    await Helper.clickTrusted(openBtn);
     await Helper.sleep(300);
 
     const searchInput = await Helper.waitForElement(cfg.search);
     await Helper.setInputValue(searchInput, data.searchText);
 
     const searchBtn = await Helper.waitForElement(cfg.searchBtn);
-    searchBtn.click();
+    await Helper.clickTrusted(searchBtn);
 
     const result = await Helper.waitForElement(cfg.result);
-    result.click();
+    await Helper.clickTrusted(result);
     Helper.log(`Selected image: ${data.searchText}`);
 
-    if (data.linkValue) {
-      const linkValue = applyGbo ? Helper.appendGboParam(data.linkValue) : data.linkValue;
-      await HubSpoke.setValue(cfg.linkValue, linkValue);
-    }
+    await HubSpoke.fillLinkValue(cfg, data, applyGbo);
 
     const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
     await HubSpoke.setValue(cfg.altText, altText);
   };
 
-  static fillCategory = async (colNumber, row, col, categoryData, altCopyContextFor, applyGbo) => {
+  // Two-stage fill, confirmed via testing: name + link value stick
+  // reliably on their own, but alt text only saves once a real image is
+  // selected first for that category — and the image popup interaction
+  // itself was wiping sibling fields that were set beforehand. Splitting
+  // into name+link (saved first) then image+alt (filled after a fresh
+  // Edit unlock) avoids both problems. Split so run() can call each stage
+  // at the right point in its own two-phase (name+link, then save+reedit,
+  // then image+alt) sequence.
+  static fillNameAndLink = async (colNumber, row, col, categoryData, applyGbo) => {
     if (!categoryData) return;
     const sel = HubSpoke.categorySelectors(colNumber, row, col);
 
     await HubSpoke.setValue(sel.nameEn, categoryData.name?.english || '');
     await HubSpoke.setValue(sel.nameFr, categoryData.name?.french || '');
+
+    await HubSpoke.fillLinkValue(sel.image.en, categoryData.image?.english, applyGbo);
+    await HubSpoke.fillLinkValue(sel.image.fr, categoryData.image?.french, applyGbo);
+  };
+
+  static fillImageAndAlt = async (colNumber, row, col, categoryData, altCopyContextFor, applyGbo) => {
+    if (!categoryData) return;
+    const sel = HubSpoke.categorySelectors(colNumber, row, col);
 
     await HubSpoke.fillImage(sel.image.en, categoryData.image?.english, altCopyContextFor('english'), applyGbo);
     await HubSpoke.fillImage(sel.image.fr, categoryData.image?.french, altCopyContextFor('french'), applyGbo);
@@ -242,14 +267,45 @@ class HubSpoke {
         : [];
 
       for (let colIndex = 0; colIndex < categories.length; colIndex++) {
+        await HubSpoke.fillNameAndLink(colNumber, rowIndex, colIndex, categories[colIndex], applyGbo);
+        Helper.log(`Filled name/link for row ${rowIndex + 1}, column ${colIndex + 1}.`);
+      }
+    }
+
+    // Intermediate save of name/link value only — confirmed reliable
+    // without any image interaction. Unlike every other save in this
+    // project, this one is clicked automatically rather than handed off
+    // for manual review: it's not the module's real completion point, just
+    // an internal step needed before the image+alt stage can run — the
+    // user never has anything meaningful to review here yet.
+    Helper.log('Name/link filled — saving automatically before filling images...');
+    const intermediateSaveBtn = await Helper.waitForElementByText(
+      HubSpoke.SELECTORS.saveButton.selector,
+      HubSpoke.SELECTORS.saveButton.text,
+      HubSpoke.SELECTORS.saveButton.exact
+    );
+    intermediateSaveBtn.click();
+    await Helper.sleep(1500);
+
+    // Saving re-locks the form in Edit mode — unlock it again before
+    // filling images. Create mode's module was never locked to begin with
+    // (clickEditButtonIfPresent no-ops if there's nothing to unlock).
+    await ModuleEditor.clickEditButtonIfPresent();
+
+    for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+      const categories = Array.isArray(rows[rowIndex].categories)
+        ? rows[rowIndex].categories.slice(0, rowCategoryCounts[rowIndex])
+        : [];
+
+      for (let colIndex = 0; colIndex < categories.length; colIndex++) {
         const altCopyContextFor = (language) => ({
           brandName: brandPage.brandName,
           deviceType,
           language,
           moduleType: 'hub-spokes-nxm',
         });
-        await HubSpoke.fillCategory(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor, applyGbo);
-        Helper.log(`Filled row ${rowIndex + 1}, column ${colIndex + 1}.`);
+        await HubSpoke.fillImageAndAlt(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor, applyGbo);
+        Helper.log(`Filled image/alt for row ${rowIndex + 1}, column ${colIndex + 1}.`);
       }
     }
 

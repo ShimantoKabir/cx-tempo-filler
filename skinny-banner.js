@@ -273,7 +273,40 @@ class SkinnyBanner {
     await SkinnyBanner.setValue(sel.frLink, french.linkValue || '');
   };
 
-  static fillImages = async (imageSel, bannerData, altCopyContext) => {
+  // Split into select-only and alt-text-only (same two-stage pattern as
+  // HubSpoke): confirmed via testing there that opening the image search
+  // popup wipes sibling fields filled beforehand, and alt text only saves
+  // once an image is actually selected — so run() selects every image
+  // AFTER everything else is saved, then sets alt text right after.
+  static selectImages = async (imageSel, bannerData) => {
+    for (const lang of Object.keys(imageSel)) {
+      const langData = bannerData[lang];
+      if (!langData) continue;
+      const slots = imageSel[lang];
+
+      for (const slot of Object.keys(slots)) {
+        const searchText = langData[slot];
+        if (!searchText) continue;
+        const cfg = slots[slot];
+
+        const openBtn = await Helper.waitForElement(cfg.open);
+        await Helper.clickTrusted(openBtn);
+        await Helper.sleep(300);
+
+        const searchInput = await Helper.waitForElement(cfg.search);
+        await Helper.setInputValue(searchInput, searchText);
+
+        const searchBtn = await Helper.waitForElement(cfg.searchBtn);
+        await Helper.clickTrusted(searchBtn);
+
+        const result = await Helper.waitForElement(cfg.result);
+        await Helper.clickTrusted(result);
+        Helper.log(`Selected ${lang} ${slot} image: ${searchText}`);
+      }
+    }
+  };
+
+  static fillImageAltTexts = async (imageSel, bannerData, altCopyContext) => {
     for (const lang of Object.keys(imageSel)) {
       const langData = bannerData[lang];
       if (!langData) continue;
@@ -285,21 +318,6 @@ class SkinnyBanner {
         const altText =
           langData[`${slot}AltCopy`] || Helper.generateAltCopy({ ...altCopyContext, language: lang });
         const cfg = slots[slot];
-
-        const openBtn = await Helper.waitForElement(cfg.open);
-        openBtn.click();
-        await Helper.sleep(300);
-
-        const searchInput = await Helper.waitForElement(cfg.search);
-        await Helper.setInputValue(searchInput, searchText);
-
-        const searchBtn = await Helper.waitForElement(cfg.searchBtn);
-        searchBtn.click();
-
-        const result = await Helper.waitForElement(cfg.result);
-        result.click();
-        Helper.log(`Selected ${lang} ${slot} image: ${searchText}`);
-
         await SkinnyBanner.setValue(cfg.altText, altText);
       }
     }
@@ -335,13 +353,7 @@ class SkinnyBanner {
     await SkinnyBanner.setValue(SEL.bannerHeight, banner.bannerHeight);
     Helper.log(`Set banner height: ${banner.bannerHeight}`);
 
-    if (bannerType !== 'text-only') {
-      await SkinnyBanner.fillImages(SEL.image, banner.banner[deviceType], {
-        brandName: brandPage.brandName,
-        deviceType,
-        moduleType,
-      });
-    } else {
+    if (bannerType === 'text-only') {
       // Required for text-only banners — there's no image, so the
       // background color is the only visual fill.
       if (!banner.bannerBgColor) {
@@ -351,6 +363,9 @@ class SkinnyBanner {
       }
       await SkinnyBanner.setColor(SEL.bannerBgColor, banner.bannerBgColor);
     }
+    // bannerType !== 'text-only': image selection deferred to after
+    // everything else is saved (see below) — the image popup interaction
+    // wipes sibling fields if touched before they're saved.
 
     const headingData = banner.headline[deviceType];
     if (SkinnyBanner.hasTextContent(headingData)) {
@@ -394,6 +409,28 @@ class SkinnyBanner {
         await SkinnyBanner.fillClickThroughUrl(SEL.clickThroughUrl, clickThroughData);
         Helper.log('Filled banner click-through URL.');
       }
+    }
+
+    if (bannerType !== 'text-only') {
+      // Intermediate save of everything except image/alt text — same
+      // two-stage pattern as HubSpoke: auto-clicked (not handed off, since
+      // there's nothing meaningful to review here yet), then re-enter Edit
+      // (no-op in Create mode, where nothing locked the form), then select
+      // images and fill their alt text.
+      Helper.log('Non-image fields filled — saving automatically before filling images...');
+      const intermediateSaveBtn = await Helper.waitForElementByText(
+        SEL.saveButton.selector,
+        SEL.saveButton.text,
+        SEL.saveButton.exact
+      );
+      intermediateSaveBtn.click();
+      await Helper.sleep(1500);
+
+      await ModuleEditor.clickEditButtonIfPresent();
+
+      const imageAltContext = { brandName: brandPage.brandName, deviceType, moduleType };
+      await SkinnyBanner.selectImages(SEL.image, banner.banner[deviceType]);
+      await SkinnyBanner.fillImageAltTexts(SEL.image, banner.banner[deviceType], imageAltContext);
     }
 
     Helper.log('Skinny Banner filled — review and click Save (or Discard Changes) to continue.');
