@@ -4,6 +4,10 @@
 
 class Helper {
   static RESUME_KEY = 'cxtfResume';
+  // Loading bar shown after clicking Save — per scratch.txt. Navigating
+  // back (or letting the content script move on) while this is still
+  // visible risks acting before the save actually finished.
+  static SAVE_LOADING_BAR = 'div.e1gvnnix0';
 
   static sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -144,6 +148,25 @@ class Helper {
       saveBtn.addEventListener('click', () => resolve(true), { once: true });
       discardBtn.addEventListener('click', () => resolve(false), { once: true });
     });
+
+    if (saved) {
+      // waitForElementGone resolves immediately if the bar isn't in the DOM
+      // yet — which it may not be right after the click fires — so it has
+      // to actually appear first, or a fast render would skip the wait
+      // entirely. Both stages are best-effort: the bar may never show up
+      // at all (e.g. a very fast save), and that's not a real failure.
+      try {
+        await Helper.waitForElement(Helper.SAVE_LOADING_BAR, 2000);
+      } catch {
+        // Never appeared — nothing to wait out.
+      }
+      try {
+        await Helper.waitForElementGone(Helper.SAVE_LOADING_BAR, 20000);
+      } catch {
+        // Timed out still visible — proceed anyway rather than blocking
+        // the whole run on a loading bar that may just be stuck.
+      }
+    }
 
     if (!navigateBack) {
       Helper.log(saved ? 'Save clicked.' : 'Discard Changes clicked.');

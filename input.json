@@ -6,51 +6,55 @@
       {
         "povStyle": "",
         "order": 3,
-        "isCompletedForWeb": false,
+        "isCompletedForWeb": true,
         "isCompletedForApp": false,
         "needEditForWeb": false,
-        "needEditForApp": false,
-        "backgroundColor": { "app": "", "web": "" },
-        "image": {
-          "web": {
-            "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "desktopAltCopy": "" },
-            "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_F", "desktopAltCopy": "" }
-          },
-          "app": {
-            "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "tablet": "", "tabletAltCopy": "" },
-            "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "tablet": "", "tabletAltCopy": "" }
+        "needEditForApp": true,
+        "cards" : [
+          {
+            "backgroundColor": { "app": "", "web": "" },
+            "image": {
+              "web": {
+                "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "desktopAltCopy": "" },
+                "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_F", "desktopAltCopy": "" }
+              },
+              "app": {
+                "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "tablet": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "tabletAltCopy": "" },
+                "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "tablet": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_F", "tabletAltCopy": "" }
+              }
+            },
+            "logo": {
+              "web": {
+                "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
+                "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
+              },
+              "app": {
+                "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
+                "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
+              }
+            },
+            "legal": {
+              "web": { "english": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" } },
+              "app": { "english": { "discloser": "", "title": "", "description": "", "textColor": "" }, "french": { "discloser": "", "title": "", "description": "", "textColor": "" } }
+            },
+            "headline": {
+              "web": { "english": { "text": "Diwali with Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
+              "app": { "english": { "text": "Diwali with Kraft Heinz", "textColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "textColor": "001E60" } }
+            },
+            "subHeadline": {
+              "web": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
+              "app": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "textColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "textColor": "001E60" } }
+            },
+            "eyebrow": {
+              "web": { "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" } },
+              "app": { "english": { "text": "", "textColor": "" }, "french": { "text": "", "textColor": "" } }
+            },
+            "cta": {
+              "web": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } },
+              "app": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } }
+            }
           }
-        },
-        "logo": {
-          "web": {
-            "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
-            "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
-          },
-          "app": {
-            "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
-            "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
-          }
-        },
-        "legal": {
-          "web": { "english": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" } },
-          "app": { "english": { "discloser": "", "title": "", "description": "", "textColor": "" }, "french": { "discloser": "", "title": "", "description": "", "textColor": "" } }
-        },
-        "headline": {
-          "web": { "english": { "text": "Diwali with Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-          "app": { "english": { "text": "Diwali with Kraft Heinz", "textColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "textColor": "001E60" } }
-        },
-        "subHeadline": {
-          "web": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-          "app": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "textColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "textColor": "001E60" } }
-        },
-        "eyebrow": {
-          "web": { "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" } },
-          "app": { "english": { "text": "", "textColor": "" }, "french": { "text": "", "textColor": "" } }
-        },
-        "cta": {
-          "web": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } },
-          "app": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } }
-        }
+        ]
       }
     ],
     "imageAndTextSkinnyBanner": [

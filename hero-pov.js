@@ -20,6 +20,52 @@ class HeroPov {
     'card-with-no-cta': 'Card with no CTA',
   };
 
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have cards with real data, which run()'s "card 0 already exists, empty"
+  // assumption doesn't account for. Same generic "delete repeatable group"
+  // component HubSpokeCard uses for its cards (dragElementWrapper +
+  // deleteGroupButton + confirmDeleteGroupButton), confirmed via console —
+  // no label/field filter needed, same as HubSpokeCard, since the top-level
+  // "Cards" list is what this targets.
+  static CARD_DELETE_SELECTORS = {
+    wrapper: 'div.dragElementWrapper',
+    deleteIcon: 'svg.deleteGroupButton',
+    confirmButton: 'button.confirmDeleteGroupButton',
+  };
+
+  static findCardWrappers = () => [...document.querySelectorAll(HeroPov.CARD_DELETE_SELECTORS.wrapper)];
+
+  static deleteExistingCards = async () => {
+    // Count up front (same pattern as HubSpokeCard.deleteExistingCards) and
+    // loop exactly that many times, rather than an arbitrary safety cap —
+    // gives a real expected count to log progress against and to break
+    // early on if fewer cards delete successfully than were actually found.
+    const count = HeroPov.findCardWrappers().length;
+    Helper.log(`Found ${count} existing card(s) to delete.`);
+
+    for (let i = 0; i < count; i++) {
+      const cards = HeroPov.findCardWrappers();
+      if (cards.length === 0) break;
+
+      const card = cards[0];
+      ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+        card.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+      });
+      await Helper.sleep(200);
+
+      const deleteBtn = card.querySelector(HeroPov.CARD_DELETE_SELECTORS.deleteIcon);
+      if (!deleteBtn) break;
+      Helper.log(`Deleting existing card ${i + 1} of ${count}: ${card.textContent}`);
+      // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
+      // .click() method, so a real click must be dispatched instead.
+      deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      const confirmBtn = await Helper.waitForElement(HeroPov.CARD_DELETE_SELECTORS.confirmButton);
+      confirmBtn.click();
+      await Helper.sleep(500);
+    }
+  };
+
   static SELECTORS = {
     app: {
       moduleName: 'input[id="../name"]',
@@ -234,6 +280,65 @@ class HeroPov {
     const el = await Helper.waitForElement(selector);
     await Helper.setInputValue(el, value);
     return el;
+  };
+
+  // The CMS mirrors the module name input's actual synced value in a
+  // separate element elsewhere on the page — per live testing, the input's
+  // own value doesn't always get picked up by the framework on the first
+  // write. Verifies against that mirror and retries (fresh click + set)
+  // rather than trusting the input's DOM value alone.
+  static MODULE_NAME_SYNC_MIRROR = 'div.css-1t27te5';
+
+  static setModuleName = async (selector, value, attempts = 3) => {
+    const el = await Helper.waitForElement(selector);
+    for (let i = 0; i < attempts; i++) {
+      await Helper.clickTrusted(el);
+      await Helper.setInputValue(el, value);
+      await Helper.sleep(500);
+
+      const mirror = document.querySelector(HeroPov.MODULE_NAME_SYNC_MIRROR);
+      if (mirror && mirror.textContent.trim() === value.trim()) {
+        return el;
+      }
+      console.warn(`[HeroPov] Module name mirror didn't sync on attempt ${i + 1}, retrying...`);
+    }
+    console.warn('[HeroPov] Module name may not have synced after all retries — proceeding anyway.');
+    return el;
+  };
+
+  // Some fields only actually commit their value to the framework's state
+  // on blur, not just on the input/change events setInputValue dispatches
+  // — clicking an unrelated element via CDP forces a real blur on whatever
+  // was last focused. A dummy input (not any real form field) is injected
+  // for this so the click can't accidentally land on something that
+  // itself needs to stay focused/unchanged.
+  static injectDummyInput = () => {
+    let el = document.getElementById('cxtf-dummy-input');
+    if (el) return el;
+
+    el = document.createElement('input');
+    el.type = 'text';
+    el.id = 'cxtf-dummy-input';
+    // Real on-screen coordinates are required — CDP clicks at the
+    // element's getBoundingClientRect() center, so this can't be
+    // display:none/visibility:hidden (those report a zero-size rect).
+    // 1x1px and transparent keeps it invisible without that problem.
+    el.style.position = 'fixed';
+    el.style.top = '0px';
+    el.style.left = '0px';
+    el.style.width = '1px';
+    el.style.height = '1px';
+    el.style.opacity = '0';
+    el.style.zIndex = '2147483647';
+    document.body.appendChild(el);
+    return el;
+  };
+
+  static blurActiveFieldViaDummyInput = async () => {
+    const el = HeroPov.injectDummyInput();
+    await Helper.clickTrusted(el);
+    await Helper.sleep(300);
+    el.remove();
   };
 
   static setTruncated = async (selector, value, maxLen) => {
@@ -551,7 +656,28 @@ class HeroPov {
   // "multi" pattern as itemCarousel/hubSpokeCard), each holding its own
   // "cards" array — index picks which instance, cards within it are
   // unaffected by this (still up to MAX_CARDS, card 0 pre-existing, etc).
-  static run = async (deviceType, brandPage, index, addGbo) => {
+  // cardsPreExist defaults true (a freshly-created module already has card 0
+  // sitting there empty, same assumption the rest of this function makes).
+  // ModuleEditor passes false after deleteExistingCards() wipes every card
+  // — so card 0 needs its own "add card" click too, not just cards beyond
+  // the first.
+  // navigateBackAfterSave defaults true (Create mode needs to go back to
+  // find the next module) — ModuleEditor passes false, since Edit mode is
+  // done with exactly one module and there's nothing to go back to find.
+  // Same fill order for both Create and Edit mode (confirmed working in
+  // Edit mode, then carried over to Create mode too): every card's image
+  // selected first (no alt text — that only saves once an image is
+  // actually selected, so it's deferred to the second pass), then a
+  // second pass fills everything else — non-image fields, alt text, and
+  // the module name last of all.
+  static run = async (
+    deviceType,
+    brandPage,
+    index,
+    addGbo,
+    cardsPreExist = true,
+    navigateBackAfterSave = true
+  ) => {
     const SEL = HeroPov.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Hero POV selectors for device type: ${deviceType}`);
 
@@ -571,40 +697,44 @@ class HeroPov {
     if (total > 1) {
       moduleName += ` ${index + 1}`;
     }
-    await HeroPov.setValue(SEL.moduleName, moduleName);
-    Helper.log(`Set module name: ${moduleName}`);
 
     const sortedCards = [...cards].slice(0, HeroPov.MAX_CARDS).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+    // No intermediate save — per explicit request, unlike every other
+    // module's two-stage (non-image fields saved first, then image) split.
+    // That split exists elsewhere because opening the image search popup
+    // was found to wipe sibling fields filled beforehand; removing it here
+    // means that risk is no longer guarded against, so verify a card's
+    // text fields actually survive image selection.
     for (let i = 0; i < sortedCards.length; i++) {
       // Card 0 exists by default when the module opens; every card after
       // that needs an explicit "add card" click first.
-      if (i > 0) {
+      if (i > 0 || !cardsPreExist) {
         await HeroPov.addSection({ selector: HeroPov.ADD_CARD_SELECTOR });
       }
-      await HeroPov.fillCardNonImage(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
-      Helper.log(`Filled non-image fields for card ${i + 1} of ${sortedCards.length}.`);
+      await HeroPov.selectCardImages(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
+      Helper.log(`Selected images for card ${i + 1} of ${sortedCards.length} (alt text deferred).`);
     }
-
-    // Intermediate save of everything except image/logo — auto-clicked
-    // (not handed off, since there's nothing meaningful to review here
-    // yet), then re-enter Edit (no-op in Create mode, where nothing locked
-    // the form), then select every card's images/logo and fill their alt
-    // text.
-    Helper.log('Non-image fields filled — saving automatically before filling images...');
-    const intermediateSaveBtn = await Helper.waitForElementByText(SEL.saveButton.selector, SEL.saveButton.text, SEL.saveButton.exact);
-    intermediateSaveBtn.click();
-    await Helper.sleep(1500);
-
-    await ModuleEditor.clickEditButtonIfPresent();
 
     for (let i = 0; i < sortedCards.length; i++) {
-      await HeroPov.selectCardImages(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
+      await HeroPov.fillCardNonImage(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
       await HeroPov.fillCardImageAlts(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
-      Helper.log(`Filled images for card ${i + 1} of ${sortedCards.length}.`);
+      Helper.log(`Filled remaining fields for card ${i + 1} of ${sortedCards.length}.`);
     }
 
+    // Module name filled last of all — per explicit request — once every
+    // card's image and text is done, rather than up front like every
+    // other module (see setModuleName's own retry/verify logic for why
+    // this field needs special handling at all).
+    await HeroPov.setModuleName(SEL.moduleName, moduleName);
+    Helper.log(`Set module name: ${moduleName}`);
+
+    // Click a dummy field via CDP to force a real blur on whatever was
+    // last focused, before handing off for review — catches any field
+    // that only commits its value on blur rather than on input/change.
+    await HeroPov.blurActiveFieldViaDummyInput();
+
     Helper.log('Hero POV filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave);
   };
 }

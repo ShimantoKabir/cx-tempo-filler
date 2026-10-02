@@ -99,11 +99,11 @@ function renderModuleChecklist(brandPage) {
 
   const deviceType = document.getElementById('deviceType').value;
   const isEditMode = document.getElementById('mode').value === 'edit';
-  // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, YouTube, and
-  // Recipe so far (see module-editor.js) — restrict the picker itself
-  // rather than letting the user select an unsupported kind and hit an
-  // error mid-run.
-  const EDIT_SUPPORTED_KEYS = ['hubSpokesNM', 'hubSpokeCard', 'youtube', 'recipe'];
+  // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV,
+  // YouTube, and Recipe so far (see module-editor.js) — restrict the picker
+  // itself rather than letting the user select an unsupported kind and hit
+  // an error mid-run.
+  const EDIT_SUPPORTED_KEYS = ['hubSpokesNM', 'hubSpokeCard', 'heroPov', 'youtube', 'recipe'];
   const defs = isEditMode ? MODULE_DEFS.filter((def) => EDIT_SUPPORTED_KEYS.includes(def.key)) : MODULE_DEFS;
   const allInstances = defs.flatMap((def) => getModuleInstances(def, brandPage, deviceType));
   // Edit mode only surfaces modules the brief actually flagged via
@@ -120,7 +120,7 @@ function renderModuleChecklist(brandPage) {
       message.style.color = '#d32f2f';
       message.textContent =
         allInstances.length === 0
-          ? 'No Hub Spokes NxM / Hub Spoke Card / YouTube / Recipe modules found in this brief.'
+          ? 'No Hub Spokes NxM / Hub Spoke Card / Hero POV / YouTube / Recipe modules found in this brief.'
           : 'No modules in this brief are flagged for edit (needEditForWeb/needEditForApp are all false).';
       container.appendChild(message);
     }

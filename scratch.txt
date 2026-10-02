@@ -958,6 +958,10 @@ app HubSpokeCard: https://v2.tempo.cxtools.walmart.com/module/caac80a4-3823-4127
 web heroPov: https://v2.tempo.cxtools.walmart.com/module/25ce1ee7-6c7f-4983-946a-253dbff813f2
 app heroPov: https://v2.tempo.cxtools.walmart.com/module/31f72820-0a0b-4794-92f8-23137a4750d9
 
+loading bar: div.e1gvnnix0
+
+div[test-dataid="cards-0,image"]>div:first-child
+
 
 
 
