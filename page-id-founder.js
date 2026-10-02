@@ -38,9 +38,9 @@ class PageIdFounder {
   // ModuleFinder entirely since it's editing a module that already exists
   // at a known URL).
   static FILL_BY_KIND = {
-    heroPov: (deviceType, brandPage, d, addGbo) => HeroPov.run(deviceType, brandPage, addGbo),
-    hubSpokesNM: (deviceType, brandPage, d, addGbo) => HubSpoke.run(deviceType, brandPage, addGbo),
-    povCard: (deviceType, brandPage, d, addGbo) => PovCard.run(deviceType, brandPage, addGbo),
+    heroPov: (deviceType, brandPage, d, addGbo) => HeroPov.run(deviceType, brandPage, d.index, addGbo),
+    hubSpokesNM: (deviceType, brandPage, d, addGbo) => HubSpoke.run(deviceType, brandPage, d.index, addGbo),
+    povCard: (deviceType, brandPage, d, addGbo) => PovCard.run(deviceType, brandPage, d.index, addGbo),
     itemCarousel: (deviceType, brandPage, d) => ItemCarousel.run(deviceType, brandPage, d.index),
     hubSpokeCard: (deviceType, brandPage, d, addGbo) => {
       if (deviceType !== 'app') {
@@ -48,7 +48,20 @@ class PageIdFounder {
       }
       return HubSpokeCard.run(deviceType, brandPage, d.index, addGbo);
     },
-    skinnyBanner: (deviceType, brandPage, d, addGbo) => SkinnyBanner.run(deviceType, d.bannerType, brandPage, addGbo),
+    skinnyBanner: (deviceType, brandPage, d, addGbo) =>
+      SkinnyBanner.run(deviceType, d.bannerType, brandPage, d.index, addGbo),
+    youtube: (deviceType, brandPage, d) => {
+      if (deviceType !== 'web') {
+        throw new Error('Youtube is web-only — cannot be edited on an app run.');
+      }
+      return Youtube.run(deviceType, brandPage, d.index);
+    },
+    recipe: (deviceType, brandPage, d) => {
+      if (deviceType !== 'web') {
+        throw new Error('Recipe is web-only — cannot be edited on an app run.');
+      }
+      return Recipe.run(deviceType, brandPage, d.index);
+    },
   };
 
   constructor({ deviceType, pageId, autoSubmit, gboModules, briefData, selectedModules }) {
@@ -63,6 +76,20 @@ class PageIdFounder {
     this.selectedModules = selectedModules;
   }
 
+  // Every module key in the brief is an array of independent module
+  // instances (its own add/fill/save cycle) — even one that's conceptually
+  // "just one module" is a single-entry array, same shape as
+  // itemCarousel/hubSpokeCard already used. Each entry gets its own
+  // descriptor, keyed by index so completion tracking and the popup
+  // checklist can address instances independently.
+  static pushArrayDescriptors = (descriptors, brandPage, key, kind, extraFor = () => ({})) => {
+    const list = brandPage[key];
+    if (!Array.isArray(list)) return;
+    list.forEach((entry, index) => {
+      descriptors.push({ moduleKey: `${key}-${index}`, kind, index, order: entry?.order, ...extraFor(entry, index) });
+    });
+  };
+
   // Builds the ordered list of modules the brief actually contains, sorted
   // by each module's own "order" field so creation follows the brief's
   // intent rather than a hardcoded module-type sequence. A module with no
@@ -70,48 +97,22 @@ class PageIdFounder {
   // logged below) rather than silently defaulting to some guessed position.
   static buildModuleDescriptors = (brandPage) => {
     const descriptors = [];
+    const push = (key, kind, extraFor) => PageIdFounder.pushArrayDescriptors(descriptors, brandPage, key, kind, extraFor);
 
-    SkinnyBanner.detectBannerTypes(brandPage).forEach((bannerType) => {
-      const moduleKey = SkinnyBanner.moduleKeyForBannerType(bannerType);
-      descriptors.push({ moduleKey, kind: 'skinnyBanner', bannerType, order: brandPage[moduleKey]?.order });
-    });
-
-    if (Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0) {
-      // heroPov has no separate module-level order field — the first
-      // card's order (also used to sort cards within the module) doubles
-      // as the module's position, per how briefs have used it so far.
-      descriptors.push({ moduleKey: 'heroPov', kind: 'heroPov', order: brandPage.heroPov[0]?.order });
-    }
-
-    if (brandPage.hubSpokesNM) {
-      descriptors.push({ moduleKey: 'hubSpokesNM', kind: 'hubSpokesNM', order: brandPage.hubSpokesNM.order });
-    }
-
-    if (brandPage.povCard) {
-      descriptors.push({ moduleKey: 'povCard', kind: 'povCard', order: brandPage.povCard.order });
-    }
-
-    // itemCarousel is an array where each entry is a fully separate module
-    // instance (its own add/fill/save cycle), not a repeating sub-element
-    // within one module (unlike heroPov's cards) — so each entry gets its
-    // own descriptor, keyed by index so completion tracking and the popup
-    // checklist can address them independently.
-    if (Array.isArray(brandPage.itemCarousel)) {
-      brandPage.itemCarousel.forEach((entry, index) => {
-        descriptors.push({ moduleKey: `itemCarousel-${index}`, kind: 'itemCarousel', index, order: entry?.order });
-      });
-    }
-
-    // hubSpokeCard is app-only (see scratch.txt — no web variant is
-    // documented) but shares itemCarousel's "array of independent module
-    // instances" shape. The popup checklist doesn't know the run's
-    // deviceType, so an app-only module can still be checked for a web
-    // run — runModules() skips it in that case rather than erroring.
-    if (Array.isArray(brandPage.hubSpokeCard)) {
-      brandPage.hubSpokeCard.forEach((entry, index) => {
-        descriptors.push({ moduleKey: `hubSpokeCard-${index}`, kind: 'hubSpokeCard', index, order: entry?.order });
-      });
-    }
+    push('imageAndTextSkinnyBanner', 'skinnyBanner', () => ({ bannerType: 'image-and-text' }));
+    push('textOnlySkinnyBanner', 'skinnyBanner', () => ({ bannerType: 'text-only' }));
+    push('heroPov', 'heroPov');
+    push('hubSpokesNM', 'hubSpokesNM');
+    push('povCard', 'povCard');
+    push('itemCarousel', 'itemCarousel');
+    // hubSpokeCard/youtube/recipe are device-restricted (app-only /
+    // web-only per scratch.txt) — the popup checklist doesn't know the
+    // run's deviceType, so a restricted module can still be checked for
+    // the wrong device; runModules() skips it in that case rather than
+    // erroring.
+    push('hubSpokeCard', 'hubSpokeCard');
+    push('youtube', 'youtube');
+    push('recipe', 'recipe');
 
     descriptors.forEach((d) => {
       if (typeof d.order !== 'number') {
@@ -174,6 +175,13 @@ class PageIdFounder {
           continue;
         }
 
+        // Web-only — skip rather than error if somehow selected on an app
+        // run, same handling as hubSpokeCard's app-only skip above.
+        if ((d.kind === 'youtube' || d.kind === 'recipe') && this.deviceType !== 'web') {
+          Helper.log(`"${d.moduleKey}" is web-only — skipping on app.`);
+          continue;
+        }
+
         if (d.kind === 'heroPov') {
           await ModuleFinder.run(this.deviceType, 'HeroPov');
         } else if (d.kind === 'hubSpokesNM') {
@@ -190,6 +198,11 @@ class PageIdFounder {
           // the auto-derived search query would be close enough, but the
           // given search text "HubSpoke" is passed explicitly to be safe.
           await ModuleFinder.run(this.deviceType, 'Hubspoke', 'HubSpoke');
+        } else if (d.kind === 'youtube' || d.kind === 'recipe') {
+          // Both are a generic "Custom HTML" module, not their own CMS
+          // module kind — Youtube.run/Recipe.run build the whole markup
+          // themselves (see scratch.txt).
+          await ModuleFinder.run(this.deviceType, 'CustomHtml', 'Custom HTML');
         } else {
           await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
         }
@@ -216,53 +229,19 @@ class PageIdFounder {
     for (const [moduleKey, isCompleted] of Object.entries(completion)) {
       if (!brandPage) continue;
 
-      if (moduleKey === 'heroPov') {
-        // heroPov is an array, but each card in it is a plain object, so
-        // (unlike setting a property on the array itself, which
-        // JSON.stringify would silently drop) writing isCompletedForWeb/App
-        // onto every card serializes fine. Save is one action for the whole
-        // module, so every card gets the same outcome.
-        if (Array.isArray(brandPage.heroPov)) {
-          brandPage.heroPov.forEach((card) => {
-            if (typeof card.isCompletedForWeb !== 'boolean') card.isCompletedForWeb = false;
-            if (typeof card.isCompletedForApp !== 'boolean') card.isCompletedForApp = false;
-            card[completedKey] = isCompleted;
-          });
-        }
-        continue;
-      }
+      // Every moduleKey is "${arrayKey}-${index}" now (buildModuleDescriptors
+      // keys every module this way, since every brief module is an array of
+      // independent instances) — only the one instance this run actually
+      // processed gets its completion flag updated.
+      const match = moduleKey.match(/^(.+)-(\d+)$/);
+      if (!match) continue;
+      const [, arrayKey, indexStr] = match;
+      const entry = Array.isArray(brandPage[arrayKey]) ? brandPage[arrayKey][Number(indexStr)] : null;
+      if (!entry) continue;
 
-      if (moduleKey.startsWith('itemCarousel-')) {
-        // Unlike heroPov, each itemCarousel array entry is an independent
-        // module instance — only the one this run actually processed
-        // (identified by index) gets its completion flag updated.
-        const index = Number(moduleKey.slice('itemCarousel-'.length));
-        const entry = Array.isArray(brandPage.itemCarousel) ? brandPage.itemCarousel[index] : null;
-        if (!entry) continue;
-        if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
-        if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
-        entry[completedKey] = isCompleted;
-        continue;
-      }
-
-      if (moduleKey.startsWith('hubSpokeCard-')) {
-        // Same independent-instance handling as itemCarousel-. isCompleted
-        // stays false here on a web run too, since runModules() skips
-        // this app-only module entirely rather than attempting it.
-        const index = Number(moduleKey.slice('hubSpokeCard-'.length));
-        const entry = Array.isArray(brandPage.hubSpokeCard) ? brandPage.hubSpokeCard[index] : null;
-        if (!entry) continue;
-        if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
-        if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
-        entry[completedKey] = isCompleted;
-        continue;
-      }
-
-      const module = brandPage[moduleKey];
-      if (!module) continue;
-      if (typeof module.isCompletedForWeb !== 'boolean') module.isCompletedForWeb = false;
-      if (typeof module.isCompletedForApp !== 'boolean') module.isCompletedForApp = false;
-      module[completedKey] = isCompleted;
+      if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
+      if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
+      entry[completedKey] = isCompleted;
     }
 
     const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });

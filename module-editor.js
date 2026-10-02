@@ -155,20 +155,30 @@ class ModuleEditor {
       );
       if (!descriptor) throw new Error(`Module "${this.moduleKey}" not found in brief.`);
 
-      // Edit mode only supports Hub Spokes NxM and Hub Spoke Card so far —
-      // other kinds haven't had a "clear existing content before refill"
-      // step built yet, and without one their fill functions would leave
-      // stale rows/cards from the module's current content mixed in with
-      // the brief's new one.
-      // Called directly (not via PageIdFounder.FILL_BY_KIND, which Create
-      // mode also uses and must keep its rowsPreExist/cardsPreExist and
-      // navigateBackAfterSave defaults) — deleting existing content wipes
-      // out the pre-existing first row/cards too, so run() needs to add
-      // every one itself instead of assuming they exist, and there's no
-      // next module to go back and find after saving.
+      // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, YouTube, and
+      // Recipe so far — other kinds haven't had a "clear existing content
+      // before refill" step built yet, and without one their fill functions
+      // would leave stale rows/cards from the module's current content
+      // mixed in with the brief's new one. YouTube/Recipe don't need that
+      // step at all — they're a single markup textarea that gets fully
+      // overwritten, not repeatable rows/cards.
+      // Hub Spokes NxM/Hub Spoke Card are called directly (not via
+      // PageIdFounder.FILL_BY_KIND, which Create mode also uses and must
+      // keep its rowsPreExist/cardsPreExist and navigateBackAfterSave
+      // defaults) — deleting existing content wipes out the pre-existing
+      // first row/cards too, so run() needs to add every one itself instead
+      // of assuming they exist, and there's no next module to go back and
+      // find after saving.
       if (descriptor.kind === 'hubSpokesNM') {
         await HubSpoke.deleteExistingRows();
-        const completed = await HubSpoke.run(this.deviceType, brandPage, this.addGbo, false, false);
+        const completed = await HubSpoke.run(
+          this.deviceType,
+          brandPage,
+          descriptor.index,
+          this.addGbo,
+          false,
+          false
+        );
         Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
       } else if (descriptor.kind === 'hubSpokeCard') {
         if (this.deviceType !== 'app') {
@@ -184,8 +194,24 @@ class ModuleEditor {
           false
         );
         Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'youtube') {
+        if (this.deviceType !== 'web') {
+          throw new Error('Youtube is web-only — cannot be edited on an app run.');
+        }
+        // No existing-content delete step needed — unlike rows/cards, this
+        // is a single markup textarea that Youtube.run overwrites directly.
+        const completed = await Youtube.run(this.deviceType, brandPage, descriptor.index, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'recipe') {
+        if (this.deviceType !== 'web') {
+          throw new Error('Recipe is web-only — cannot be edited on an app run.');
+        }
+        const completed = await Recipe.run(this.deviceType, brandPage, descriptor.index, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
       } else {
-        throw new Error(`Edit mode only supports Hub Spokes NxM and Hub Spoke Card for now (got "${descriptor.kind}").`);
+        throw new Error(
+          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, YouTube, and Recipe for now (got "${descriptor.kind}").`
+        );
       }
     } catch (err) {
       Helper.fail(err);

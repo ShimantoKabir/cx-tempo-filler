@@ -7,12 +7,11 @@ let selectedBriefData = null;
 
 // Single source of truth for module key -> display label, mirroring
 // page-id-founder.js's buildModuleDescriptors on the content-script side.
-// heroPov is an array, so its presence check differs from the plain-object
-// Skinny Banner modules. itemCarousel is also an array, but unlike heroPov
-// (whose entries are cards within ONE module save) each itemCarousel entry
-// is a fully separate module instance — so it's marked "multi" to get one
-// checklist row (and one moduleKey/completion flag) per entry instead of one
-// row for the whole array.
+// Every module key in the brief is an array of independent module instances
+// (its own add/fill/save cycle) — even a module that's conceptually "just
+// one" is a single-entry array, so getModuleInstances below has a single
+// path: one checklist row per array entry, keyed by index
+// (`${key}-${index}`) to match buildModuleDescriptors' moduleKey scheme.
 //
 // hasAppUrl marks which modules have an app link field at all — those get
 // a second "Add gbo=1" checkbox under their row, since that's a per-module
@@ -22,70 +21,66 @@ let selectedBriefData = null;
 const MODULE_DEFS = [
   { key: 'imageAndTextSkinnyBanner', label: 'Image + Text Skinny Banner' },
   { key: 'textOnlySkinnyBanner', label: 'Text Only Skinny Banner' },
-  {
-    key: 'heroPov',
-    label: 'Hero POV',
-    isPresent: (brandPage) => Array.isArray(brandPage.heroPov) && brandPage.heroPov.length > 0,
-    // heroPov's completion flags live on each card, not on brandPage.heroPov
-    // itself — all cards get the same value (see downloadOutputJson), so
-    // checking the first one is enough.
-    isFullyCompleted: (brandPage) => {
-      const card = brandPage.heroPov?.[0];
-      return Boolean(card?.isCompletedForWeb && card?.isCompletedForApp);
-    },
-  },
+  { key: 'heroPov', label: 'Hero POV' },
   { key: 'hubSpokesNM', label: 'Hub Spokes NxM' },
   { key: 'povCard', label: 'POV Card' },
-  { key: 'itemCarousel', label: 'Item Carousel', multi: true, hasAppUrl: false },
+  { key: 'itemCarousel', label: 'Item Carousel', hasAppUrl: false },
   // App-only (no web variant per scratch.txt) — appOnly hides it from the
   // checklist entirely when Device Type is "web", rather than showing it
   // and relying on runModules() to skip it at run time.
-  { key: 'hubSpokeCard', label: 'Hub Spoke Card', multi: true, appOnly: true },
+  { key: 'hubSpokeCard', label: 'Hub Spoke Card', appOnly: true },
+  // Web-only (per scratch.txt: "this module is only for web") — both are a
+  // generic Custom HTML module, not their own CMS module kind, so
+  // Youtube.run/Recipe.run build the whole markup themselves. Neither ever
+  // carries an isCompletedForApp field at all (there's no app run to
+  // track), so the default "AND both device flags" check would never
+  // report true — override to check the web flag alone.
+  {
+    key: 'youtube',
+    label: 'YouTube Embed',
+    hasAppUrl: false,
+    webOnly: true,
+    isEntryFullyCompleted: (entry) => Boolean(entry?.isCompletedForWeb),
+  },
+  {
+    key: 'recipe',
+    label: 'Recipe',
+    hasAppUrl: false,
+    webOnly: true,
+    isEntryFullyCompleted: (entry) => Boolean(entry?.isCompletedForWeb),
+  },
 ];
 
-function isModulePresent(def, brandPage) {
-  return def.isPresent ? def.isPresent(brandPage) : Boolean(brandPage[def.key]);
+// Brief-authored flag marking a module as actually needing an Edit-mode
+// pass, per device type — Edit mode's checklist uses this to only surface
+// modules the brief explicitly flagged, instead of every supported-kind
+// module regardless of whether it needs touching.
+function entryNeedsEdit(entry, deviceType) {
+  return Boolean(deviceType === 'web' ? entry?.needEditForWeb : entry?.needEditForApp);
 }
 
-// True once a module has been completed for both device types, based on the
-// isCompletedForWeb/isCompletedForApp flags an earlier run's output.json
-// would have stamped in (if that file gets re-uploaded as the next brief).
-function isModuleFullyCompleted(def, brandPage) {
-  if (def.isFullyCompleted) return def.isFullyCompleted(brandPage);
-  const module = brandPage[def.key];
-  return Boolean(module?.isCompletedForWeb && module?.isCompletedForApp);
-}
-
-// Expands a def into the checklist rows it contributes: one row for an
-// ordinary module, or one row per array entry for a "multi" def — matching
-// page-id-founder.js's buildModuleDescriptors moduleKey scheme
-// (`${key}-${index}`) so selectedModules filtering lines up on both sides.
-// An appOnly def contributes nothing at all when deviceType is "web".
+// Expands a def into the checklist rows it contributes: one row per array
+// entry, matching page-id-founder.js's buildModuleDescriptors moduleKey
+// scheme (`${key}-${index}`) so selectedModules filtering lines up on both
+// sides. An appOnly/webOnly def contributes nothing at all on the wrong
+// device type.
 function getModuleInstances(def, brandPage, deviceType) {
   if (def.appOnly && deviceType !== 'app') return [];
+  if (def.webOnly && deviceType !== 'web') return [];
 
   const hasAppUrl = def.hasAppUrl !== false;
+  const list = brandPage[def.key];
+  if (!Array.isArray(list)) return [];
 
-  if (def.multi) {
-    const list = brandPage[def.key];
-    if (!Array.isArray(list)) return [];
-    return list.map((entry, index) => ({
-      moduleKey: `${def.key}-${index}`,
-      label: `${def.label} #${index + 1}`,
-      isFullyCompleted: Boolean(entry?.isCompletedForWeb && entry?.isCompletedForApp),
-      hasAppUrl,
-    }));
-  }
-
-  if (!isModulePresent(def, brandPage)) return [];
-  return [
-    {
-      moduleKey: def.key,
-      label: def.label,
-      isFullyCompleted: isModuleFullyCompleted(def, brandPage),
-      hasAppUrl,
-    },
-  ];
+  return list.map((entry, index) => ({
+    moduleKey: `${def.key}-${index}`,
+    label: `${def.label} #${index + 1}`,
+    isFullyCompleted: def.isEntryFullyCompleted
+      ? def.isEntryFullyCompleted(entry)
+      : Boolean(entry?.isCompletedForWeb && entry?.isCompletedForApp),
+    needsEdit: entryNeedsEdit(entry, deviceType),
+    hasAppUrl,
+  }));
 }
 
 function detectBriefModules(brandPage, deviceType) {
@@ -104,13 +99,33 @@ function renderModuleChecklist(brandPage) {
 
   const deviceType = document.getElementById('deviceType').value;
   const isEditMode = document.getElementById('mode').value === 'edit';
-  // Edit mode only supports Hub Spokes NxM and Hub Spoke Card so far (see
-  // module-editor.js) — restrict the picker itself rather than letting the
-  // user select an unsupported kind and hit an error mid-run.
-  const EDIT_SUPPORTED_KEYS = ['hubSpokesNM', 'hubSpokeCard'];
+  // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, YouTube, and
+  // Recipe so far (see module-editor.js) — restrict the picker itself
+  // rather than letting the user select an unsupported kind and hit an
+  // error mid-run.
+  const EDIT_SUPPORTED_KEYS = ['hubSpokesNM', 'hubSpokeCard', 'youtube', 'recipe'];
   const defs = isEditMode ? MODULE_DEFS.filter((def) => EDIT_SUPPORTED_KEYS.includes(def.key)) : MODULE_DEFS;
-  const instances = defs.flatMap((def) => getModuleInstances(def, brandPage, deviceType));
-  if (instances.length === 0) return;
+  const allInstances = defs.flatMap((def) => getModuleInstances(def, brandPage, deviceType));
+  // Edit mode only surfaces modules the brief actually flagged via
+  // needEditForWeb/needEditForApp — otherwise every supported-kind module
+  // would show up regardless of whether it needs touching. Create mode
+  // ignores the flag entirely; it's only meaningful for picking what to edit.
+  const instances = isEditMode ? allInstances.filter((inst) => inst.needsEdit) : allInstances;
+  if (instances.length === 0) {
+    // Render the "nothing to do" message into moduleChecklist itself
+    // (rather than leaving it empty) so it's actually visible — the
+    // :empty CSS rule in popup.html hides the container otherwise.
+    if (isEditMode) {
+      const message = document.createElement('div');
+      message.style.color = '#d32f2f';
+      message.textContent =
+        allInstances.length === 0
+          ? 'No Hub Spokes NxM / Hub Spoke Card / YouTube / Recipe modules found in this brief.'
+          : 'No modules in this brief are flagged for edit (needEditForWeb/needEditForApp are all false).';
+      container.appendChild(message);
+    }
+    return;
+  }
 
   const heading = document.createElement('label');
   heading.textContent = isEditMode ? 'Module to edit' : 'Modules to run';
@@ -126,7 +141,11 @@ function renderModuleChecklist(brandPage) {
     const checkbox = document.createElement('input');
     checkbox.type = isEditMode ? 'radio' : 'checkbox';
     if (isEditMode) checkbox.name = 'editModuleChoice';
-    checkbox.checked = !isEditMode;
+    // Edit mode's picker is now pre-filtered to only needEdit-flagged
+    // modules — auto-select when that leaves exactly one, since there's
+    // nothing else to choose between. Create mode still checks everything
+    // by default.
+    checkbox.checked = isEditMode ? instances.length === 1 : true;
     checkbox.dataset.moduleKey = inst.moduleKey;
     checkbox.id = `module-${inst.moduleKey}`;
 

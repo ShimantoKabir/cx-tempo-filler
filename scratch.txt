@@ -699,6 +699,264 @@ card:
     fr like value: textarea[data-e2eid="categoryCards-categoryCards-0-fr_image-url-link"]
 
 
+youtube web
+===========
+this module is only for web
+module search text: Custom HTML
+module find key: CustomHtml
+module name: input[id="../name"]
+
+en html markup: textarea[data-e2eid="markup"]
+fr html markup: textarea[data-e2eid="fr_markup"]
+
+video-id=E47Vg4W1c8w
+
+html template:
+    <div style="padding-top:2rem;padding-bottom:1rem;">
+        <div style="width: 75%; margin: 0px auto; position: relative; padding-bottom: 42.20%;">
+            <iframe 
+                allowfullscreen 
+                src="https://www.youtube.com/embed/{video-id}?rel=0" 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+            </iframe>
+        </div>
+    </div>
+
+input json will have video id, extension just replace the video id and 
+place the html code  to en/fr html markup to the textarea
+
+
+recipe web
+===========
+this module is only for web
+module search text: Custom HTML
+module find key: CustomHtml
+module name: input[id="../name"]
+
+en html markup: textarea[data-e2eid="markup"]
+fr html markup: textarea[data-e2eid="fr_markup"]
+
+html template:
+    <style>
+    @media only screen and (max-width: 690px) {
+        .marsDirectionsContainer23 {
+        padding: 10px 0px !important;
+        width: 100% !important;
+        }
+    }
+
+    h1,
+    h2,
+    h3 {
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 16px;
+    }
+
+    p {
+        line-height: 1.5;
+        margin: 5px 0;
+    }
+
+    ul,
+    ol {
+        margin: 0;
+        display: block;
+    }
+
+    li {
+        margin-bottom: 10px;
+        padding: 0;
+    }
+
+    a {
+        text-decoration: underline;
+    }
+
+    a:hover {
+        cursor: pointer;
+    }
+
+    .sm_txt {
+        font-size: 12px;
+    }
+
+    section {
+        display: inline-block;
+    }
+
+    .p20 {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .recipe-wrapper {
+        background: #FFFFFF;
+        padding: 20px;
+        width: 90%;
+        margin: 0 auto;
+        font-family: Bogle, Helvetica Neue, Helvetica, Arial, sans-serif;
+        border: rgb(216, 216, 216) 1px solid;
+        border-radius: 8px;
+    }
+
+    .recipe-img-cont {
+        display: inline-block;
+        float: left;
+        text-align: center;
+        vertical-align: top;
+        min-width: 300px;
+        max-width: 100%;
+        width: -webkit-calc(292000px - 48000%);
+        min-width: -webkit-calc(48%);
+        width: calc(292000px - 48000%);
+        min-width: calc(48%);
+    }
+
+    .recipe-img {
+        max-width: 640px;
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .recipe-copy {
+        display: inline-block;
+        float: right;
+        text-align: left;
+        font-size: 1rem;
+        vertical-align: top;
+        min-width: 300px;
+        max-width: 100%;
+        width: -webkit-calc(292000px - 48000%);
+        min-width: -webkit-calc(48%);
+        width: calc(292000px - 48000%);
+        min-width: calc(48%);
+    }
+
+    .sub-copy-title {
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    .sub-copy-desc {
+        font-size: 1.15rem;
+        font-weight: bold;
+    }
+
+    .recipe-sub-container {
+        display: flex;
+    }
+
+    .recipe-sub-child {
+        margin-right: 50px;
+    }
+
+    .recipe-hr {
+        border: rgb(216, 216, 216) 1px solid;
+    }
+
+    .marsDirectionsContainer23 {
+        padding: 10px 20px;
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
+        font-size: 1rem;
+        vertical-align: top;
+    }
+
+    .directions-inner {
+        display: inline-block;
+    }
+
+    .ingredients-text {
+        font-size: 1rem;
+    }
+
+    .clearfix {
+        clear: both;
+    }
+    </style>
+    <div class="recipe-wrapper">
+    <div>
+        <div class="recipe-img-cont">
+        <img class="recipe-img" src="{recipe.image.english}" alt="{recipe.alt.english}">
+        </div>
+        <div class="recipe-copy">
+        <h1>{recipe.title.english}</h1>
+        <p>{recipe.subhead.english}</p>
+        <div class="recipe-sub-container">
+            <div class="recipe-sub-child">
+            <p>
+                <span class="sub-copy-title">Prep Time:</span>
+                <br>
+                <span class="sub-copy-desc">{recipe.prepTime.english}</span>
+            </p>
+            </div>
+            <div class="recipe-sub-child">
+            <p>
+                <span class="sub-copy-title">Cook Time:</span>
+                <br>
+                <span class="sub-copy-desc">{recipe.cookTime.english}</span>
+            </p>
+            </div>
+            <div class="recipe-sub-child">
+            <p>
+                <span class="sub-copy-title">Serving Size:</span>
+                <br>
+                <span class="sub-copy-desc">{recipe.servingSize.english}</span>
+            </p>
+            </div>
+        </div>
+        <h3>{recipe.ingredientsLabel.english}</h3>
+        <p>
+            <span class="ingredients-text"> {recipe.ingredients.english[0]} <br> {recipe.ingredients.english[1]} <br> {recipe.ingredients.english[2]} <br> {recipe.ingredients.english[3]} <br> {recipe.ingredients.english[4]} </span>
+        </p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <hr class="recipe-hr">
+    <div class="marsDirectionsContainer23">
+        <div class="directions-inner">
+        <p>
+            <b>{recipe.directionsLabel.english}</b>
+        </p>
+        <ol>
+            <li>{recipe.directions.english[0]}</li>
+            <li>{recipe.directions.english[1]}</li>
+            <li>{recipe.directions.english[2]}</li>
+            <li>{recipe.directions.english[3]}</li>
+            <li>{recipe.directions.english[4]}</li>
+            <li>{recipe.directions.english[5]}</li>
+            <li>{recipe.directions.english[6]}</li>
+            <li>{recipe.directions.english[7]}</li>
+            <li>{recipe.directions.english[8]}</li>
+        </ol>
+        <br>
+        <br>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+
+
+testing edit URLs
+=================
+web HubSpokesNxM: https://v2.tempo.cxtools.walmart.com/module/13db91ae-e156-40ff-8e43-7a733d2e403a
+app HubSpokeCard: https://v2.tempo.cxtools.walmart.com/module/caac80a4-3823-4127-a319-c93aa915c9a2
+
+web heroPov: https://v2.tempo.cxtools.walmart.com/module/25ce1ee7-6c7f-4983-946a-253dbff813f2
+app heroPov: https://v2.tempo.cxtools.walmart.com/module/31f72820-0a0b-4794-92f8-23137a4750d9
 
 
 

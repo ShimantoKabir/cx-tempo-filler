@@ -547,18 +547,30 @@ class HeroPov {
   // Errors intentionally propagate to the caller — same convention as
   // ModuleFinder.run/SkinnyBanner.run — so a failure stops the loop instead
   // of continuing on to a module that was never actually added.
-  static run = async (deviceType, brandPage, addGbo) => {
+  // brandPage.heroPov is an array of independent module instances (same
+  // "multi" pattern as itemCarousel/hubSpokeCard), each holding its own
+  // "cards" array — index picks which instance, cards within it are
+  // unaffected by this (still up to MAX_CARDS, card 0 pre-existing, etc).
+  static run = async (deviceType, brandPage, index, addGbo) => {
     const SEL = HeroPov.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Hero POV selectors for device type: ${deviceType}`);
 
-    const cards = brandPage.heroPov;
+    const instance = brandPage.heroPov?.[index];
+    const cards = instance?.cards;
     if (!Array.isArray(cards) || cards.length === 0) {
-      throw new Error('Brief is missing heroPov data');
+      throw new Error(`Brief is missing heroPov[${index}].cards data`);
     }
 
     Helper.log('Filling Hero POV module...');
 
-    const moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hero-pov', deviceType);
+    // When the brief has more than one Hero POV, append a 1-based sequence
+    // number so the generated names aren't all identical (same convention
+    // as item-carousel.js/hub-spoke-card.js).
+    const total = Array.isArray(brandPage.heroPov) ? brandPage.heroPov.length : 1;
+    let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hero-pov', deviceType);
+    if (total > 1) {
+      moduleName += ` ${index + 1}`;
+    }
     await HeroPov.setValue(SEL.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 

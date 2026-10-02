@@ -45,13 +45,25 @@ class HubSpoke {
     confirmButton: 'button.confirmDeleteGroupButton',
   };
 
+  static findRowWrappers = () =>
+    [...document.querySelectorAll(HubSpoke.ROW_DELETE_SELECTORS.wrapper)].filter((el) =>
+      el.textContent.includes(HubSpoke.ROW_DELETE_SELECTORS.rowLabelMatch)
+    );
+
   static deleteExistingRows = async () => {
-    // Loop bound is a safety cap against an infinite loop (e.g. if a delete
-    // click doesn't actually remove the row), not a real expected count.
-    for (let i = 0; i < HubSpoke.MAX_ROWS + 1; i++) {
-      const rows = [...document.querySelectorAll(HubSpoke.ROW_DELETE_SELECTORS.wrapper)].filter((el) =>
-        el.textContent.includes(HubSpoke.ROW_DELETE_SELECTORS.rowLabelMatch)
-      );
+    // Count up front (same pattern as HubSpokeCard.deleteExistingCards) and
+    // loop exactly that many times, rather than an arbitrary MAX_ROWS + 1
+    // safety cap — gives a real expected count to log progress against and
+    // to break early on if fewer rows delete successfully than were
+    // actually found. The label filter stays — unlike Hub Spoke Card, this
+    // module's dragElementWrappers are nested (rows AND the categories
+    // inside them both use it), so rowLabelMatch is still needed to scope
+    // to rows only.
+    const count = HubSpoke.findRowWrappers().length;
+    Helper.log(`Found ${count} existing row(s) to delete.`);
+
+    for (let i = 0; i < count; i++) {
+      const rows = HubSpoke.findRowWrappers();
       if (rows.length === 0) break;
 
       const row = rows[0];
@@ -62,7 +74,7 @@ class HubSpoke {
 
       const deleteBtn = row.querySelector(HubSpoke.ROW_DELETE_SELECTORS.deleteIcon);
       if (!deleteBtn) break;
-      Helper.log(`Deleting existing row: ${row.textContent}`);
+      Helper.log(`Deleting existing row ${i + 1} of ${count}: ${row.textContent}`);
       // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
       // .click() method, so a real click must be dispatched instead.
       deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
@@ -193,22 +205,31 @@ class HubSpoke {
   // navigateBackAfterSave defaults true (Create mode needs to go back to
   // find the next module) — ModuleEditor passes false, since Edit mode is
   // done with exactly one module and there's nothing to go back to find.
-  static run = async (deviceType, brandPage, addGbo, rowsPreExist = true, navigateBackAfterSave = true) => {
+  // brandPage.hubSpokesNM is an array of independent module instances (same
+  // "multi" pattern as itemCarousel/hubSpokeCard) — index picks which one.
+  static run = async (deviceType, brandPage, index, addGbo, rowsPreExist = true, navigateBackAfterSave = true) => {
     // Category image linkValue isn't device-split in the brief (same value
     // used for web and app runs), so gbo=1 only applies on an app run.
     const applyGbo = deviceType === 'app' && Boolean(addGbo);
-    const hub = brandPage.hubSpokesNM;
-    if (!hub) throw new Error('Brief is missing hubSpokesNM data');
+    const hub = brandPage.hubSpokesNM?.[index];
+    if (!hub) throw new Error(`Brief is missing hubSpokesNM[${index}] data`);
 
     const rows = Array.isArray(hub.rows) ? hub.rows.slice(0, HubSpoke.MAX_ROWS) : [];
     if (rows.length === 0) throw new Error('hubSpokesNM.rows is empty');
 
     Helper.log('Filling Hub Spokes NxM module...');
 
+    // When the brief has more than one Hub Spokes NxM, append a 1-based
+    // sequence number so the generated names aren't all identical (same
+    // convention as item-carousel.js/hub-spoke-card.js).
+    const total = Array.isArray(brandPage.hubSpokesNM) ? brandPage.hubSpokesNM.length : 1;
     const gridLayout = `${rows.length}x${hub.columns}`;
-    const moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hub-spokes-nxm', deviceType, {
+    let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hub-spokes-nxm', deviceType, {
       gridLayout,
     });
+    if (total > 1) {
+      moduleName += ` ${index + 1}`;
+    }
     await HubSpoke.setValue(HubSpoke.SELECTORS.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 

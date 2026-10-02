@@ -27,6 +27,10 @@
   #moduleChecklist {
     margin-top: 6px; font-size: 12px;
   }
+  /* All three are only ever populated via textContent/innerHTML replacement
+     (never left as whitespace), so :empty reliably means "nothing to show
+     yet" — hide them until there's actually content. */
+  #status:empty, #briefSummary:empty, #moduleChecklist:empty { display: none; }
   #moduleChecklist .module-group { margin-top: 6px; }
   #moduleChecklist .row { margin-top: 4px; }
   #moduleChecklist .row label { font-weight: 400; }
@@ -40,14 +44,14 @@
 
   <label for="mode">Mode</label>
   <select id="mode">
-    <option value="create">Create Page</option>
-    <option value="edit">Edit Module</option>
+    <option value="create">Build</option>
+    <option value="edit">Edit</option>
   </select>
 
   <label for="deviceType">Device Type</label>
   <select id="deviceType">
     <option value="app">App</option>
-    <option value="web">Web</option>
+    <option value="web" selected>Web</option>
   </select>
 
   <div id="pageIdRow">

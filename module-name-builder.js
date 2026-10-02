@@ -10,6 +10,8 @@ class ModuleNameBuilder {
     'skinny-banner': (p) => `${p.prefix}${p.brandName} Brand CP Skinny Banner ${p.timeSuffix}`,
     'pov-carousel': (p) => `${p.prefix}${p.brandName} CP POV Carousel ${p.timeSuffix}`,
     'text-only-skinny-banner': (p) => `${p.prefix}${p.brandName} CP Text Only Skinny Banner ${p.timeSuffix}`,
+    'youtube': (p) => `${p.prefix}${p.brandName} Brand CP YouTube ${p.timeSuffix}`,
+    'recipe': (p) => `${p.prefix}${p.brandName} Brand CP Recipe ${p.timeSuffix}`,
   };
 
   /**

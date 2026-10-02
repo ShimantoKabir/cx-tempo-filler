@@ -140,21 +140,6 @@ class SkinnyBanner {
     },
   };
 
-  // A brief can carry either or both Skinny Banner variants; each one found
-  // gets its own module added and filled in, in the brief's declared "order"
-  // rather than object key order (which isn't guaranteed to match intent).
-  static detectBannerTypes = (brandPage) => {
-    const entries = [];
-    if (brandPage.imageAndTextSkinnyBanner) {
-      entries.push({ type: 'image-and-text', order: brandPage.imageAndTextSkinnyBanner.order ?? 0 });
-    }
-    if (brandPage.textOnlySkinnyBanner) {
-      entries.push({ type: 'text-only', order: brandPage.textOnlySkinnyBanner.order ?? 0 });
-    }
-    entries.sort((a, b) => a.order - b.order);
-    return entries.map((e) => e.type);
-  };
-
   // Single source of truth for the bannerType <-> brief property key mapping,
   // shared by run() and by page-id-founder.js's module selection/completion
   // tracking.
@@ -326,18 +311,28 @@ class SkinnyBanner {
   // Errors intentionally propagate to the caller — page-id-founder.js's
   // runSkinnyBanner loop needs a failed module to stop the loop instead of
   // continuing on to fill a module that was never actually added.
-  static run = async (deviceType, bannerType, brandPage, addGbo) => {
+  // brandPage[bannerKey] is an array of independent module instances (same
+  // "multi" pattern as itemCarousel/hubSpokeCard) — index picks which one.
+  static run = async (deviceType, bannerType, brandPage, index, addGbo) => {
     const SEL = SkinnyBanner.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Skinny Banner selectors for device type: ${deviceType}`);
 
     const bannerKey = SkinnyBanner.moduleKeyForBannerType(bannerType);
-    const banner = brandPage[bannerKey];
-    if (!banner) throw new Error(`Brief is missing ${bannerKey} data`);
+    const bannerList = brandPage[bannerKey];
+    const banner = Array.isArray(bannerList) ? bannerList[index] : null;
+    if (!banner) throw new Error(`Brief is missing ${bannerKey}[${index}] data`);
 
     Helper.log('Filling Skinny Banner module...');
 
+    // When the brief has more than one of this banner variant, append a
+    // 1-based sequence number so the generated names aren't all identical
+    // (same convention as item-carousel.js/hub-spoke-card.js).
+    const total = bannerList.length;
     const moduleType = bannerType === 'text-only' ? 'text-only-skinny-banner' : 'skinny-banner';
-    const moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, moduleType, deviceType);
+    let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, moduleType, deviceType);
+    if (total > 1) {
+      moduleName += ` ${index + 1}`;
+    }
     await SkinnyBanner.setValue(SEL.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 
