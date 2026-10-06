@@ -5,10 +5,6 @@
     "imageAndTextSkinnyBanner": [
       {
         "order": 2,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "bannerType": "image-and-text",
         "bannerHeight": "220",
         "banner": {
@@ -79,11 +75,6 @@
     "textOnlySkinnyBanner": [
       {
         "order": 1,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "needEdit": false,
         "bannerType": "text-only",
         "bannerHeight": "100",
         "bannerBgColor": "",
@@ -137,10 +128,6 @@
     "heroPov": [
       {
         "order": 3,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "cards": [
           {
             "povStyle": "card-with-no-cta",
@@ -303,10 +290,6 @@
     ],
     "hubSpokesNM": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": true,
-        "needEditForApp": false,
         "columns": 4,
         "heading": { "english": "hub-spoke", "french": "hub-spoke" },
         "rows": [
@@ -443,10 +426,6 @@
     ],
     "povCard": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "order": 5,
         "title": {
           "web": { "english": "", "french": "" },
@@ -578,10 +557,6 @@
     ],
     "itemCarousel": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "order": 6,
         "title": { "english": "Shop Hilary's looks", "french": "Magasinez les tenues de Hilary" },
         "subTitle": { "english": "", "french": "" },
@@ -599,10 +574,6 @@
         ]
       },
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "order": 7,
         "title": { "english": "The Reebok edit", "french": "L'édit Reebok" },
         "subTitle": { "english": "", "french": "" },
@@ -622,10 +593,6 @@
     ],
     "hubSpokeCard": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "order": 8,
         "title": { "english": "Shop", "french": "Magasiner" },
         "cards": [
@@ -676,8 +643,6 @@
         ]
       },
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
         "order": 9,
         "title": { "english": "Shop", "french": "Magasiner" },
         "cards": [
@@ -731,8 +696,6 @@
     "youtube" : [
       {
         "order": 2,
-        "isCompletedForWeb": false,
-        "needEditForWeb": false,
         "englishId": "",
         "frenchId": ""
       }
@@ -740,8 +703,6 @@
     "recipe": [
       {
         "order": 2,
-        "isCompletedForWeb": false,
-        "needEditForWeb": false,
         "image": {
           "english": "https://i5.walmartimages.ca/dfw/8822aef6-5b35/k2-_50ab4c97-c04f-4e98-9eb0-f9e5edd129c1.v1.jpg",
           "french": "https://i5.walmartimages.ca/dfw/8822aef6-d9ac/k2-_7aafc05c-2562-4f31-b865-e7c8cd172c03.v1.jpg"

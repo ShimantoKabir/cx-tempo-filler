@@ -63,7 +63,7 @@ class Youtube {
     const total = Array.isArray(brandPage.youtube) ? brandPage.youtube.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'youtube', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
     await Youtube.setValue(Youtube.SELECTORS.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
@@ -73,10 +73,16 @@ class Youtube {
     Helper.log('Filled en/fr HTML markup.');
 
     Helper.log('YouTube module filled — review and click Save (or Discard Changes) to continue.');
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `youtube-${index}`, moduleName }
+      : null;
     return await Helper.waitForSaveOrDiscard(
       Youtube.SELECTORS.saveButton,
       Youtube.SELECTORS.discardButton,
-      navigateBackAfterSave
+      navigateBackAfterSave,
+      moduleRecord
     );
   };
 }

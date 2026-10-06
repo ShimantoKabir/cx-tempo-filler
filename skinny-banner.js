@@ -146,6 +146,104 @@ class SkinnyBanner {
   static moduleKeyForBannerType = (bannerType) =>
     bannerType === 'text-only' ? 'textOnlySkinnyBanner' : 'imageAndTextSkinnyBanner';
 
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have Heading/Sub Heading/Banner CTA sections added, none of which
+  // run()'s "add section" calls account for (they always click "add",
+  // assuming the section doesn't exist yet). Same generic "delete
+  // repeatable group" component every other module uses. Per scratch.txt,
+  // section labels differ by device type, and Banner CTA can repeat (up to
+  // 3 on web, 2 on app) while everything else is capped at 1 — so each
+  // label is drained in a loop rather than assumed to appear once.
+  // Legal Disclosure is deliberately left out — per explicit instruction,
+  // it's rarely used and skipped on both create/build and edit.
+  static SECTION_DELETE_SELECTORS = {
+    wrapper: 'div.dragElementWrapper',
+    deleteIcon: 'svg.deleteGroupButton',
+    confirmButton: 'button.confirmDeleteGroupButton',
+  };
+
+  static EDIT_SECTION_LABELS = {
+    web: ['Heading Details', 'Sub Heading Details', 'Banner CTA'],
+    app: ['Banner Heading', 'Banner Sub-Heading', 'Banner CTA'],
+  };
+
+  static findSectionWrapper = (label) =>
+    [...document.querySelectorAll(SkinnyBanner.SECTION_DELETE_SELECTORS.wrapper)].find((el) =>
+      el.textContent.includes(label)
+    );
+
+  static deleteAllOfLabel = async (label) => {
+    // Safety cap, not an exact expected count — Banner CTA can repeat, but
+    // it's cheap to just keep deleting until none of this label remain.
+    for (let i = 0; i < 5; i++) {
+      const target = SkinnyBanner.findSectionWrapper(label);
+      if (!target) break;
+
+      ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+        target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+      });
+      await Helper.sleep(200);
+
+      const deleteBtn = target.querySelector(SkinnyBanner.SECTION_DELETE_SELECTORS.deleteIcon);
+      if (!deleteBtn) break;
+      Helper.log(`Deleting existing "${label}" section.`);
+      // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
+      // .click() method, so a real click must be dispatched instead.
+      deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      const confirmBtn = await Helper.waitForElement(SkinnyBanner.SECTION_DELETE_SELECTORS.confirmButton);
+      confirmBtn.click();
+      await Helper.sleep(500);
+    }
+  };
+
+  static deleteExistingSections = async (deviceType) => {
+    const labels = SkinnyBanner.EDIT_SECTION_LABELS[deviceType] || [];
+    for (const label of labels) {
+      await SkinnyBanner.deleteAllOfLabel(label);
+    }
+  };
+
+  // Per scratch.txt: every image dropdown has its own reset/clear button —
+  // clicking all of them clears whatever image an existing module already
+  // has selected, before run() selects new ones.
+  static clearImages = async () => {
+    const buttons = [...document.querySelectorAll('div[data-testid="reset-button"]')];
+    Helper.log(`Found ${buttons.length} image reset button(s) to clear.`);
+    for (const btn of buttons) {
+      btn.click();
+      await Helper.sleep(300);
+    }
+  };
+
+  // Per scratch.txt: plain fields that aren't behind any "add section"
+  // group, so the delete-group mechanism above doesn't touch them — clear
+  // them directly instead. App has no bannerHeight/bannerBgColor fields
+  // to clear (only module name).
+  static CLEAR_INPUT_KEYS = {
+    web: ['moduleName', 'bannerHeight', 'bannerBgColor'],
+    app: ['moduleName'],
+  };
+
+  static clearInputs = async (deviceType) => {
+    const SEL = SkinnyBanner.SELECTORS[deviceType];
+    const keys = SkinnyBanner.CLEAR_INPUT_KEYS[deviceType] || [];
+    for (const key of keys) {
+      try {
+        const el = await Helper.waitForElement(SEL[key], 2000);
+        await Helper.setInputValue(el, '');
+      } catch {
+        // Field doesn't exist on this page — skip it.
+      }
+    }
+  };
+
+  static prepareForEdit = async (deviceType) => {
+    await SkinnyBanner.deleteExistingSections(deviceType);
+    await SkinnyBanner.clearImages();
+    await SkinnyBanner.clearInputs(deviceType);
+  };
+
   // Briefs sometimes give hex colors without the leading "#" (e.g. "001E60").
   // The CMS color field expects one, so add it back rather than write an
   // invalid value.
@@ -258,11 +356,11 @@ class SkinnyBanner {
     await SkinnyBanner.setValue(sel.frLink, french.linkValue || '');
   };
 
-  // Split into select-only and alt-text-only (same two-stage pattern as
-  // HubSpoke): confirmed via testing there that opening the image search
-  // popup wipes sibling fields filled beforehand, and alt text only saves
-  // once an image is actually selected — so run() selects every image
-  // AFTER everything else is saved, then sets alt text right after.
+  // Split into select-only and alt-text-only (same "images first" pattern
+  // as hero-pov.js/hub-spoke.js/hub-spoke-card.js): alt text only saves
+  // once an image is actually selected, so run() selects every image
+  // first (nothing else on the page yet to wipe), then sets alt text in a
+  // later pass alongside the rest of the banner's fields.
   static selectImages = async (imageSel, bannerData) => {
     for (const lang of Object.keys(imageSel)) {
       const langData = bannerData[lang];
@@ -313,7 +411,10 @@ class SkinnyBanner {
   // continuing on to fill a module that was never actually added.
   // brandPage[bannerKey] is an array of independent module instances (same
   // "multi" pattern as itemCarousel/hubSpokeCard) — index picks which one.
-  static run = async (deviceType, bannerType, brandPage, index, addGbo) => {
+  // navigateBackAfterSave defaults true (Create mode needs to go back to
+  // find the next module) — ModuleEditor passes false, since Edit mode is
+  // done with exactly one module and there's nothing to go back to find.
+  static run = async (deviceType, bannerType, brandPage, index, addGbo, navigateBackAfterSave = true) => {
     const SEL = SkinnyBanner.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Skinny Banner selectors for device type: ${deviceType}`);
 
@@ -331,11 +432,11 @@ class SkinnyBanner {
     const moduleType = bannerType === 'text-only' ? 'text-only-skinny-banner' : 'skinny-banner';
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, moduleType, deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
-    await SkinnyBanner.setValue(SEL.moduleName, moduleName);
-    Helper.log(`Set module name: ${moduleName}`);
 
+    // Structural prerequisite — must happen before any section/content
+    // field exists at all.
     const typeBtn = await Helper.waitForElement(SEL.bannerTypeButton);
     typeBtn.click();
     await Helper.sleep(300);
@@ -344,6 +445,16 @@ class SkinnyBanner {
     typeOption.click();
     Helper.log(`Selected banner type option: ${optionText}`);
     await Helper.sleep(300);
+
+    // No intermediate save — per explicit request, same flow as
+    // hero-pov.js/hub-spoke.js/hub-spoke-card.js: image selected first (if
+    // this banner type has one — nothing else on the page yet to wipe),
+    // then a second pass fills everything else, then module name last of
+    // all.
+    if (bannerType !== 'text-only') {
+      await SkinnyBanner.selectImages(SEL.image, banner.banner[deviceType]);
+      Helper.log('Selected images (alt text deferred).');
+    }
 
     await SkinnyBanner.setValue(SEL.bannerHeight, banner.bannerHeight);
     Helper.log(`Set banner height: ${banner.bannerHeight}`);
@@ -358,9 +469,6 @@ class SkinnyBanner {
       }
       await SkinnyBanner.setColor(SEL.bannerBgColor, banner.bannerBgColor);
     }
-    // bannerType !== 'text-only': image selection deferred to after
-    // everything else is saved (see below) — the image popup interaction
-    // wipes sibling fields if touched before they're saved.
 
     const headingData = banner.headline[deviceType];
     if (SkinnyBanner.hasTextContent(headingData)) {
@@ -407,28 +515,29 @@ class SkinnyBanner {
     }
 
     if (bannerType !== 'text-only') {
-      // Intermediate save of everything except image/alt text — same
-      // two-stage pattern as HubSpoke: auto-clicked (not handed off, since
-      // there's nothing meaningful to review here yet), then re-enter Edit
-      // (no-op in Create mode, where nothing locked the form), then select
-      // images and fill their alt text.
-      Helper.log('Non-image fields filled — saving automatically before filling images...');
-      const intermediateSaveBtn = await Helper.waitForElementByText(
-        SEL.saveButton.selector,
-        SEL.saveButton.text,
-        SEL.saveButton.exact
-      );
-      intermediateSaveBtn.click();
-      await Helper.sleep(1500);
-
-      await ModuleEditor.clickEditButtonIfPresent();
-
       const imageAltContext = { brandName: brandPage.brandName, deviceType, moduleType };
-      await SkinnyBanner.selectImages(SEL.image, banner.banner[deviceType]);
       await SkinnyBanner.fillImageAltTexts(SEL.image, banner.banner[deviceType], imageAltContext);
+      Helper.log('Filled image alt text.');
     }
 
+    // Module name filled last of all — per explicit request — once
+    // everything else is done, rather than up front (see
+    // Helper.setModuleName's own retry/verify logic for why this field
+    // needs special handling).
+    await Helper.setModuleName(SEL.moduleName, moduleName);
+    Helper.log(`Set module name: ${moduleName}`);
+
+    // Click a dummy field via CDP to force a real blur on whatever was
+    // last focused, before handing off for review — catches any field
+    // that only commits its value on blur rather than on input/change.
+    await Helper.blurActiveFieldViaDummyInput();
+
     Helper.log('Skinny Banner filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `${bannerKey}-${index}`, moduleName }
+      : null;
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
   };
 }

@@ -282,65 +282,6 @@ class HeroPov {
     return el;
   };
 
-  // The CMS mirrors the module name input's actual synced value in a
-  // separate element elsewhere on the page — per live testing, the input's
-  // own value doesn't always get picked up by the framework on the first
-  // write. Verifies against that mirror and retries (fresh click + set)
-  // rather than trusting the input's DOM value alone.
-  static MODULE_NAME_SYNC_MIRROR = 'div.css-1t27te5';
-
-  static setModuleName = async (selector, value, attempts = 3) => {
-    const el = await Helper.waitForElement(selector);
-    for (let i = 0; i < attempts; i++) {
-      await Helper.clickTrusted(el);
-      await Helper.setInputValue(el, value);
-      await Helper.sleep(500);
-
-      const mirror = document.querySelector(HeroPov.MODULE_NAME_SYNC_MIRROR);
-      if (mirror && mirror.textContent.trim() === value.trim()) {
-        return el;
-      }
-      console.warn(`[HeroPov] Module name mirror didn't sync on attempt ${i + 1}, retrying...`);
-    }
-    console.warn('[HeroPov] Module name may not have synced after all retries — proceeding anyway.');
-    return el;
-  };
-
-  // Some fields only actually commit their value to the framework's state
-  // on blur, not just on the input/change events setInputValue dispatches
-  // — clicking an unrelated element via CDP forces a real blur on whatever
-  // was last focused. A dummy input (not any real form field) is injected
-  // for this so the click can't accidentally land on something that
-  // itself needs to stay focused/unchanged.
-  static injectDummyInput = () => {
-    let el = document.getElementById('cxtf-dummy-input');
-    if (el) return el;
-
-    el = document.createElement('input');
-    el.type = 'text';
-    el.id = 'cxtf-dummy-input';
-    // Real on-screen coordinates are required — CDP clicks at the
-    // element's getBoundingClientRect() center, so this can't be
-    // display:none/visibility:hidden (those report a zero-size rect).
-    // 1x1px and transparent keeps it invisible without that problem.
-    el.style.position = 'fixed';
-    el.style.top = '0px';
-    el.style.left = '0px';
-    el.style.width = '1px';
-    el.style.height = '1px';
-    el.style.opacity = '0';
-    el.style.zIndex = '2147483647';
-    document.body.appendChild(el);
-    return el;
-  };
-
-  static blurActiveFieldViaDummyInput = async () => {
-    const el = HeroPov.injectDummyInput();
-    await Helper.clickTrusted(el);
-    await Helper.sleep(300);
-    el.remove();
-  };
-
   static setTruncated = async (selector, value, maxLen) => {
     let v = value || '';
     if (maxLen && v.length > maxLen) {
@@ -695,7 +636,7 @@ class HeroPov {
     const total = Array.isArray(brandPage.heroPov) ? brandPage.heroPov.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hero-pov', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
 
     const sortedCards = [...cards].slice(0, HeroPov.MAX_CARDS).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -726,15 +667,20 @@ class HeroPov {
     // card's image and text is done, rather than up front like every
     // other module (see setModuleName's own retry/verify logic for why
     // this field needs special handling at all).
-    await HeroPov.setModuleName(SEL.moduleName, moduleName);
+    await Helper.setModuleName(SEL.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 
     // Click a dummy field via CDP to force a real blur on whatever was
     // last focused, before handing off for review — catches any field
     // that only commits its value on blur rather than on input/change.
-    await HeroPov.blurActiveFieldViaDummyInput();
+    await Helper.blurActiveFieldViaDummyInput();
 
     Helper.log('Hero POV filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave);
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `heroPov-${index}`, moduleName }
+      : null;
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
   };
 }

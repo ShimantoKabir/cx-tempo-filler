@@ -44,6 +44,51 @@ class ItemCarousel {
     return el;
   };
 
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have a title/sub-title, an item-selection mode, and a SKU tag list —
+  // none of which run() accounts for (it always sets fresh values, but
+  // never resets the selection mode or clears old tags first). Per
+  // scratch.txt: clear the SKU tags while still in "Items List" mode (the
+  // clear-tags button only exists in that mode), then reset selection to
+  // "None" for a clean slate — run() switches it back to "Items List"
+  // itself right after — then clear the plain text fields directly.
+  static clearSkus = async () => {
+    const clearBtn = await Helper.waitForElement('button[data-testid="clear-tags"]');
+    clearBtn.click();
+    Helper.log('Cleared existing SKU tags.');
+    await Helper.sleep(300);
+  };
+
+  static resetItemSelection = async (deviceType) => {
+    const SEL = ItemCarousel.SELECTORS[deviceType];
+    const selectionBtn = await Helper.waitForElement(SEL.itemSelectionButton);
+    selectionBtn.click();
+    await Helper.sleep(300);
+    const noneOption = await Helper.waitForElementByText(SEL.itemSelectionOption, 'None', false);
+    noneOption.click();
+    Helper.log('Reset item selection to "None".');
+    await Helper.sleep(300);
+  };
+
+  static clearModuleFields = async (deviceType) => {
+    const SEL = ItemCarousel.SELECTORS[deviceType];
+    const keys = ['moduleName', 'titleEn', 'titleFr', 'subTitleEn', 'subTitleFr'];
+    for (const key of keys) {
+      try {
+        const el = await Helper.waitForElement(SEL[key], 2000);
+        await Helper.setInputValue(el, '');
+      } catch {
+        // Field doesn't exist on this page — skip it.
+      }
+    }
+  };
+
+  static prepareForEdit = async (deviceType) => {
+    await ItemCarousel.clearSkus();
+    await ItemCarousel.resetItemSelection(deviceType);
+    await ItemCarousel.clearModuleFields(deviceType);
+  };
+
   // Errors intentionally propagate to the caller — same convention as
   // ModuleFinder.run/SkinnyBanner.run/HeroPov.run/HubSpoke.run/PovCard.run —
   // so a failure stops the loop instead of continuing on to a module that
@@ -52,7 +97,10 @@ class ItemCarousel {
   // module instance (its own module-add, fill, and save cycle), not a
   // repeating sub-element within one module — so `index` selects which
   // entry this call fills.
-  static run = async (deviceType, brandPage, index) => {
+  // navigateBackAfterSave defaults true (Create mode needs to go back to
+  // find the next module) — ModuleEditor passes false, since Edit mode is
+  // done with exactly one module and there's nothing to go back to find.
+  static run = async (deviceType, brandPage, index, navigateBackAfterSave = true) => {
     const SEL = ItemCarousel.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No Item Carousel selectors for device type: ${deviceType}`);
 
@@ -67,9 +115,12 @@ class ItemCarousel {
     const total = Array.isArray(brandPage.itemCarousel) ? brandPage.itemCarousel.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'item-carousel', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
-    await ItemCarousel.setValue(SEL.moduleName, moduleName);
+    // Verified + retried against div.css-1t27te5 (see Helper.setModuleName)
+    // rather than a plain setValue — this field was found not to always
+    // sync on the first write.
+    await Helper.setModuleName(SEL.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
 
     await ItemCarousel.setValue(SEL.titleEn, item.title?.english || '');
@@ -98,6 +149,11 @@ class ItemCarousel {
     }
 
     Helper.log('Item Carousel filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `itemCarousel-${index}`, moduleName }
+      : null;
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
   };
 }

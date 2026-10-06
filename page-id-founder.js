@@ -134,8 +134,10 @@ class PageIdFounder {
   // Adds and fills one module per entry found in the brief AND checked by
   // the user in the popup. With no brief uploaded — or nothing selected —
   // falls back to adding a single blank module, matching the pre-brief
-  // behavior. Regardless of outcome, downloads output.json annotating every
-  // module found in the brief with whether it actually got completed.
+  // behavior. Completion is tracked in chrome.storage now (see
+  // Helper.saveModuleRecord, called from inside each module's own run()
+  // right after a successful save) rather than by downloading an
+  // output.json to re-upload as the next run's brief.
   runModules = async () => {
     const brandPage = this.briefData && this.briefData.brandPage;
     if (!brandPage) {
@@ -155,105 +157,54 @@ class PageIdFounder {
       return;
     }
 
-    const completion = {};
-    allDescriptors.forEach((d) => {
-      completion[d.moduleKey] = false;
-    });
+    for (const d of descriptors) {
+      // Each module's run() blocks until the user clicks either Save or
+      // Discard Changes, and returns true only for Save — Discard still
+      // navigates back to continue the loop, but must NOT mark the
+      // module as completed.
+      const addGbo = this.gboModules?.includes(d.moduleKey) ?? false;
 
-    try {
-      for (const d of descriptors) {
-        // Each module's run() blocks until the user clicks either Save or
-        // Discard Changes, and returns true only for Save — Discard still
-        // navigates back to continue the loop, but must NOT mark the
-        // module as completed.
-        const addGbo = this.gboModules?.includes(d.moduleKey) ?? false;
-
-        // App-only — skip rather than error if somehow selected on a web
-        // run (the popup checklist doesn't filter by deviceType).
-        if (d.kind === 'hubSpokeCard' && this.deviceType !== 'app') {
-          Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
-          continue;
-        }
-
-        // Web-only — skip rather than error if somehow selected on an app
-        // run, same handling as hubSpokeCard's app-only skip above.
-        if ((d.kind === 'youtube' || d.kind === 'recipe') && this.deviceType !== 'web') {
-          Helper.log(`"${d.moduleKey}" is web-only — skipping on app.`);
-          continue;
-        }
-
-        if (d.kind === 'heroPov') {
-          await ModuleFinder.run(this.deviceType, 'HeroPov');
-        } else if (d.kind === 'hubSpokesNM') {
-          await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
-        } else if (d.kind === 'povCard') {
-          const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
-          await ModuleFinder.run(this.deviceType, moduleKey, 'POVCar');
-        } else if (d.kind === 'itemCarousel') {
-          // "ItemCarousel" auto-derives to "item carousel", already
-          // matching scratch.txt's given search text — no override needed.
-          await ModuleFinder.run(this.deviceType, 'ItemCarousel');
-        } else if (d.kind === 'hubSpokeCard') {
-          // Module find key is "Hubspoke" (exact case per scratch.txt);
-          // the auto-derived search query would be close enough, but the
-          // given search text "HubSpoke" is passed explicitly to be safe.
-          await ModuleFinder.run(this.deviceType, 'Hubspoke', 'HubSpoke');
-        } else if (d.kind === 'youtube' || d.kind === 'recipe') {
-          // Both are a generic "Custom HTML" module, not their own CMS
-          // module kind — Youtube.run/Recipe.run build the whole markup
-          // themselves (see scratch.txt).
-          await ModuleFinder.run(this.deviceType, 'CustomHtml', 'Custom HTML');
-        } else {
-          await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
-        }
-
-        completion[d.moduleKey] = await PageIdFounder.FILL_BY_KIND[d.kind](this.deviceType, brandPage, d, addGbo);
+      // App-only — skip rather than error if somehow selected on a web
+      // run (the popup checklist doesn't filter by deviceType).
+      if (d.kind === 'hubSpokeCard' && this.deviceType !== 'app') {
+        Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
+        continue;
       }
-    } finally {
-      this.downloadOutputJson(completion);
+
+      // Web-only — skip rather than error if somehow selected on an app
+      // run, same handling as hubSpokeCard's app-only skip above.
+      if ((d.kind === 'youtube' || d.kind === 'recipe') && this.deviceType !== 'web') {
+        Helper.log(`"${d.moduleKey}" is web-only — skipping on app.`);
+        continue;
+      }
+
+      if (d.kind === 'heroPov') {
+        await ModuleFinder.run(this.deviceType, 'HeroPov');
+      } else if (d.kind === 'hubSpokesNM') {
+        await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
+      } else if (d.kind === 'povCard') {
+        const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
+        await ModuleFinder.run(this.deviceType, moduleKey, 'POVCar');
+      } else if (d.kind === 'itemCarousel') {
+        // "ItemCarousel" auto-derives to "item carousel", already
+        // matching scratch.txt's given search text — no override needed.
+        await ModuleFinder.run(this.deviceType, 'ItemCarousel');
+      } else if (d.kind === 'hubSpokeCard') {
+        // Module find key is "Hubspoke" (exact case per scratch.txt);
+        // the auto-derived search query would be close enough, but the
+        // given search text "HubSpoke" is passed explicitly to be safe.
+        await ModuleFinder.run(this.deviceType, 'Hubspoke', 'HubSpoke');
+      } else if (d.kind === 'youtube' || d.kind === 'recipe') {
+        // Both are a generic "Custom HTML" module, not their own CMS
+        // module kind — Youtube.run/Recipe.run build the whole markup
+        // themselves (see scratch.txt).
+        await ModuleFinder.run(this.deviceType, 'CustomHtml', 'Custom HTML');
+      } else {
+        await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
+      }
+
+      await PageIdFounder.FILL_BY_KIND[d.kind](this.deviceType, brandPage, d, addGbo);
     }
-  };
-
-  // Writes isCompletedForWeb/isCompletedForApp onto each module the brief
-  // contained (based on the completion map built in runModules) and
-  // downloads the result as output.json, so a failed/partial run is
-  // downloadable too. Only the field matching this run's device type is
-  // updated — the other device's field (e.g. from a prior run whose
-  // output.json was re-uploaded as this run's brief) is preserved as-is,
-  // defaulting to false the first time a module is seen.
-  downloadOutputJson = (completion) => {
-    const output = JSON.parse(JSON.stringify(this.briefData));
-    const completedKey = this.deviceType === 'web' ? 'isCompletedForWeb' : 'isCompletedForApp';
-    const brandPage = output.brandPage;
-
-    for (const [moduleKey, isCompleted] of Object.entries(completion)) {
-      if (!brandPage) continue;
-
-      // Every moduleKey is "${arrayKey}-${index}" now (buildModuleDescriptors
-      // keys every module this way, since every brief module is an array of
-      // independent instances) — only the one instance this run actually
-      // processed gets its completion flag updated.
-      const match = moduleKey.match(/^(.+)-(\d+)$/);
-      if (!match) continue;
-      const [, arrayKey, indexStr] = match;
-      const entry = Array.isArray(brandPage[arrayKey]) ? brandPage[arrayKey][Number(indexStr)] : null;
-      if (!entry) continue;
-
-      if (typeof entry.isCompletedForWeb !== 'boolean') entry.isCompletedForWeb = false;
-      if (typeof entry.isCompletedForApp !== 'boolean') entry.isCompletedForApp = false;
-      entry[completedKey] = isCompleted;
-    }
-
-    const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'output.json';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    Helper.log('Downloaded output.json with module completion status.');
   };
 
   run = async () => {

@@ -121,11 +121,11 @@ class HubSpokeCard {
     await HubSpokeCard.setValue(selector, v);
   };
 
-  // Split select-only / alt-text-only (same two-stage pattern as every
-  // other module with images): opening the image search popup was found to
-  // wipe sibling fields filled beforehand, and alt text only saves once an
-  // image is actually selected — so run() selects every card's image
-  // after everything else is saved, then fills alt text.
+  // Split select-only / alt-text-only (same "images first" pattern as
+  // hero-pov.js/hub-spoke.js): alt text only saves once an image is
+  // actually selected, so run() selects every card's image first (nothing
+  // else on the page yet to wipe), then fills alt text in a later pass
+  // alongside the rest of each card's fields.
   static selectImage = async (cfg, data) => {
     if (!data || !data.searchText) return;
 
@@ -203,50 +203,56 @@ class HubSpokeCard {
     const total = Array.isArray(brandPage.hubSpokeCard) ? brandPage.hubSpokeCard.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hub-spoke-card', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
-    await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.moduleName, moduleName);
-    Helper.log(`Set module name: ${moduleName}`);
 
-    await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleEn, entry.title?.english || '');
-    await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleFr, entry.title?.french || '');
-
+    // No intermediate save — per explicit request, same flow as
+    // hero-pov.js/hub-spoke.js: every card's image selected first (nothing
+    // else on the page yet to wipe), then a second pass fills everything
+    // else — heading, link value, alt text — then title and module name
+    // last of all.
     for (let i = 0; i < cards.length; i++) {
       if (i >= HubSpokeCard.PRE_EXISTING_CARDS || !cardsPreExist) {
         const addBtn = await Helper.waitForElement(HubSpokeCard.SELECTORS.addCardButton);
         addBtn.click();
         await Helper.sleep(300);
       }
-      await HubSpokeCard.fillCardNonImage(HubSpokeCard.SELECTORS.card(i), cards[i], addGbo);
-      Helper.log(`Filled non-image fields for card ${i + 1} of ${cards.length}.`);
+      await HubSpokeCard.selectCardImages(HubSpokeCard.SELECTORS.card(i), cards[i]);
+      Helper.log(`Selected images for card ${i + 1} of ${cards.length} (rest deferred).`);
     }
-
-    // Intermediate save of everything except image — auto-clicked (not
-    // handed off, since there's nothing meaningful to review here yet),
-    // then re-enter Edit (no-op in Create mode, where nothing locked the
-    // form), then select every card's image and fill its alt text.
-    Helper.log('Non-image fields filled — saving automatically before filling images...');
-    const intermediateSaveBtn = await Helper.waitForElementByText(
-      HubSpokeCard.SELECTORS.saveButton.selector,
-      HubSpokeCard.SELECTORS.saveButton.text,
-      HubSpokeCard.SELECTORS.saveButton.exact
-    );
-    intermediateSaveBtn.click();
-    await Helper.sleep(1500);
-
-    await ModuleEditor.clickEditButtonIfPresent();
 
     for (let i = 0; i < cards.length; i++) {
-      await HubSpokeCard.selectCardImages(HubSpokeCard.SELECTORS.card(i), cards[i]);
+      await HubSpokeCard.fillCardNonImage(HubSpokeCard.SELECTORS.card(i), cards[i], addGbo);
       await HubSpokeCard.fillCardImageAlts(HubSpokeCard.SELECTORS.card(i), cards[i], brandPage.brandName);
-      Helper.log(`Filled image for card ${i + 1} of ${cards.length}.`);
+      Helper.log(`Filled remaining fields for card ${i + 1} of ${cards.length}.`);
     }
 
+    await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleEn, entry.title?.english || '');
+    await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleFr, entry.title?.french || '');
+    Helper.log('Filled title.');
+
+    // Module name filled last of all — per explicit request — once every
+    // card is done, rather than up front (see Helper.setModuleName's own
+    // retry/verify logic for why this field needs special handling).
+    await Helper.setModuleName(HubSpokeCard.SELECTORS.moduleName, moduleName);
+    Helper.log(`Set module name: ${moduleName}`);
+
+    // Click a dummy field via CDP to force a real blur on whatever was
+    // last focused, before handing off for review — catches any field
+    // that only commits its value on blur rather than on input/change.
+    await Helper.blurActiveFieldViaDummyInput();
+
     Helper.log('Hub Spoke Card filled — review and click Save (or Discard Changes) to continue.');
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `hubSpokeCard-${index}`, moduleName }
+      : null;
     return await Helper.waitForSaveOrDiscard(
       HubSpokeCard.SELECTORS.saveButton,
       HubSpokeCard.SELECTORS.discardButton,
-      navigateBackAfterSave
+      navigateBackAfterSave,
+      moduleRecord
     );
   };
 }

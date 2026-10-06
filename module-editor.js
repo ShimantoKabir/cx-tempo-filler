@@ -156,19 +156,22 @@ class ModuleEditor {
       if (!descriptor) throw new Error(`Module "${this.moduleKey}" not found in brief.`);
 
       // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV,
-      // YouTube, and Recipe so far — other kinds haven't had a "clear
-      // existing content before refill" step built yet, and without one
-      // their fill functions would leave stale rows/cards from the module's
-      // current content mixed in with the brief's new one. YouTube/Recipe
-      // don't need that step at all — they're a single markup textarea
-      // that gets fully overwritten, not repeatable rows/cards.
+      // YouTube, Recipe, Skinny Banner, POV Card, and Item Carousel so far —
+      // other kinds haven't had a "clear existing content before refill" step built yet, and
+      // without one their fill functions would leave stale rows/cards from
+      // the module's current content mixed in with the brief's new one.
+      // YouTube/Recipe don't need that step at all — they're a single
+      // markup textarea that gets fully overwritten, not repeatable
+      // rows/cards.
       // Hub Spokes NxM/Hub Spoke Card/Hero POV are called directly (not via
       // PageIdFounder.FILL_BY_KIND, which Create mode also uses and must
       // keep its rowsPreExist/cardsPreExist and navigateBackAfterSave
       // defaults) — deleting existing content wipes out the pre-existing
       // first row/card too, so run() needs to add every one itself instead
       // of assuming they exist, and there's no next module to go back and
-      // find after saving.
+      // find after saving. Skinny Banner's sections don't pre-exist at all
+      // (run() always clicks "add"), so it only needs navigateBackAfterSave
+      // overridden, not a rowsPreExist-style flag.
       if (descriptor.kind === 'hubSpokesNM') {
         await HubSpoke.deleteExistingRows();
         const completed = await HubSpoke.run(
@@ -221,9 +224,38 @@ class ModuleEditor {
         }
         const completed = await Recipe.run(this.deviceType, brandPage, descriptor.index, false);
         Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'skinnyBanner') {
+        // Works on both web and app — no device restriction.
+        await SkinnyBanner.prepareForEdit(this.deviceType);
+        const completed = await SkinnyBanner.run(
+          this.deviceType,
+          descriptor.bannerType,
+          brandPage,
+          descriptor.index,
+          this.addGbo,
+          false
+        );
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'povCard') {
+        // Works on both web and app — no device restriction.
+        await PovCard.prepareForEdit(this.deviceType);
+        const completed = await PovCard.run(
+          this.deviceType,
+          brandPage,
+          descriptor.index,
+          this.addGbo,
+          false,
+          false
+        );
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'itemCarousel') {
+        // Works on both web and app — no device restriction.
+        await ItemCarousel.prepareForEdit(this.deviceType);
+        const completed = await ItemCarousel.run(this.deviceType, brandPage, descriptor.index, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
       } else {
         throw new Error(
-          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, and Recipe for now (got "${descriptor.kind}").`
+          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, Recipe, Skinny Banner, POV Card, and Item Carousel for now (got "${descriptor.kind}").`
         );
       }
     } catch (err) {

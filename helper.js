@@ -13,6 +13,38 @@ class Helper {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };
 
+  // Tracks which modules have already been built, so the popup can offer
+  // an "Edit" shortcut (with the URL already known) instead of letting a
+  // module be built twice. Keyed by pageId+deviceType+moduleKey rather than
+  // the generated module name/URL — those are only known after a Create
+  // run actually finishes, while the key pieces here are already computed
+  // by popup.js for the checklist. One single storage key holds the whole
+  // map (not one chrome.storage key per module) to keep reads/writes to a
+  // single round trip.
+  static MODULE_RECORDS_KEY = 'cxtfModuleRecords';
+
+  static moduleRecordKey = (pageId, deviceType, moduleKey) => `${pageId}:${deviceType}:${moduleKey}`;
+
+  static getModuleRecords = () => {
+    return new Promise((resolve) => {
+      chrome.storage.local.get(Helper.MODULE_RECORDS_KEY, (result) => {
+        resolve(result[Helper.MODULE_RECORDS_KEY] || {});
+      });
+    });
+  };
+
+  // record is { url, moduleName } — savedAt is stamped here so every
+  // caller doesn't have to remember to.
+  static saveModuleRecord = async (pageId, deviceType, moduleKey, record) => {
+    const all = await Helper.getModuleRecords();
+    const key = Helper.moduleRecordKey(pageId, deviceType, moduleKey);
+    all[key] = { ...record, savedAt: Date.now() };
+    await new Promise((resolve) => {
+      chrome.storage.local.set({ [Helper.MODULE_RECORDS_KEY]: all }, resolve);
+    });
+    Helper.log(`Saved module record for ${key}.`);
+  };
+
   static waitForElement = (selector, timeout = 10000) => {
     return new Promise((resolve, reject) => {
       const existing = document.querySelector(selector);
@@ -135,7 +167,13 @@ class Helper {
   // to return to the module-zone list to find the next module) — Edit mode
   // passes false, since there's no next module to find and nothing to go
   // back to.
-  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel, navigateBack = true) => {
+  // moduleRecord (optional) is { pageId, deviceType, moduleKey, moduleName }
+  // — only Create mode's calls pass one (Edit mode doesn't track/limit
+  // edits, so it never does). Saved here, before navigateBack below can
+  // move the page away from the module's own URL — this is the only point
+  // where "saved" is confirmed true AND window.location.href still is that
+  // URL.
+  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel, navigateBack = true, moduleRecord = null) => {
     const saveBtn = await Helper.waitForElementByText(saveButtonSel.selector, saveButtonSel.text, saveButtonSel.exact);
     const discardBtn = await Helper.waitForElementByText(
       discardButtonSel.selector,
@@ -165,6 +203,13 @@ class Helper {
       } catch {
         // Timed out still visible — proceed anyway rather than blocking
         // the whole run on a loading bar that may just be stuck.
+      }
+
+      if (moduleRecord) {
+        await Helper.saveModuleRecord(moduleRecord.pageId, moduleRecord.deviceType, moduleRecord.moduleKey, {
+          url: window.location.href,
+          moduleName: moduleRecord.moduleName,
+        });
       }
     }
 
@@ -254,6 +299,67 @@ class Helper {
   static clickTrusted = async (el) => {
     const ok = await Helper.clickViaCDP(el);
     if (!ok) el.click();
+  };
+
+  // The CMS mirrors the module name input's actual synced value in a
+  // separate element elsewhere on the page — per live testing, the input's
+  // own value doesn't always get picked up by the framework on the first
+  // write. Verifies against that mirror and retries (fresh click + set)
+  // rather than trusting the input's DOM value alone. Shared by every
+  // module — input[id="../name"] and this mirror are the same generic CMS
+  // fields everywhere, not specific to any one module.
+  static MODULE_NAME_SYNC_MIRROR = 'div.css-1t27te5';
+
+  static setModuleName = async (selector, value, attempts = 3) => {
+    const el = await Helper.waitForElement(selector);
+    for (let i = 0; i < attempts; i++) {
+      await Helper.clickTrusted(el);
+      await Helper.setInputValue(el, value);
+      await Helper.sleep(500);
+
+      const mirror = document.querySelector(Helper.MODULE_NAME_SYNC_MIRROR);
+      if (mirror && mirror.textContent.trim() === value.trim()) {
+        return el;
+      }
+      console.warn(`[Helper] Module name mirror didn't sync on attempt ${i + 1}, retrying...`);
+    }
+    console.warn('[Helper] Module name may not have synced after all retries — proceeding anyway.');
+    return el;
+  };
+
+  // Some fields only actually commit their value to the framework's state
+  // on blur, not just on the input/change events setInputValue dispatches
+  // — clicking an unrelated element via CDP forces a real blur on whatever
+  // was last focused. A dummy input (not any real form field) is injected
+  // for this so the click can't accidentally land on something that
+  // itself needs to stay focused/unchanged.
+  static injectDummyInput = () => {
+    let el = document.getElementById('cxtf-dummy-input');
+    if (el) return el;
+
+    el = document.createElement('input');
+    el.type = 'text';
+    el.id = 'cxtf-dummy-input';
+    // Real on-screen coordinates are required — CDP clicks at the
+    // element's getBoundingClientRect() center, so this can't be
+    // display:none/visibility:hidden (those report a zero-size rect).
+    // 1x1px and transparent keeps it invisible without that problem.
+    el.style.position = 'fixed';
+    el.style.top = '0px';
+    el.style.left = '0px';
+    el.style.width = '1px';
+    el.style.height = '1px';
+    el.style.opacity = '0';
+    el.style.zIndex = '2147483647';
+    document.body.appendChild(el);
+    return el;
+  };
+
+  static blurActiveFieldViaDummyInput = async () => {
+    const el = Helper.injectDummyInput();
+    await Helper.clickTrusted(el);
+    await Helper.sleep(300);
+    el.remove();
   };
 
   // Deliberately no el.blur() here by default: this helper is also used for

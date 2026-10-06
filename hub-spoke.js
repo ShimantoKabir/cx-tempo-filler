@@ -131,19 +131,25 @@ class HubSpoke {
     return el;
   };
 
-  // Confirmed via testing: with image open/search/select skipped entirely,
-  // name + link value stuck correctly for every category — but alt text
-  // still didn't save, even with no image interaction at all. So alt text
-  // has its own, separate problem (plausibly: the field may only be truly
-  // "live" once a real image exists for that category, per the AI-suggested
-  // alt text seen in the captured GraphQL payload).
   static fillLinkValue = async (cfg, data, applyGbo) => {
     if (!data || !data.linkValue) return;
     const linkValue = applyGbo ? Helper.appendGboParam(data.linkValue) : data.linkValue;
     await HubSpoke.setValue(cfg.linkValue, linkValue);
   };
 
-  static fillImage = async (cfg, data, altCopyContext, applyGbo) => {
+  static fillAltText = async (cfg, data, altCopyContext) => {
+    if (!data || !data.searchText) return;
+    const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
+    await HubSpoke.setValue(cfg.altText, altText);
+  };
+
+  // Image selection only — name/link/alt text are all deferred to
+  // fillCategoryRest, same "images first" flow as hero-pov.js (confirmed
+  // working there): filling text fields after an image is selected doesn't
+  // wipe the image, but selecting an image after text fields were already
+  // filled was found to wipe them — so every category's image gets
+  // selected first, with nothing else on the page yet to wipe.
+  static selectImage = async (cfg, data) => {
     if (!data || !data.searchText) return;
 
     const openBtn = await Helper.waitForElement(cfg.open);
@@ -159,22 +165,20 @@ class HubSpoke {
     const result = await Helper.waitForElement(cfg.result);
     await Helper.clickTrusted(result);
     Helper.log(`Selected image: ${data.searchText}`);
-
-    await HubSpoke.fillLinkValue(cfg, data, applyGbo);
-
-    const altText = data.altCopy || Helper.generateAltCopy(altCopyContext);
-    await HubSpoke.setValue(cfg.altText, altText);
   };
 
-  // Two-stage fill, confirmed via testing: name + link value stick
-  // reliably on their own, but alt text only saves once a real image is
-  // selected first for that category — and the image popup interaction
-  // itself was wiping sibling fields that were set beforehand. Splitting
-  // into name+link (saved first) then image+alt (filled after a fresh
-  // Edit unlock) avoids both problems. Split so run() can call each stage
-  // at the right point in its own two-phase (name+link, then save+reedit,
-  // then image+alt) sequence.
-  static fillNameAndLink = async (colNumber, row, col, categoryData, applyGbo) => {
+  static selectCategoryImages = async (colNumber, row, col, categoryData) => {
+    if (!categoryData) return;
+    const sel = HubSpoke.categorySelectors(colNumber, row, col);
+
+    await HubSpoke.selectImage(sel.image.en, categoryData.image?.english);
+    await HubSpoke.selectImage(sel.image.fr, categoryData.image?.french);
+  };
+
+  // Everything except the image itself — name, link value, and alt text
+  // (alt text only saves once a real image is already selected, which by
+  // this point every category's is).
+  static fillCategoryRest = async (colNumber, row, col, categoryData, altCopyContextFor, applyGbo) => {
     if (!categoryData) return;
     const sel = HubSpoke.categorySelectors(colNumber, row, col);
 
@@ -183,14 +187,9 @@ class HubSpoke {
 
     await HubSpoke.fillLinkValue(sel.image.en, categoryData.image?.english, applyGbo);
     await HubSpoke.fillLinkValue(sel.image.fr, categoryData.image?.french, applyGbo);
-  };
 
-  static fillImageAndAlt = async (colNumber, row, col, categoryData, altCopyContextFor, applyGbo) => {
-    if (!categoryData) return;
-    const sel = HubSpoke.categorySelectors(colNumber, row, col);
-
-    await HubSpoke.fillImage(sel.image.en, categoryData.image?.english, altCopyContextFor('english'), applyGbo);
-    await HubSpoke.fillImage(sel.image.fr, categoryData.image?.french, altCopyContextFor('french'), applyGbo);
+    await HubSpoke.fillAltText(sel.image.en, categoryData.image?.english, altCopyContextFor('english'));
+    await HubSpoke.fillAltText(sel.image.fr, categoryData.image?.french, altCopyContextFor('french'));
   };
 
   // Errors intentionally propagate to the caller — same convention as
@@ -228,13 +227,8 @@ class HubSpoke {
       gridLayout,
     });
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
-    await HubSpoke.setValue(HubSpoke.SELECTORS.moduleName, moduleName);
-    Helper.log(`Set module name: ${moduleName}`);
-
-    await HubSpoke.setValue(HubSpoke.SELECTORS.headingEn, hub.heading?.english || '');
-    await HubSpoke.setValue(HubSpoke.SELECTORS.headingFr, hub.heading?.french || '');
 
     // Column count must be selected before any row/category selector can
     // resolve, since the chosen number is baked into their test-dataid.
@@ -249,12 +243,11 @@ class HubSpoke {
     const colNumber = hub.columns;
     const maxColumnsForRow = Math.min(colNumber, HubSpoke.MAX_COLUMNS);
 
-    // Two clean phases, not interleaved: (1) click every "add row"/"ADD
+    // Clean phases, not interleaved: (1) click every "add row"/"ADD
     // CATEGORIES" button for the WHOLE module first — no field writes at
-    // all yet — then (2) go back and fill every already-created slot.
-    // Reasoning: card 0 (pre-existing, never touched by an "add" click)
-    // keeps its data reliably; every dynamically-added card's TEXT fields
-    // (name/alt/link) were observed getting wiped while its already-
+    // all yet. Reasoning: card 0 (pre-existing, never touched by an "add"
+    // click) keeps its data reliably; every dynamically-added card's TEXT
+    // fields (name/alt/link) were observed getting wiped while its already-
     // selected IMAGE survived — consistent with a later "add" click
     // triggering a re-render that remounts earlier cards' DOM (resetting
     // whatever only the DOM, not the app's own state, ever captured) while
@@ -282,36 +275,21 @@ class HubSpoke {
       }
     }
 
+    // No intermediate save — per explicit request, same flow as
+    // hero-pov.js: (2) every category's image selected first (nothing
+    // else on the page yet to wipe), then (3) a second pass fills
+    // everything else — name, link value, alt text — then heading and
+    // module name last of all.
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       const categories = Array.isArray(rows[rowIndex].categories)
         ? rows[rowIndex].categories.slice(0, rowCategoryCounts[rowIndex])
         : [];
 
       for (let colIndex = 0; colIndex < categories.length; colIndex++) {
-        await HubSpoke.fillNameAndLink(colNumber, rowIndex, colIndex, categories[colIndex], applyGbo);
-        Helper.log(`Filled name/link for row ${rowIndex + 1}, column ${colIndex + 1}.`);
+        await HubSpoke.selectCategoryImages(colNumber, rowIndex, colIndex, categories[colIndex]);
+        Helper.log(`Selected images for row ${rowIndex + 1}, column ${colIndex + 1} (name/link/alt deferred).`);
       }
     }
-
-    // Intermediate save of name/link value only — confirmed reliable
-    // without any image interaction. Unlike every other save in this
-    // project, this one is clicked automatically rather than handed off
-    // for manual review: it's not the module's real completion point, just
-    // an internal step needed before the image+alt stage can run — the
-    // user never has anything meaningful to review here yet.
-    Helper.log('Name/link filled — saving automatically before filling images...');
-    const intermediateSaveBtn = await Helper.waitForElementByText(
-      HubSpoke.SELECTORS.saveButton.selector,
-      HubSpoke.SELECTORS.saveButton.text,
-      HubSpoke.SELECTORS.saveButton.exact
-    );
-    intermediateSaveBtn.click();
-    await Helper.sleep(1500);
-
-    // Saving re-locks the form in Edit mode — unlock it again before
-    // filling images. Create mode's module was never locked to begin with
-    // (clickEditButtonIfPresent no-ops if there's nothing to unlock).
-    await ModuleEditor.clickEditButtonIfPresent();
 
     for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
       const categories = Array.isArray(rows[rowIndex].categories)
@@ -325,16 +303,37 @@ class HubSpoke {
           language,
           moduleType: 'hub-spokes-nxm',
         });
-        await HubSpoke.fillImageAndAlt(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor, applyGbo);
-        Helper.log(`Filled image/alt for row ${rowIndex + 1}, column ${colIndex + 1}.`);
+        await HubSpoke.fillCategoryRest(colNumber, rowIndex, colIndex, categories[colIndex], altCopyContextFor, applyGbo);
+        Helper.log(`Filled remaining fields for row ${rowIndex + 1}, column ${colIndex + 1}.`);
       }
     }
 
+    await HubSpoke.setValue(HubSpoke.SELECTORS.headingEn, hub.heading?.english || '');
+    await HubSpoke.setValue(HubSpoke.SELECTORS.headingFr, hub.heading?.french || '');
+    Helper.log('Filled heading.');
+
+    // Module name filled last of all — per explicit request — once every
+    // row/category is done, rather than up front (see Helper.setModuleName's
+    // own retry/verify logic for why this field needs special handling).
+    await Helper.setModuleName(HubSpoke.SELECTORS.moduleName, moduleName);
+    Helper.log(`Set module name: ${moduleName}`);
+
+    // Click a dummy field via CDP to force a real blur on whatever was
+    // last focused, before handing off for review — catches any field
+    // that only commits its value on blur rather than on input/change.
+    await Helper.blurActiveFieldViaDummyInput();
+
     Helper.log('Hub Spokes NxM filled — review and click Save (or Discard Changes) to continue.');
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `hubSpokesNM-${index}`, moduleName }
+      : null;
     return await Helper.waitForSaveOrDiscard(
       HubSpoke.SELECTORS.saveButton,
       HubSpoke.SELECTORS.discardButton,
-      navigateBackAfterSave
+      navigateBackAfterSave,
+      moduleRecord
     );
   };
 }

@@ -112,7 +112,7 @@ class ModuleFinder {
     selectModuleBtn.click();
     Helper.log('Clicked Select Module.');
 
-    await Helper.waitForElementGone(ModuleFinder.SELECTORS.loadingOverlay,50000);
+    await Helper.waitForElementGone(ModuleFinder.SELECTORS.loadingOverlay, 60000);
     Helper.log('Loading overlay gone.');
 
     // TODO: fill the module name input (input[id="../name"]) using

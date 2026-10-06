@@ -297,7 +297,7 @@ class Recipe {
     const total = Array.isArray(brandPage.recipe) ? brandPage.recipe.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'recipe', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
     await Recipe.setValue(Recipe.SELECTORS.moduleName, moduleName);
     Helper.log(`Set module name: ${moduleName}`);
@@ -307,10 +307,16 @@ class Recipe {
     Helper.log('Filled en/fr HTML markup.');
 
     Helper.log('Recipe module filled — review and click Save (or Discard Changes) to continue.');
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `recipe-${index}`, moduleName }
+      : null;
     return await Helper.waitForSaveOrDiscard(
       Recipe.SELECTORS.saveButton,
       Recipe.SELECTORS.discardButton,
-      navigateBackAfterSave
+      navigateBackAfterSave,
+      moduleRecord
     );
   };
 }

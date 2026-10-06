@@ -141,11 +141,87 @@ class PovCard {
     }
   };
 
-  // Split select-only / alt-text-only (same two-stage pattern as HubSpoke/
-  // SkinnyBanner/HeroPov): opening the image search popup was found to
-  // wipe sibling fields filled beforehand, and alt text only saves once an
-  // image is actually selected — so run() selects every card's image
-  // after everything else is saved, then fills alt text.
+  // Edit mode only (see module-editor.js): an existing module may already
+  // have cards with real data, which run()'s "card 0 already exists,
+  // empty" assumption doesn't account for. Same generic "delete repeatable
+  // group" component every other module uses (dragElementWrapper +
+  // deleteGroupButton + confirmDeleteGroupButton), filtered by the "POV
+  // Cards" label per scratch.txt (unlike Hub Spoke Card, which needed no
+  // filter — this module's wrappers include other non-card groups too).
+  static CARD_DELETE_SELECTORS = {
+    wrapper: 'div.dragElementWrapper',
+    deleteIcon: 'svg.deleteGroupButton',
+    confirmButton: 'button.confirmDeleteGroupButton',
+    labelMatch: 'POV Cards',
+  };
+
+  static findCardWrappers = () =>
+    [...document.querySelectorAll(PovCard.CARD_DELETE_SELECTORS.wrapper)].filter((el) =>
+      el.textContent.includes(PovCard.CARD_DELETE_SELECTORS.labelMatch)
+    );
+
+  static deleteExistingCards = async () => {
+    // Count up front (same pattern as HubSpokeCard.deleteExistingCards) and
+    // loop exactly that many times, rather than an arbitrary safety cap —
+    // gives a real expected count to log progress against and to break
+    // early on if fewer cards delete successfully than were actually found.
+    const count = PovCard.findCardWrappers().length;
+    Helper.log(`Found ${count} existing card(s) to delete.`);
+
+    for (let i = 0; i < count; i++) {
+      const cards = PovCard.findCardWrappers();
+      if (cards.length === 0) break;
+
+      const card = cards[0];
+      ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+        card.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+      });
+      await Helper.sleep(200);
+
+      const deleteBtn = card.querySelector(PovCard.CARD_DELETE_SELECTORS.deleteIcon);
+      if (!deleteBtn) break;
+      Helper.log(`Deleting existing card ${i + 1} of ${count}: ${card.textContent}`);
+      // deleteBtn is an <svg> — unlike HTMLElement, SVGElement has no
+      // .click() method, so a real click must be dispatched instead.
+      deleteBtn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+      const confirmBtn = await Helper.waitForElement(PovCard.CARD_DELETE_SELECTORS.confirmButton);
+      confirmBtn.click();
+      await Helper.sleep(500);
+    }
+  };
+
+  // Per scratch.txt: module name/title (/sub-title on web) aren't behind
+  // any "add section" group, so the delete-group mechanism above doesn't
+  // touch them — clear them directly instead. App has no sub-title field.
+  static CLEAR_FIELD_KEYS = {
+    app: ['moduleName', 'titleEn', 'titleFr'],
+    web: ['moduleName', 'titleEn', 'titleFr', 'subTitle'],
+  };
+
+  static clearModuleFields = async (deviceType) => {
+    const SEL = PovCard.SELECTORS[deviceType];
+    const keys = PovCard.CLEAR_FIELD_KEYS[deviceType] || [];
+    for (const key of keys) {
+      try {
+        const el = await Helper.waitForElement(SEL[key], 2000);
+        await Helper.setInputValue(el, '');
+      } catch {
+        // Field doesn't exist on this page — skip it.
+      }
+    }
+  };
+
+  static prepareForEdit = async (deviceType) => {
+    await PovCard.deleteExistingCards();
+    await PovCard.clearModuleFields(deviceType);
+  };
+
+  // Split select-only / alt-text-only (same "images first" pattern as
+  // hero-pov.js/hub-spoke.js/hub-spoke-card.js/skinny-banner.js): alt text
+  // only saves once an image is actually selected, so run() selects every
+  // card's image first (nothing else on the page yet to wipe), then fills
+  // alt text in a later pass alongside the rest of each card's fields.
   static selectImage = async (cfg, data) => {
     if (!data || !data.searchText) return;
 
@@ -223,7 +299,15 @@ class PovCard {
   // never actually added.
   // brandPage.povCard is an array of independent module instances (same
   // "multi" pattern as itemCarousel/hubSpokeCard) — index picks which one.
-  static run = async (deviceType, brandPage, index, addGbo) => {
+  // cardsPreExist defaults true (a freshly-created module already has card 0
+  // sitting there empty, same assumption the rest of this function makes).
+  // ModuleEditor passes false after deleteExistingCards() wipes every card
+  // — so card 0 needs its own "add card" click too, not just cards beyond
+  // the first.
+  // navigateBackAfterSave defaults true (Create mode needs to go back to
+  // find the next module) — ModuleEditor passes false, since Edit mode is
+  // done with exactly one module and there's nothing to go back to find.
+  static run = async (deviceType, brandPage, index, addGbo, cardsPreExist = true, navigateBackAfterSave = true) => {
     const SEL = PovCard.SELECTORS[deviceType];
     if (!SEL) throw new Error(`No POV Card selectors for device type: ${deviceType}`);
 
@@ -241,10 +325,29 @@ class PovCard {
     const total = Array.isArray(brandPage.povCard) ? brandPage.povCard.length : 1;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'pov-cards', deviceType);
     if (total > 1) {
-      moduleName += ` ${index + 1}`;
+      moduleName += ` #${index + 1}`;
     }
-    await PovCard.setValue(SEL.moduleName, moduleName);
-    Helper.log(`Set module name: ${moduleName}`);
+
+    // No intermediate save — per explicit request, same flow as
+    // hero-pov.js/hub-spoke.js/hub-spoke-card.js/skinny-banner.js: every
+    // card's image selected first (nothing else on the page yet to wipe),
+    // then a second pass fills everything else, then title/sub-title and
+    // module name last of all.
+    for (let i = 0; i < cards.length; i++) {
+      if (i > 0 || !cardsPreExist) {
+        const addBtn = await Helper.waitForElement(SEL.addCardButton);
+        addBtn.click();
+        await Helper.sleep(300);
+      }
+      await PovCard.selectCardImages(SEL.card(i), cards[i], deviceType);
+      Helper.log(`Selected images for card ${i + 1} of ${cards.length} (rest deferred).`);
+    }
+
+    for (let i = 0; i < cards.length; i++) {
+      await PovCard.fillCardNonImage(SEL.card(i), cards[i], deviceType, addGbo);
+      await PovCard.fillCardImageAlts(SEL.card(i), cards[i], deviceType, brandPage.brandName);
+      Helper.log(`Filled remaining fields for card ${i + 1} of ${cards.length}.`);
+    }
 
     const titleData = pov.title?.[deviceType];
     await PovCard.setValue(SEL.titleEn, titleData?.english || '');
@@ -253,35 +356,25 @@ class PovCard {
     if (deviceType === 'web' && pov.subTitle?.web) {
       await PovCard.setValue(SEL.subTitle, pov.subTitle.web);
     }
+    Helper.log('Filled title.');
 
-    for (let i = 0; i < cards.length; i++) {
-      if (i > 0) {
-        const addBtn = await Helper.waitForElement(SEL.addCardButton);
-        addBtn.click();
-        await Helper.sleep(300);
-      }
-      await PovCard.fillCardNonImage(SEL.card(i), cards[i], deviceType, addGbo);
-      Helper.log(`Filled non-image fields for card ${i + 1} of ${cards.length}.`);
-    }
+    // Module name filled last of all — per explicit request — once every
+    // card is done, rather than up front (see Helper.setModuleName's own
+    // retry/verify logic for why this field needs special handling).
+    await Helper.setModuleName(SEL.moduleName, moduleName);
+    Helper.log(`Set module name: ${moduleName}`);
 
-    // Intermediate save of everything except image — auto-clicked (not
-    // handed off, since there's nothing meaningful to review here yet),
-    // then re-enter Edit (no-op in Create mode, where nothing locked the
-    // form), then select every card's image and fill its alt text.
-    Helper.log('Non-image fields filled — saving automatically before filling images...');
-    const intermediateSaveBtn = await Helper.waitForElementByText(SEL.saveButton.selector, SEL.saveButton.text, SEL.saveButton.exact);
-    intermediateSaveBtn.click();
-    await Helper.sleep(1500);
-
-    await ModuleEditor.clickEditButtonIfPresent();
-
-    for (let i = 0; i < cards.length; i++) {
-      await PovCard.selectCardImages(SEL.card(i), cards[i], deviceType);
-      await PovCard.fillCardImageAlts(SEL.card(i), cards[i], deviceType, brandPage.brandName);
-      Helper.log(`Filled image for card ${i + 1} of ${cards.length}.`);
-    }
+    // Click a dummy field via CDP to force a real blur on whatever was
+    // last focused, before handing off for review — catches any field
+    // that only commits its value on blur rather than on input/change.
+    await Helper.blurActiveFieldViaDummyInput();
 
     Helper.log('POV Card filled — review and click Save (or Discard Changes) to continue.');
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton);
+    // Only Create mode (navigateBackAfterSave=true) tracks a module record
+    // — Edit mode doesn't track/limit edits, so it never passes one.
+    const moduleRecord = navigateBackAfterSave
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `povCard-${index}`, moduleName }
+      : null;
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
   };
 }

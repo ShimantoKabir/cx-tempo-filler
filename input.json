@@ -1,49 +1,80 @@
 {
   "brandPage": {
-    "pageId": "6000210080328",
-    "brandName": "Kraft Heinz Diwali",
+    "pageId": "6000210105766",
+    "brandName": "Kraft Holiday",
+    "textOnlySkinnyBanner": [
+      {
+        "order": 1,
+        "bannerType": "text-only",
+        "bannerHeight": "100",
+        "bannerBgColor": "203064",
+        "headline": {
+          "web": { "english": { "text": "Learn more: www.kraft.ca/2MILLIONPLATES", "textColor": "" }, "french": { "text": "www.kraftheinz.com/fr-CA/2millionsdassiettes", "textColor": "" } },
+          "app": { "english": { "text": "Learn more: www.kraft.ca/2MILLIONPLATES", "textColor": "" }, "french": { "text": "www.kraftheinz.com/fr-CA/2millionsdassiettes", "textColor": "" } }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
+            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
+          },
+          "app": {
+            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
+            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
+            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
+          }
+        }
+      }
+    ],
     "heroPov": [
       {
-        "povStyle": "",
         "order": 3,
-        "isCompletedForWeb": true,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": true,
-        "cards" : [
+        "cards": [
           {
+            "povStyle": "",
             "backgroundColor": { "app": "", "web": "" },
             "image": {
               "web": {
-                "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "desktopAltCopy": "" },
-                "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "desktop": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_F", "desktopAltCopy": "" }
+                "english": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_E", "mobileAltCopy": "", "desktop": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_E", "desktopAltCopy": "" },
+                "french": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_F", "mobileAltCopy": "", "desktop": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_F", "desktopAltCopy": "" }
               },
               "app": {
-                "english": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_E", "mobileAltCopy": "", "tablet": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "tabletAltCopy": "" },
-                "french": { "mobile": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "", "tablet": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_261008-D_F", "tabletAltCopy": "" }
+                "english": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_E", "mobileAltCopy": "", "tablet": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_E", "tabletAltCopy": "" },
+                "french": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_F", "mobileAltCopy": "", "tablet": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_F", "tabletAltCopy": "" }
               }
             },
             "logo": {
               "web": {
-                "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
-                "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
+                "english": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_E", "altCopy": "" },
+                "french": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_F", "altCopy": "" }
               },
               "app": {
-                "english": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" },
-                "french": { "searchText": "HPOV-BP_CR0231_WK37-41-Kraft-Diwali_Logo_261008_E", "altCopy": "" }
+                "english": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_E", "altCopy": "" },
+                "french": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_F", "altCopy": "" }
               }
             },
             "legal": {
-              "web": { "english": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "discloser": "", "title": "", "description": "", "desktopTextColor": "", "mobileTextColor": "" } },
-              "app": { "english": { "discloser": "", "title": "", "description": "", "textColor": "" }, "french": { "discloser": "", "title": "", "description": "", "textColor": "" } }
+              "web": {
+                "english": { "discloser": "Legal", "title": "Legal", "description": "*Learn more at Kraft.ca/2millionplates\nThis Kraft Heinz offer is hosted by Kraft Heinz Canada and is in no way sponsored, endorsed, administered by, or\nassociated with Wal-Mart Canada Corp. Kraft.ca/2millionplates is hosted by a third party and is not associated with\nwalmart.ca.", "desktopTextColor": "", "mobileTextColor": "" },
+                "french": { "discloser": "Mention légale", "title": "Mention légale", "description": "* Précisions à Kraft.ca/2millionsdassiettes\nL'offre Kraft Heinz est organisée par Kraft Heinz Canada et n'est en aucun cas commanditée, approuvée ou administrée\npar La Compagnie Walmart du Canada ni associée à cette dernière. Le contenu de kraft.ca/2MILLIONSDASSIETTES est\nhébergé par un tiers et n'est pas associé au site walmart.ca.", "desktopTextColor": "", "mobileTextColor": "" }
+              },
+              "app": {
+                "english": { "discloser": "Legal", "title": "Legal", "description": "*Learn more at Kraft.ca/2millionplates\nThis Kraft Heinz offer is hosted by Kraft Heinz Canada and is in no way sponsored, endorsed, administered by, or\nassociated with Wal-Mart Canada Corp. Kraft.ca/2millionplates is hosted by a third party and is not associated with\nwalmart.ca.", "textColor": "" },
+                "french": { "discloser": "Mention légale", "title": "Mention légale", "description": "* Précisions à Kraft.ca/2millionsdassiettes\nL'offre Kraft Heinz est organisée par Kraft Heinz Canada et n'est en aucun cas commanditée, approuvée ou administrée\npar La Compagnie Walmart du Canada ni associée à cette dernière. Le contenu de kraft.ca/2MILLIONSDASSIETTES est\nhébergé par un tiers et n'est pas associé au site walmart.ca.", "textColor": "" }
+              }
             },
             "headline": {
-              "web": { "english": { "text": "Diwali with Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-              "app": { "english": { "text": "Diwali with Kraft Heinz", "textColor": "001E60" }, "french": { "text": "Célébrez avec Kraft Heinz", "textColor": "001E60" } }
+              "web": { "english": { "text": "Shop Kraft, give back", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Aidez Kraft à redonner", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
+              "app": { "english": { "text": "Shop Kraft, give back", "textColor": "001E60" }, "french": { "text": "Aidez Kraft à redonner", "textColor": "001E60" } }
             },
             "subHeadline": {
-              "web": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-              "app": { "english": { "text": "A time-saving take on authentic, comforting & traditional recipes.", "textColor": "001E60" }, "french": { "text": "Des recettes authentiques et réconfortantes en moins de temps.", "textColor": "001E60" } }
+              "web": { "english": { "text": "Help us fill 2 million* plates with Food Banks Canada.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Remplissons 2 millions* d'assiettes avec Banques alimentaires Canada.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
+              "app": { "english": { "text": "Help us fill 2 million* plates with Food Banks Canada.", "textColor": "001E60" }, "french": { "text": "Remplissons 2 millions* d'assiettes avec Banques alimentaires Canada.", "textColor": "001E60" } }
             },
             "eyebrow": {
               "web": { "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" } },
@@ -57,139 +88,55 @@
         ]
       }
     ],
-    "imageAndTextSkinnyBanner": [
-      {
-        "order": 2,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "bannerType": "image-and-text",
-        "bannerHeight": "220",
-        "banner": {
-          "web": {
-            "english": { "desktop": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "desktopAltCopy": "", "mobile": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "" },
-            "french": { "desktop": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-D_E", "desktopAltCopy": "", "mobile": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "" }
-          },
-          "app": {
-            "english": { "mobile": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "" },
-            "french": { "mobile": "SKB_CR0231_WK37-41-Kraft-Diwali_261008-M_F", "mobileAltCopy": "" }
-          }
-        },
-        "bannerCta": {
-          "linkColor": "",
-          "web": {
-            "english": { "linkText": "Célébrez Diwali", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Acheter", "linkValue": "https://www.heinz.com/fr-CA" }
-          },
-          "app": {
-            "english": { "linkText": "Célébrez Diwali", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Acheter", "linkValue": "https://www.heinz.com/fr-CA" }
-          }
-        },
-        "bannerClickThoughURL": {
-          "app": {
-            "english": { "linkText": "Célébrez Diwali", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Acheter", "linkValue": "https://www.heinz.com/fr-CA" }
-          }
-        },
-        "headline": {
-          "web": { "english": { "text": "Celebrate Diwali", "textColor": "" }, "french": { "text": "La tradition avec une touche moderne.", "textColor": "" } },
-          "app": { "english": { "text": "Celebrate Diwali", "textColor": "" }, "french": { "text": "La tradition avec une touche moderne.", "textColor": "" } }
-        },
-        "subHeadline": {
-          "web": { "english": { "text": "Traditional flavour with a modern twist.", "textColor": "" }, "french": { "text": "Shop", "textColor": "" } },
-          "app": { "english": { "text": "Traditional flavour with a modern twist.", "textColor": "" }, "french": { "text": "Shop", "textColor": "" } }
-        }
-      }
-    ],
-    "textOnlySkinnyBanner": [
-      {
-        "order": 1,
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "needEdit": false,
-        "bannerType": "text-only",
-        "bannerHeight": "100",
-        "bannerBgColor": "5C276F",
-        "headline": {
-          "web": { "english": { "text": "Kraft Heinz", "textColor": "FFFFFF" }, "french": { "text": "Produits Kraft Heinz", "textColor": "FFFFFF" } },
-          "app": { "english": { "text": "Kraft Heinz", "textColor": "FFFFFF" }, "french": { "text": "Produits Kraft Heinz", "textColor": "FFFFFF" } }
-        },
-        "bannerCta": {
-          "linkColor": "",
-          "web": {
-            "english": { "linkText": "Shop all", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Voir tout", "linkValue": "https://www.heinz.com/fr-CA" }
-          },
-          "app": {
-            "english": { "linkText": "Shop all", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Voir tout", "linkValue": "https://www.heinz.com/fr-CA" }
-          }
-        },
-        "bannerClickThoughURL": {
-          "app": {
-            "english": { "linkText": "Shop all", "linkValue": "https://www.heinz.com/en-CA" },
-            "french": { "linkText": "Voir tout", "linkValue": "https://www.heinz.com/fr-CA" }
-          }
-        }
-      }
-    ],
     "povCard": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
         "order": 5,
         "title": { "web": { "english": "", "french": "" }, "app": { "english": "", "french": "" } },
         "subTitle": { "web": "" },
         "cards": [
           {
             "image": {
-              "web": { "english": { "searchText": "POVC-BP-1_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-1_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } }
+              "web": { "english": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
+              "app": { "english": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
             },
             "heading": { "web": { "english": "Heinz Ketchup", "french": "Ketchup Heinz" }, "app": { "english": "Heinz Ketchup", "french": "Ketchup Heinz" } },
-            "subHeading": { "app": { "english": "Bring the iconic Heinz flavour to your favourite Diwali meals.", "french": "La touche Heinz pour vos plats favoris de Diwali." } },
-            "description": { "web": { "english": "Bring the iconic Heinz flavour to your favourite Diwali meals.", "french": "La touche Heinz pour vos plats favoris de Diwali." } },
+            "subHeading": { "app": { "english": "Savour the signature thick texture & rich taste.", "french": "Savourez sa texture épaisse et son goût riche signatures." } },
+            "description": { "web": { "english": "Savour the signature thick texture & rich taste.", "french": "Savourez sa texture épaisse et son goût riche signatures." } },
             "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
             "textColor": { "web": "001E60" },
             "cta": {
-              "web": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-L-Bottle/206038?classType=REGULAR&athbdg=L1300&from=/search" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-L-Bottle/206038?classType=REGULAR&athbdg=L1300&from=/search" } },
-              "app": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-L-Bottle/206038?classType=REGULAR&athbdg=L1300&from=/search" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-L-Bottle/206038?classType=REGULAR&athbdg=L1300&from=/search" } }
+              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" } },
+              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" } }
             }
           },
           {
             "image": {
-              "web": { "english": { "searchText": "POVC-BP-2_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-2_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } }
+              "web": { "english": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
+              "app": { "english": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
             },
-            "heading": { "web": { "english": "Philadelphia Original", "french": "Fromage Philadelphia" }, "app": { "english": "Philadelphia Original", "french": "Fromage Philadelphia" } },
-            "subHeading": { "app": { "english": "The secret to smooth, indulgent Diwali recipes.", "french": "Le secret de recettes onctueuses et gourmandes pour Diwali." } },
-            "description": { "web": { "english": "The secret to smooth, indulgent Diwali recipes.", "french": "Le secret de recettes onctueuses et gourmandes pour Diwali." } },
+            "heading": { "web": { "english": "KD Original", "french": "Macaroni KD Original" }, "app": { "english": "KD Original", "french": "Macaroni KD Original" } },
+            "subHeading": { "app": { "english": "Kraft's classic, deliciously creamy macaroni & cheese.", "french": "Le macaroni au fromage classique de Kraft, délicieusement crémeux." } },
+            "description": { "web": { "english": "Kraft's classic, deliciously creamy macaroni & cheese.", "french": "Le macaroni au fromage classique de Kraft, délicieusement crémeux." } },
             "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
             "textColor": { "web": "001E60" },
             "cta": {
-              "web": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-brick-cream-cheese/10053807?classType=REGULAR&from=/search" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/philadelphia-original-brick-cream-cheese/10053807?classType=REGULAR&from=/search" } },
-              "app": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-brick-cream-cheese/10053807?classType=REGULAR&from=/search" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/philadelphia-original-brick-cream-cheese/10053807?classType=REGULAR&from=/search" } }
+              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } },
+              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } }
             }
           },
           {
             "image": {
-              "web": { "english": { "searchText": "POVC-BP-3_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-3_CR0231_WK37-41-Kraft-Diwali_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CR0231_WK37-41-Kraft-Diwali_261008_F", "altCopy": "" } }
+              "web": { "english": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
+              "app": { "english": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
             },
-            "heading": { "web": { "english": "Classico Pasta Sauce", "french": "Sauce Classico" }, "app": { "english": "Classico Pasta Sauce", "french": "Sauce Classico" } },
-            "subHeading": { "app": { "english": "Create restaurant-inspired meals with Classico.", "french": "La tradition avec une touche moderne." } },
-            "description": { "web": { "english": "Create restaurant-inspired meals with Classico.", "french": "La tradition avec une touche moderne." } },
+            "heading": { "web": { "english": "Philadelphia Original", "french": "Philadelphia Original" }, "app": { "english": "Philadelphia Original", "french": "Philadelphia Original" } },
+            "subHeading": { "app": { "english": "Enjoy the velvety goodness of Philadelphia Cream Cheese.", "french": "Savourez le bon goût velouté du fromage à la crème Philadelphia." } },
+            "description": { "web": { "english": "Enjoy the velvety goodness of Philadelphia Cream Cheese.", "french": "Savourez le bon goût velouté du fromage à la crème Philadelphia." } },
             "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
             "textColor": { "web": "001E60" },
             "cta": {
-              "web": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/Classico-Fire-Roasted-Tomato-Garlic-600ML-Spreads/7BD5BOAV6WZN?classType=REGULAR&athbdg=L1300&from=/search%09%09%22" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/Classico-Fire-Roasted-Tomato-Garlic-600ML-Spreads/7BD5BOAV6WZN?classType=REGULAR&athbdg=L1300&from=/search%09%09%22" } },
-              "app": { "english": { "linkText": "Buy now", "linkValue": "https://www.walmart.ca/en/ip/Classico-Fire-Roasted-Tomato-Garlic-600ML-Spreads/7BD5BOAV6WZN?classType=REGULAR&athbdg=L1300&from=/search%09%09%22" }, "french": { "linkText": "Acheter", "linkValue": "https://www.walmart.ca/fr/ip/Classico-Fire-Roasted-Tomato-Garlic-600ML-Spreads/7BD5BOAV6WZN?classType=REGULAR&athbdg=L1300&from=/search%09%09%22" } }
+              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-cream-cheese-product/6000194034105?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } },
+              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-cream-cheese-product/6000194034105?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } }
             }
           }
         ]
@@ -197,102 +144,10 @@
     ],
     "itemCarousel": [
       {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "order": 7,
-        "title": { "english": "Butter paneer essentials", "french": "Essentiels pour paneer au beurre" },
-        "subTitle": { "english": "", "french": "" },
-        "skus": ["7BD5BOAV6WZN", "6000197065884", "6000200237828", "6000198590928", "206038", "10053807", "6000202112369"]
-      },
-      {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "order": 9,
-        "title": { "english": "For great biryani flavour", "french": "Préparez un délicieux biryani" },
-        "subTitle": { "english": "", "french": "" },
-        "skus": ["5L9HF103LULI", "42PX5L0T82BK", "6000191274027", "6000200237828", "6000197065884", "6000194789805", "6000198590928", "6000198590572"]
-      },
-      {
-        "isCompletedForWeb": false,
-        "isCompletedForApp": false,
-        "needEditForWeb": false,
-        "needEditForApp": false,
-        "order": 11,
-        "title": { "english": "Peanut chicken must-haves", "french": "Essentiels pour poulet aux arachides" },
-        "subTitle": { "english": "", "french": "" },
-        "skus": ["206880", "6E0ZQ22LZFD5", "6000204156326", "6000198590928", "6000197065884", "10302320", "10303778", "3VLCAVLWS55J"]
-      }
-    ],
-    "recipe": [
-      {
         "order": 6,
-        "isCompletedForWeb": false,
-        "needEditForWeb": false,
-        "image": { "english": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_E", "french": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_F" },
-        "alt": { "english": "20-minute creamy butter paneer", "french": "Paneer au beurre crémeux prêt en 20 minutes" },
-        "title": { "english": "20-minute creamy butter paneer", "french": "Paneer au beurre crémeux prêt en 20 minutes" },
-        "subhead": { "english": "Restaurant-style flavour in under 20 minutes.", "french": "Des saveurs dignes du restaurant en moins de 20 minutes." },
-        "prepTime": { "english": "5 minutes", "french": "5 minutes" },
-        "cookTime": { "english": "20 minutes", "french": "20 minutes" },
-        "servingSize": { "english": "4", "french": "4" },
-        "ingredientsLabel": { "english": "Ingredients", "french": "Ingrédients" },
-        "ingredients": {
-          "english": ["1 tbsp (salted or unsalted) butter", "1 tsp garlic paste & ginger paste", "1 jar Classico Fire-Roasted Tomato & Garlic Pasta Sauce", "1 cup Heinz Tomato Ketchup", "1 tsp garam masala", "1/2 block Philadelphia Original Brick Cream Cheese", "2 cups diced paneer (or cooked chicken)", "3/4 cup water", "Salt to taste"],
-          "french": ["1 c. à soupe (15 ml) de beurre (salé ou non salé)", "1 c. à thé (5 ml) de pâte d'ail et 1 c. à thé (5 ml) de pâte de gingembre", "1 pot de sauce pour pâtes Tomates grillées sur le feu et ail de Classico", "1 tasse (250 ml) de ketchup aux tomates Heinz", "1 c. à thé (5 ml) de garam masala", "½ bloc de fromage à la crème original Philadelphia", "2 tasses (500 ml) de paneer (ou de poulet cuit) en cubes", "¾ de tasse d'eau", "Sel au goût"]
-        },
-        "directionsLabel": { "english": "Directions", "french": "" },
-        "directions": {
-          "english": ["Melt butter in a pan. Add garlic and ginger paste and sauté for 1 minute.", "Add Classico Fire-Roasted Tomato & Garlic Pasta Sauce, Heinz Tomato Ketchup, and garam masala. Simmer for 5 minutes.", "Stir in Philadelphia Original Brick Cream Cheese until smooth and creamy.", "Add cubed cooked paneer or chicken and water. Simmer for 8–10 minutes. Adjust seasoning if required.", "Optional: Garnish with cilantro (coriander)."],
-          "french": ["Dans une poêle, faire fondre le beurre. Ajouter la pâte d'ail et la pâte de gingembre et faire revenir pendant 1 minute.", "Ajouter la sauce pour pâtes Tomates grillées sur le feu et ail de Classico, le ketchup aux tomates Heinz et le garam masala. Laisser mijoter 5 minutes.", "Incorporer le fromage à la crème original Philadelphia en brique jusqu'à ce que le mélange soit lisse et crémeux.", "Ajouter les cubes de paneer ou de poulet cuits et l'eau. Laisser mijoter de 8 à 10 minutes. Rectifier l'assaisonnement au besoin.", "Facultatif : Garnir de coriandre."]
-        }
-      },
-      {
-        "order": 8,
-        "isCompletedForWeb": false,
-        "needEditForWeb": false,
-        "image": { "english": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_E", "french": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_F" },
-        "alt": { "english": "One-pot vegetable biryani", "french": "Biryani aux légumes tout-en-un" },
-        "title": { "english": "One-pot vegetable biryani", "french": "Biryani aux légumes tout-en-un" },
-        "subhead": { "english": "", "french": "" },
-        "prepTime": { "english": "10 minutes", "french": "10 minutes" },
-        "cookTime": { "english": "10 minutes", "french": "10 minutes" },
-        "servingSize": { "english": "4", "french": "4" },
-        "ingredientsLabel": { "english": "", "french": "" },
-        "ingredients": {
-          "english": ["2 tbsp oil or butter", "2 tsp each garlic paste and ginger paste", "1 ½ tsp biryani masala or garam masala", "2 cups mixed vegetables, diced small, fresh or frozen (carrots, peas, green beans, cauliflower and/or potatoes)", "1 jar Classico Tomato & Basil Pasta Sauce", "2 cups basmati rice (rinsed)", "2 ½ cups water or vegetable broth", "Salt to taste", "Optional: Garnish with fried onions, cilantro, mint."],
-          "french": ["2 c. à soupe (30 ml) d'huile ou de beurre", "2 c. à thé (10 ml) de pâte d'ail et 2 c. à thé (10 ml) de pâte de gingembre", "1 ½ c. à thé (7,5 ml) de biryani masala ou de garam masala", "2 tasses de mélange de légumes coupés en petits dés, frais ou surgelés (carottes, pois, haricots verts, chou-fleur et pommes de terre)", "1 pot de sauce pour pâtes Tomates et basilic de Classico", "2 tasses (500 ml) de riz basmati (rincé)", "2 ½ tasses (625 ml) d'eau ou de bouillon de légumes", "Sel au goût", "Facultatif : Garnir d'oignons frits, de coriandre et de menthe."]
-        },
-        "directionsLabel": { "english": "Directions", "french": "" },
-        "directions": {
-          "english": ["Add oil or butter to a pot over medium heat. Sauté garlic and ginger paste for 1 minute.", "Add masala and vegetables. Sauté for an additional 3–4 minutes.", "Stir in Classico Tomato & Basil Pasta Sauce and simmer for 5 minutes.", "Add rice and water. Bring to a boil. Cover and reduce heat. Cook for 12–15 minutes until rice is tender and liquid is absorbed.", "Remove from heat and let stand, covered, for 5 minutes. Fluff with a fork, and garnish before serving."],
-          "french": ["Ajouter l'huile ou le beurre dans une casserole chauffée à feu moyen. Faire revenir la pâte d'ail et la pâte de gingembre pendant 1 minute.", "Ajouter le masala et les légumes, puis faire revenir pendant encore 3 ou 4 minutes.", "Ajouter la sauce pour pâtes Tomates et basilic de Classico, puis laisser mijoter 5 minutes.", "Ajouter le riz et l'eau. Porter à ébullition. Couvrir et baisser le feu. Cuire de 12 à 15 minutes ou jusqu'à ce que le riz soit tendre et que le liquide soit absorbé.", "Retirer du feu et laisser reposer à couvert pendant 5 minutes. Aérer la préparation à l'aide d'une fourchette et ajouter les garnitures avant de servir."]
-        }
-      },
-      {
-        "order": 10,
-        "isCompletedForWeb": false,
-        "needEditForWeb": false,
-        "image": { "english": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_E", "french": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_F" },
-        "alt": { "english": "Weeknight peanut chicken & chutney", "french": "Poulet aux arachides et chutney pour les soirs de semaine" },
-        "title": { "english": "Weeknight peanut chicken & chutney", "french": "Poulet aux arachides et chutney pour les soirs de semaine" },
-        "subhead": { "english": "", "french": "" },
-        "prepTime": { "english": "5 minutes", "french": "5 minutes" },
-        "cookTime": { "english": "25 minutes", "french": "25 minutes" },
-        "servingSize": { "english": "4", "french": "4" },
-        "ingredientsLabel": { "english": "", "french": "" },
-        "ingredients": {
-          "english": ["Chicken:", "2 tbsp Kraft Smooth Peanut Butter", "2 tbsp canola or vegetable oil", "1 tbsp lemon juice", "1 tsp each garlic paste and ginger paste", "1 ½ tsp tandoori masala or garam masala", "½ tsp paprika or chili powder", "1 ½ lbs boneless chicken, cut into cubes", "Salt to taste", "Chutney:", "¼ cup Kraft Crunchy Peanut Butter (can substitute for Kraft Smooth Peanut Butter)", "2 tbsp lemon or lime juice", "1 tsp garlic, paste or minced", "½–1 tsp chili powder or finely chopped green chili", "3 tbsp warm water"],
-          "french": ["Poulet :", "2 c. à soupe (30 ml) de beurre d'arachide crémeux Kraft", "2 c. à soupe (30 ml) d'huile de canola ou végétale", "1 c. à soupe (15 ml) de jus de citron", "1 c. à thé (5 ml) de pâte d'ail et 1 c. à thé (5 ml) de pâte de gingembre", "1 ½ c. à thé (7,5 ml) de tandoori masala ou de garam masala", "½ c. à thé (2,5 ml) de paprika ou de poudre de chili", "1 ½ lb de poulet désossé, coupé en cubes", "Sel au goût", "Chutney :", "¼ de tasse (60 ml) de beurre d'arachide croquant Kraft (ou de beurre d'arachide crémeux Kraft)", "2 c. à soupe (30 ml) de jus de citron ou de lime", "1 c. à thé (5 ml) d'ail (en pâte ou haché finement)", "½ à 1 c. à thé (2,5 à 5 ml) de poudre de chili ou de piment vert haché finement", "3 c. à soupe (45 ml) d'eau tiède"]
-        },
-        "directionsLabel": { "english": "Directions", "french": "" },
-        "directions": {
-          "english": ["Chicken:", "Whisk Kraft Smooth Peanut Butter, oil, lemon juice, garlic and ginger paste, and spices in a bowl until smooth. Adjust seasoning to taste.", "Add cubed chicken and coat thoroughly. Allow to marinade for 10–15 minutes.", "Grill, pan-fry or air-fry the chicken, until it is cooked through and lightly charred.", "Optional: Serve with hot lemon wedges and garnish with cilantro.", "Chutney:", "Whisk all the ingredients in a bowl until smooth.", "Slowly add warm water, 1 tbsp at a time until desired consistency, thin enough to drizzle.", "Adjust seasoning to taste."],
-          "french": ["Poulet :", "Dans un bol, fouetter le beurre d'arachide crémeux Kraft, l'huile, le jus de citron, la pâte d'ail, la pâte de gingembre et les épices jusqu'à ce que le mélange soit lisse. Rectifier l'assaisonnement au goût.", "Ajouter les cubes de poulet et bien les enrober du mélange. Laisser mariner de 10 à 15 minutes.", "Cuire le poulet au gril, à la poêle ou à la friteuse à air chaud de 10 à 12 minutes, ou jusqu'à ce qu'il soit bien cuit et légèrement doré.", "Facultatif : Servir avec des quartiers de citron chauds et garnir de coriandre.", "Chutney :", "Dans un bol, fouetter tous les ingrédients jusqu'à ce que le mélange soit lisse.", "Ajouter progressivement l'eau tiède, 1 c. à soupe (15 ml) à la fois, jusqu'à l'obtention de la consistance désirée, soit assez liquide pour former un mince filet.", "Rectifier l'assaisonnement au goût."]
-        }
+        "title": { "english": "Fill your plate", "french": "Remplissez votre assiette" },
+        "subTitle": { "english": "", "french": "" },
+        "skus": ["57000002992", "68100048629", "4CW6SAER16MG", "7CBGEIJIWCKP", "7LA77YUJPSW2", "6000205370034", "206880", "5L9HF103LULI", "6000194034105", "10072749"]
       }
     ]
   }

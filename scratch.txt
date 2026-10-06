@@ -963,7 +963,118 @@ loading bar: div.e1gvnnix0
 div[test-dataid="cards-0,image"]>div:first-child
 
 
+skinny banner edit web:
+==========
+includesText: Heading Details, Sub Heading Details, Banner CTA, Legal Disclosure
+note: max: 3 Banner CTA can be added. rest max 1    
+delete cta opened by below code and click delete cta
+const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+  el.textContent.includes('includesText')
+);
+['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+  target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+});
 
+console.log('delete CTA:', target.querySelector('svg.deleteGroupButton'));
+
+clear image:
+div[data-testid="reset-button"] find all button by this selector and clicked it
+
+clear input: 
+module name: input[id="../name"]
+banner height: input[data-e2eid="desktopBannerHeight"]
+backgroundColor: input[data-e2eid="backgroundColor"]
+
+
+skinny banner edit app:
+=======================
+includesText: Banner Heading, Banner Sub-Heading, Banner CTA, Legal Disclosure
+note: max: 2 Banner CTA can be added. rest max 1    
+delete cta opened by below code and click delete cta
+const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+  el.textContent.includes('includesText')
+);
+['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+  target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+});
+
+console.log('delete CTA:', target.querySelector('svg.deleteGroupButton'));
+
+clear input: 
+module name: input[id="../name"]
+
+
+pov-card app edit
+=======================
+clear:
+module name: input[id="../name"]
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+
+delete cards:
+includesText: POV Cards
+note: max: 5 cards can be added
+const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+  el.textContent.includes('includesText')
+);
+['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+  target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+});
+console.log('delete CTA:', target.querySelector('svg.deleteGroupButton'));
+
+
+
+
+pov-card web edit
+=======================
+clear:
+module name: input[id="../name"]
+en title: input[data-e2eid="headingText"]
+fr title: input[data-e2eid="fr_headingText"]
+sub-title: input[data-e2eid="subHeadingText"]
+
+delete cards:
+includesText: POV Cards
+note: max: 4 cards can be added
+const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+  el.textContent.includes('includesText')
+);
+['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+  target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+});
+console.log('delete CTA:', target.querySelector('svg.deleteGroupButton'));
+
+
+
+item-carousel web edit
+======================
+clear input:
+module name: input[id="../name"]
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+fr sub-title: input[data-e2eid="subTitle"]
+fr sub-title: input[data-e2eid="fr_subTitle"]
+
+item selection: button[data-e2eid="itemsSelection"]
+options: button[data-e2eid="itemsSelection"] + div div[id^="option-"]
+    needed to check innerHtml: it includes "None" then select
+
+clear skus: button[data-testid="clear-tags"]
+
+item-carousel app
+=================
+clear input:
+module name: input[id="../name"]
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+fr sub-title: input[data-e2eid="subTitle"]
+fr sub-title: input[data-e2eid="fr_subTitle"]
+
+item selection: button[data-e2eid="itemSelection"]
+options: button[data-e2eid="itemSelection"] + div div[id^="option-"]
+    needed to check innerHtml: it includes "None" then select
+
+add skus: button[data-testid="clear-tags"]
 
 
 
