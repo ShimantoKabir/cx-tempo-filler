@@ -375,6 +375,6 @@ class PovCard {
     const moduleRecord = navigateBackAfterSave
       ? { pageId: brandPage.pageId, deviceType, moduleKey: `povCard-${index}`, moduleName }
       : null;
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, moduleRecord);
   };
 }

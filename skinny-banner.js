@@ -456,8 +456,12 @@ class SkinnyBanner {
       Helper.log('Selected images (alt text deferred).');
     }
 
-    await SkinnyBanner.setValue(SEL.bannerHeight, banner.bannerHeight);
-    Helper.log(`Set banner height: ${banner.bannerHeight}`);
+    // Web text-only banners always use a fixed 150px height regardless of
+    // what the brief says (Build and Edit both go through this one function,
+    // so this covers both automatically).
+    const bannerHeight = (deviceType === 'web' && bannerType === 'text-only') ? '150px' : banner.bannerHeight;
+    await SkinnyBanner.setValue(SEL.bannerHeight, bannerHeight);
+    Helper.log(`Set banner height: ${bannerHeight}`);
 
     if (bannerType === 'text-only') {
       // Required for text-only banners — there's no image, so the
@@ -538,6 +542,6 @@ class SkinnyBanner {
     const moduleRecord = navigateBackAfterSave
       ? { pageId: brandPage.pageId, deviceType, moduleKey: `${bannerKey}-${index}`, moduleName }
       : null;
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, moduleRecord);
   };
 }

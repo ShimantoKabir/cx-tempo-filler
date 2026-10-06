@@ -99,7 +99,12 @@ const MODULE_DEFS = [
   { key: 'imageAndTextSkinnyBanner', label: 'Image + Text Skinny Banner' },
   { key: 'textOnlySkinnyBanner', label: 'Text Only Skinny Banner' },
   { key: 'heroPov', label: 'Hero POV' },
-  { key: 'hubSpokesNM', label: 'Hub Spokes NxM' },
+  // Hidden from the checklist entirely when Device Type is "app" per
+  // explicit request — webOnly hides it the same way youtube/recipe/
+  // inspirationModule are hidden below, even though HubSpoke.run() itself
+  // still technically supports an app run (selectors are identical for
+  // web/app per hub-spoke.js) — this only restricts what the popup offers.
+  { key: 'hubSpokeNM', label: 'Hub Spoke NxM', webOnly: true },
   { key: 'povCard', label: 'POV Card' },
   { key: 'itemCarousel', label: 'Item Carousel', hasAppUrl: false },
   // App-only (no web variant per scratch.txt) — appOnly hides it from the
@@ -111,6 +116,7 @@ const MODULE_DEFS = [
   // Youtube.run/Recipe.run build the whole markup themselves.
   { key: 'youtube', label: 'YouTube Embed', hasAppUrl: false, webOnly: true },
   { key: 'recipe', label: 'Recipe', hasAppUrl: false, webOnly: true },
+  { key: 'inspirationModule', label: 'Inspiration Module', hasAppUrl: false, webOnly: true },
 ];
 
 // Build-completion tracking lives in chrome.storage now, not in the brief
@@ -210,12 +216,12 @@ async function renderModuleChecklist(brandPage) {
   const deviceType = document.getElementById('deviceType').value;
   const isEditMode = document.getElementById('mode').value === 'edit';
   // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV,
-  // YouTube, Recipe, Skinny Banner (both variants), POV Card, and Item
-  // Carousel so far (see module-editor.js) — restrict the picker itself
-  // rather than letting the user select an unsupported kind and hit an
-  // error mid-run.
+  // YouTube, Recipe, Skinny Banner (both variants), POV Card, Item
+  // Carousel, and Inspiration Module so far (see module-editor.js) —
+  // restrict the picker itself rather than letting the user select an
+  // unsupported kind and hit an error mid-run.
   const EDIT_SUPPORTED_KEYS = [
-    'hubSpokesNM',
+    'hubSpokeNM',
     'hubSpokeCard',
     'heroPov',
     'youtube',
@@ -224,6 +230,7 @@ async function renderModuleChecklist(brandPage) {
     'textOnlySkinnyBanner',
     'povCard',
     'itemCarousel',
+    'inspirationModule',
   ];
   const defs = isEditMode ? MODULE_DEFS.filter((def) => EDIT_SUPPORTED_KEYS.includes(def.key)) : MODULE_DEFS;
   const records = await getModuleRecords();
@@ -241,7 +248,7 @@ async function renderModuleChecklist(brandPage) {
       const message = document.createElement('div');
       message.style.color = '#d32f2f';
       message.textContent =
-        'No Hub Spokes NxM / Hub Spoke Card / Hero POV / YouTube / Recipe / Skinny Banner / POV Card / Item Carousel modules found in this brief.';
+        'No Hub Spokes NxM / Hub Spoke Card / Hero POV / YouTube / Recipe / Skinny Banner / POV Card / Item Carousel / Inspiration Module modules found in this brief.';
       container.appendChild(message);
     }
     return;

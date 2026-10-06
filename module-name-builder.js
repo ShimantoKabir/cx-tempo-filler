@@ -12,6 +12,7 @@ class ModuleNameBuilder {
     'text-only-skinny-banner': (p) => `${p.prefix}${p.brandName} CP Text Only Skinny Banner ${p.timeSuffix}`,
     'youtube': (p) => `${p.prefix}${p.brandName} Brand CP YouTube ${p.timeSuffix}`,
     'recipe': (p) => `${p.prefix}${p.brandName} Brand CP Recipe ${p.timeSuffix}`,
+    'inspiration-module': (p) => `${p.prefix}${p.brandName} Brand CP Inspiration Module ${p.timeSuffix}`,
   };
 
   /**

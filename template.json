@@ -288,7 +288,7 @@
         ]
       }
     ],
-    "hubSpokesNM": [
+    "hubSpokeNM": [
       {
         "columns": 4,
         "heading": { "english": "hub-spoke", "french": "hub-spoke" },
@@ -779,6 +779,252 @@
             "Tremper l'extrémité d'un cure-dent dans la moutarde et dessiner des traits sur le « visage »."
           ]
         }
+      }
+    ],
+    "inspirationModule": [
+      {
+        "order": 20,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Air"
+              },
+              "french": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Air"
+              }
+            },
+            "heading": {
+              "english": "Febreze Air",
+              "french": "Febreze Air"
+            },
+            "subHeading": {
+              "english": "Just-cleaned freshness in every space.",
+              "french": "Pour une sensation de fraîcheur dans chaque espace."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "4VV5VAC48801",
+              "6000197848660",
+              "6000197849110",
+              "6000208807431",
+              "6000196727537",
+              "6000196727398",
+              "6000206703073",
+              "7BBC9XXXC8G8",
+              "575R6JXDFP2H",
+              "6000199303948"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 21,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Plug"
+              },
+              "french": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Prise Febreze"
+              }
+            },
+            "heading": {
+              "english": "Febreze Plug",
+              "french": "Prise Febreze"
+            },
+            "subHeading": {
+              "english": "Up to 50 days of continuous fragrance.",
+              "french": "Jusqu'à 50 jours de parfum continu."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000202392680",
+              "0TBOFWY48G5X",
+              "6000208170948",
+              "6000208807841",
+              "6000200692396",
+              "6000208626369",
+              "6000208808680",
+              "6000208808911",
+              "16R9X4DM2FMG",
+              "6000208807734"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 22,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Bathroom"
+              },
+              "french": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Salle de bain"
+              }
+            },
+            "heading": {
+              "english": "Febreze Bathroom",
+              "french": "Febreze Salle de bain"
+            },
+            "subHeading": {
+              "english": "Non-stop odour-fighting, up to 45 days.",
+              "french": "Élimine les odeurs jusqu'à 45 jours."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000208807245",
+              "6000208808320",
+              "6000208808307",
+              "6000208807226",
+              "6000208808621",
+              "5GK8XSRLL6B4",
+              "6000208807974",
+              "6000208807906",
+              "6000208806916",
+              "1J23J1EOL8CL"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 23,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Auto"
+              },
+              "french": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Auto"
+              }
+            },
+            "heading": {
+              "english": "Febreze Auto",
+              "french": "Febreze Auto"
+            },
+            "subHeading": {
+              "english": "Eliminate odours for better rides.",
+              "french": "Roulez sans odeurs désagréables."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000197850023",
+              "6000208807987",
+              "6000199312941",
+              "6000208806981",
+              "6000208806836",
+              "6000199315800",
+              "6000208418483",
+              "6000208808592",
+              "6000208419850",
+              "6000208419543"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 24,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Fabric"
+              },
+              "french": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Tissu"
+              }
+            },
+            "heading": {
+              "english": "Febreze Fabric",
+              "french": "Febreze Tissu"
+            },
+            "subHeading": {
+              "english": "Spray & refresh your household fabrics.",
+              "french": "Vaporisez et rafraîchissez vos tissus d’intérieur."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000207494286",
+              "6000207362787",
+              "6000208169653",
+              "6000208808480",
+              "6000203371502",
+              "6000207362867",
+              "6000207494519",
+              "6000208808974",
+              "6000207363157"
+            ]
+          }
+        ]
       }
     ]
   }

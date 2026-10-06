@@ -681,6 +681,6 @@ class HeroPov {
     const moduleRecord = navigateBackAfterSave
       ? { pageId: brandPage.pageId, deviceType, moduleKey: `heroPov-${index}`, moduleName }
       : null;
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, moduleRecord);
   };
 }

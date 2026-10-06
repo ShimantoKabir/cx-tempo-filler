@@ -1,153 +1,1917 @@
 {
   "brandPage": {
-    "pageId": "6000210105766",
-    "brandName": "Kraft Holiday",
-    "textOnlySkinnyBanner": [
-      {
-        "order": 1,
-        "bannerType": "text-only",
-        "bannerHeight": "100",
-        "bannerBgColor": "203064",
-        "headline": {
-          "web": { "english": { "text": "Learn more: www.kraft.ca/2MILLIONPLATES", "textColor": "" }, "french": { "text": "www.kraftheinz.com/fr-CA/2millionsdassiettes", "textColor": "" } },
-          "app": { "english": { "text": "Learn more: www.kraft.ca/2MILLIONPLATES", "textColor": "" }, "french": { "text": "www.kraftheinz.com/fr-CA/2millionsdassiettes", "textColor": "" } }
-        },
-        "bannerCta": {
-          "linkColor": "",
-          "web": {
-            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
-            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
-          },
-          "app": {
-            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
-            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
-          }
-        },
-        "bannerClickThoughURL": {
-          "app": {
-            "english": { "linkText": "Learn more", "linkValue": "https://www.kraftheinz.com/en-CA/twomillionplates" },
-            "french": { "linkText": "Précisions", "linkValue": "https://www.kraftheinz.com/fr-CA/2millionsdassiettes" }
-          }
-        }
-      }
-    ],
+    "pageId": "6000209571253",
+    "brandName": "P&G Febreze",
+    "textColor": "001E60",
     "heroPov": [
       {
-        "order": 3,
+        "order": 1,
         "cards": [
           {
-            "povStyle": "",
-            "backgroundColor": { "app": "", "web": "" },
+            "povStyle": "card-with-no-cta",
+            "backgroundColor": {
+              "app": "",
+              "web": ""
+            },
             "image": {
               "web": {
-                "english": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_E", "mobileAltCopy": "", "desktop": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_E", "desktopAltCopy": "" },
-                "french": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_F", "mobileAltCopy": "", "desktop": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_F", "desktopAltCopy": "" }
+                "english": {
+                  "mobile": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_E.jpg",
+                  "mobileAltCopy": "",
+                  "desktop": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_E.jpg",
+                  "desktopAltCopy": ""
+                },
+                "french": {
+                  "mobile": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_F.jpg",
+                  "mobileAltCopy": "",
+                  "desktop": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_F.jpg",
+                  "desktopAltCopy": ""
+                }
               },
               "app": {
-                "english": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_E", "mobileAltCopy": "", "tablet": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_E", "tabletAltCopy": "" },
-                "french": { "mobile": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-M_F", "mobileAltCopy": "", "tablet": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_261008-D_F", "tabletAltCopy": "" }
+                "english": {
+                  "mobile": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_E.jpg",
+                  "mobileAltCopy": "",
+                  "tablet": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_E.jpg",
+                  "tabletAltCopy": ""
+                },
+                "french": {
+                  "mobile": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_F.jpg",
+                  "mobileAltCopy": "",
+                  "tablet": "HPOV-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_F.jpg",
+                  "tabletAltCopy": ""
+                }
               }
             },
             "logo": {
               "web": {
-                "english": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_E", "altCopy": "" },
-                "french": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_F", "altCopy": "" }
+                "english": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                }
               },
               "app": {
-                "english": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_E", "altCopy": "" },
-                "french": { "searchText": "HPOV-BP_CF6460_Kraft-Holiday-Giving-2M-Plates_Logo_261008_F", "altCopy": "" }
+                "english": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                }
               }
             },
             "legal": {
               "web": {
-                "english": { "discloser": "Legal", "title": "Legal", "description": "*Learn more at Kraft.ca/2millionplates\nThis Kraft Heinz offer is hosted by Kraft Heinz Canada and is in no way sponsored, endorsed, administered by, or\nassociated with Wal-Mart Canada Corp. Kraft.ca/2millionplates is hosted by a third party and is not associated with\nwalmart.ca.", "desktopTextColor": "", "mobileTextColor": "" },
-                "french": { "discloser": "Mention légale", "title": "Mention légale", "description": "* Précisions à Kraft.ca/2millionsdassiettes\nL'offre Kraft Heinz est organisée par Kraft Heinz Canada et n'est en aucun cas commanditée, approuvée ou administrée\npar La Compagnie Walmart du Canada ni associée à cette dernière. Le contenu de kraft.ca/2MILLIONSDASSIETTES est\nhébergé par un tiers et n'est pas associé au site walmart.ca.", "desktopTextColor": "", "mobileTextColor": "" }
+                "english": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                },
+                "french": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                }
               },
               "app": {
-                "english": { "discloser": "Legal", "title": "Legal", "description": "*Learn more at Kraft.ca/2millionplates\nThis Kraft Heinz offer is hosted by Kraft Heinz Canada and is in no way sponsored, endorsed, administered by, or\nassociated with Wal-Mart Canada Corp. Kraft.ca/2millionplates is hosted by a third party and is not associated with\nwalmart.ca.", "textColor": "" },
-                "french": { "discloser": "Mention légale", "title": "Mention légale", "description": "* Précisions à Kraft.ca/2millionsdassiettes\nL'offre Kraft Heinz est organisée par Kraft Heinz Canada et n'est en aucun cas commanditée, approuvée ou administrée\npar La Compagnie Walmart du Canada ni associée à cette dernière. Le contenu de kraft.ca/2MILLIONSDASSIETTES est\nhébergé par un tiers et n'est pas associé au site walmart.ca.", "textColor": "" }
+                "english": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "textColor": ""
+                },
+                "french": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "textColor": ""
+                }
               }
             },
             "headline": {
-              "web": { "english": { "text": "Shop Kraft, give back", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Aidez Kraft à redonner", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-              "app": { "english": { "text": "Shop Kraft, give back", "textColor": "001E60" }, "french": { "text": "Aidez Kraft à redonner", "textColor": "001E60" } }
+              "web": {
+                "english": {
+                  "text": "Breathe happy with Febreze",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                },
+                "french": {
+                  "text": "Febreze, le parfum du bonheur",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "Breathe happy with Febreze",
+                  "textColor": "001E60"
+                },
+                "french": {
+                  "text": "Febreze, le parfum du bonheur",
+                  "textColor": "001E60"
+                }
+              }
             },
             "subHeadline": {
-              "web": { "english": { "text": "Help us fill 2 million* plates with Food Banks Canada.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" }, "french": { "text": "Remplissons 2 millions* d'assiettes avec Banques alimentaires Canada.", "desktopTextColor": "001E60", "mobileTextColor": "001E60" } },
-              "app": { "english": { "text": "Help us fill 2 million* plates with Food Banks Canada.", "textColor": "001E60" }, "french": { "text": "Remplissons 2 millions* d'assiettes avec Banques alimentaires Canada.", "textColor": "001E60" } }
+              "web": {
+                "english": {
+                  "text": "Fights odour and freshens.",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                },
+                "french": {
+                  "text": "Combat les odeurs et rafraîchit.",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "Fights odour and freshens.",
+                  "textColor": "001E60"
+                },
+                "french": {
+                  "text": "Combat les odeurs et rafraîchit.",
+                  "textColor": "001E60"
+                }
+              }
             },
             "eyebrow": {
-              "web": { "english": { "text": "", "desktopTextColor": "", "mobileTextColor": "" }, "french": { "text": "", "desktopTextColor": "", "mobileTextColor": "" } },
-              "app": { "english": { "text": "", "textColor": "" }, "french": { "text": "", "textColor": "" } }
+              "web": {
+                "english": {
+                  "text": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                },
+                "french": {
+                  "text": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "",
+                  "textColor": ""
+                },
+                "french": {
+                  "text": "",
+                  "textColor": ""
+                }
+              }
             },
             "cta": {
-              "web": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } },
-              "app": { "english": { "linkText": "", "linkValue": "" }, "french": { "linkText": "", "linkValue": "" } }
+              "web": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": ""
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": ""
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": ""
+                }
+              }
             }
           }
         ]
+      },
+      {
+        "order": 26,
+        "cards" : [
+          {
+            "povStyle": "card-with-no-cta",
+            "backgroundColor": {
+              "app": "",
+              "web": ""
+            },
+            "image": {
+              "web": {
+                "english": {
+                  "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_E.jpg",
+                  "mobileAltCopy": "",
+                  "desktop": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_E.jpg",
+                  "desktopAltCopy": ""
+                },
+                "french": {
+                  "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_F.jpg",
+                  "mobileAltCopy": "",
+                  "desktop": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_F.jpg",
+                  "desktopAltCopy": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_E.jpg",
+                  "mobileAltCopy": "",
+                  "tablet": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_E.jpg",
+                  "tabletAltCopy": ""
+                },
+                "french": {
+                  "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_F.jpg",
+                  "mobileAltCopy": "",
+                  "tablet": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_F.jpg",
+                  "tabletAltCopy": ""
+                }
+              }
+            },
+            "logo": {
+              "web": {
+                "english": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+                  "altCopy": ""
+                }
+              }
+            },
+            "legal": {
+              "web": {
+                "english": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                },
+                "french": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "textColor": ""
+                },
+                "french": {
+                  "discloser": "",
+                  "title": "",
+                  "description": "",
+                  "textColor": ""
+                }
+              }
+            },
+            "headline": {
+              "web": {
+                "english": {
+                  "text": "Breathe happy with Febreze!",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                },
+                "french": {
+                  "text": "Respirez le bonheur avec Febreze",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "Breathe happy with Febreze!",
+                  "textColor": "001E60"
+                },
+                "french": {
+                  "text": "Respirez le bonheur avec Febreze",
+                  "textColor": "001E60"
+                }
+              }
+            },
+            "subHeadline": {
+              "web": {
+                "english": {
+                  "text": "Transform your spaces into a breath of fresh air with Febreze!",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                },
+                "french": {
+                  "text": "Faites entrer un vent de fraîcheur dans chaque pièce avec Febreze!",
+                  "desktopTextColor": "001E60",
+                  "mobileTextColor": "001E60"
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "Transform your spaces into a breath of fresh air with Febreze!",
+                  "textColor": ""
+                },
+                "french": {
+                  "text": "Faites entrer un vent de fraîcheur dans chaque pièce avec Febreze!",
+                  "textColor": ""
+                }
+              }
+            },
+            "eyebrow": {
+              "web": {
+                "english": {
+                  "text": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                },
+                "french": {
+                  "text": "",
+                  "desktopTextColor": "",
+                  "mobileTextColor": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "text": "",
+                  "textColor": ""
+                },
+                "french": {
+                  "text": "",
+                  "textColor": ""
+                }
+              }
+            },
+            "cta": {
+              "web": {
+                "english": {
+                  "linkText": "",
+                  "linkValue": ""
+                },
+                "french": {
+                  "linkText": "",
+                  "linkValue": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "linkText": "",
+                  "linkValue": ""
+                },
+                "french": {
+                  "linkText": "",
+                  "linkValue": ""
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "hubSpokeNM": [
+      {
+        "columns": 6,
+        "heading": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "rows": [
+          {
+            "categories": [
+              {
+                "name": {
+                  "english": "Trash",
+                  "french": "Trash"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-1_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.tbd.com",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-1_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.tbd.com",
+                    "altCopy": ""
+                  }
+                }
+              },
+              {
+                "name": {
+                  "english": "Air",
+                  "french": "Air"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-2_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.walmart.ca/en/search?q=febreze+air+mist",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-2_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.walmart.ca/fr/search?q=febreze+air+mist",
+                    "altCopy": ""
+                  }
+                }
+              },
+              {
+                "name": {
+                  "english": "Plugs",
+                  "french": "Plugs"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-3_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.walmart.ca/en/search?q=febreze+plugs+",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-3_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.walmart.ca/fr/search?q=febreze+plugs+",
+                    "altCopy": ""
+                  }
+                }
+              },
+              {
+                "name": {
+                  "english": "Bathroom",
+                  "french": "Bathroom"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-4_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.walmart.ca/en/search?q=febreze+bathroom",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-4_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.walmart.ca/fr/search?q=febreze+bathroom",
+                    "altCopy": ""
+                  }
+                }
+              },
+              {
+                "name": {
+                  "english": "Auto",
+                  "french": "Auto"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-5_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.walmart.ca/en/search?q=febreze%20car&typeahead=febreze%20car",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-5_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.walmart.ca/fr/search?q=febreze%20car&typeahead=febreze%20car",
+                    "altCopy": ""
+                  }
+                }
+              },
+              {
+                "name": {
+                  "english": "Fabric",
+                  "french": "Fabric"
+                },
+                "image": {
+                  "english": {
+                    "searchText": "HSK-6_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                    "linkValue": "https://www.walmart.ca/en/search?q=febreze+fabric+refresher",
+                    "altCopy": ""
+                  },
+                  "french": {
+                    "searchText": "HSK-6_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                    "linkValue": "https://www.walmart.ca/fr/search?q=febreze+fabric+refresher",
+                    "altCopy": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "textOnlySkinnyBanner": [
+      {
+        "order": 2,
+        "bannerType": "text-only",
+        "bannerHeight": "150",
+        "bannerBgColor": "",
+        "headline": {
+          "web": {
+            "english": {
+              "text": "New Febreze Trash Odour Fighter",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Nouvel éliminateur d’odeurs de déchets",
+              "textColor": "001E60"
+            }
+          },
+          "app": {
+            "english": {
+              "text": "New Febreze Trash Odour Fighter",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Nouvel éliminateur d’odeurs de déchets",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "001E60",
+          "web": {
+            "english": {
+              "linkText": "Shop all",
+              "linkValue": "https://www.walmart.ca/en/search?q=febreeze"
+            },
+            "french": {
+              "linkText": "Voir tout",
+              "linkValue": "https://www.walmart.ca/fr/search?q=febreeze"
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "Shop all",
+              "linkValue": "https://www.walmart.ca/en/search?q=febreeze"
+            },
+            "french": {
+              "linkText": "Voir tout",
+              "linkValue": "https://www.walmart.ca/fr/search?q=febreeze"
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "Shop all",
+              "linkValue": "https://www.walmart.ca/en/search?q=febreeze"
+            },
+            "french": {
+              "linkText": "Voir tout",
+              "linkValue": "https://www.walmart.ca/fr/search?q=febreeze"
+            }
+          }
+        }
       }
     ],
     "povCard": [
       {
-        "order": 5,
-        "title": { "web": { "english": "", "french": "" }, "app": { "english": "", "french": "" } },
-        "subTitle": { "web": "" },
+        "order": 3,
+        "title": {
+          "web": {
+            "english": "",
+            "french": ""
+          },
+          "app": {
+            "english": "",
+            "french": ""
+          }
+        },
+        "subTitle": {
+          "web": ""
+        },
         "cards": [
           {
             "image": {
-              "web": { "english": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-1_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
+              "web": {
+                "english": {
+                  "searchText": "POVC-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "POVC-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                  "altCopy": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "searchText": "POVC-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "POVC-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                  "altCopy": ""
+                }
+              }
             },
-            "heading": { "web": { "english": "Heinz Ketchup", "french": "Ketchup Heinz" }, "app": { "english": "Heinz Ketchup", "french": "Ketchup Heinz" } },
-            "subHeading": { "app": { "english": "Savour the signature thick texture & rich taste.", "french": "Savourez sa texture épaisse et son goût riche signatures." } },
-            "description": { "web": { "english": "Savour the signature thick texture & rich taste.", "french": "Savourez sa texture épaisse et son goût riche signatures." } },
-            "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
-            "textColor": { "web": "001E60" },
+            "heading": {
+              "web": {
+                "english": "Trash Odour Fighter",
+                "french": "Éliminateur d'odeurs"
+              },
+              "app": {
+                "english": "Trash Odour Fighter",
+                "french": "Éliminateur d'odeurs"
+              }
+            },
+            "subHeading": {
+              "app": {
+                "english": "Reduces up to 99% of common trash odours.",
+                "french": "Réduit jusqu'à 99 % des odeurs communes de déchets."
+              }
+            },
+            "description": {
+              "web": {
+                "english": "Reduces up to 99% of common trash odours.",
+                "french": "Réduit jusqu'à 99 % des odeurs communes de déchets."
+              }
+            },
+            "eyebrow": {
+              "web": {
+                "english": "",
+                "french": ""
+              },
+              "app": ""
+            },
+            "textColor": {
+              "web": "001E60"
+            },
             "cta": {
-              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" } },
-              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Heinz-Tomato-Ketchup-1-LT-Bottle/206038?from=/search" } }
+              "web": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": "https://www.tbd.com"
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": "https://www.tbd.com"
+                }
+              },
+              "app": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": "https://www.tbd.com"
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": "https://www.tbd.com"
+                }
+              }
             }
           },
           {
             "image": {
-              "web": { "english": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-2_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
+              "web": {
+                "english": {
+                  "searchText": "POVC-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "POVC-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                  "altCopy": ""
+                }
+              },
+              "app": {
+                "english": {
+                  "searchText": "POVC-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                  "altCopy": ""
+                },
+                "french": {
+                  "searchText": "POVC-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                  "altCopy": ""
+                }
+              }
             },
-            "heading": { "web": { "english": "KD Original", "french": "Macaroni KD Original" }, "app": { "english": "KD Original", "french": "Macaroni KD Original" } },
-            "subHeading": { "app": { "english": "Kraft's classic, deliciously creamy macaroni & cheese.", "french": "Le macaroni au fromage classique de Kraft, délicieusement crémeux." } },
-            "description": { "web": { "english": "Kraft's classic, deliciously creamy macaroni & cheese.", "french": "Le macaroni au fromage classique de Kraft, délicieusement crémeux." } },
-            "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
-            "textColor": { "web": "001E60" },
-            "cta": {
-              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } },
-              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } }
-            }
-          },
-          {
-            "image": {
-              "web": { "english": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } },
-              "app": { "english": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_E", "altCopy": "" }, "french": { "searchText": "POVC-BP-3_CF6460_Kraft-Holiday-Giving-2M-Plates_261008_F", "altCopy": "" } }
+            "heading": {
+              "web": {
+                "english": "Easy to use",
+                "french": "Facile à utiliser"
+              },
+              "app": {
+                "english": "Easy to use",
+                "french": "Facile à utiliser"
+              }
             },
-            "heading": { "web": { "english": "Philadelphia Original", "french": "Philadelphia Original" }, "app": { "english": "Philadelphia Original", "french": "Philadelphia Original" } },
-            "subHeading": { "app": { "english": "Enjoy the velvety goodness of Philadelphia Cream Cheese.", "french": "Savourez le bon goût velouté du fromage à la crème Philadelphia." } },
-            "description": { "web": { "english": "Enjoy the velvety goodness of Philadelphia Cream Cheese.", "french": "Savourez le bon goût velouté du fromage à la crème Philadelphia." } },
-            "eyebrow": { "web": { "english": "", "french": "" }, "app": "" },
-            "textColor": { "web": "001E60" },
+            "subHeading": {
+              "app": {
+                "english": "Just insert, peel & stick.",
+                "french": "Insérez la recharge et collez l’éliminateur en retirant la pellicule."
+              }
+            },
+            "description": {
+              "web": {
+                "english": "Just insert, peel & stick.",
+                "french": "Insérez la recharge et collez l’éliminateur en retirant la pellicule."
+              }
+            },
+            "eyebrow": {
+              "web": {
+                "english": "",
+                "french": ""
+              },
+              "app": ""
+            },
+            "textColor": {
+              "web": "001E60"
+            },
             "cta": {
-              "web": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-cream-cheese-product/6000194034105?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } },
-              "app": { "english": { "linkText": "Shop", "linkValue": "https://www.walmart.ca/en/ip/philadelphia-original-cream-cheese-product/6000194034105?classType=REGULAR&athbdg=L1600&from=/search" }, "french": { "linkText": "Magasiner", "linkValue": "https://www.walmart.ca/fr/ip/Kraft-Dinner-Original-Macaroni-and-Cheese-Dinner-200g-Box/4CW6SAER16MG?classType=REGULAR&athbdg=L1600&from=/search" } }
+              "web": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": "https://www.tbd.com"
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": "https://www.tbd.com"
+                }
+              },
+              "app": {
+                "english": {
+                  "linkText": "Shop",
+                  "linkValue": "https://www.tbd.com"
+                },
+                "french": {
+                  "linkText": "Magasiner",
+                  "linkValue": "https://www.tbd.com"
+                }
+              }
             }
           }
         ]
       }
     ],
-    "itemCarousel": [
+    "imageAndTextSkinnyBanner": [
+      {
+        "order": 4,
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Inspo Module with Carousel #1 (Febreze Air) — app-only per brief note",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Febreze Air",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Febreze Air",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Just-cleaned freshness in every space.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Pour une sensation de fraîcheur dans chaque espace.",
+              "textColor": "001E60"
+            }
+          }
+        }
+      },
       {
         "order": 6,
-        "title": { "english": "Fill your plate", "french": "Remplissez votre assiette" },
-        "subTitle": { "english": "", "french": "" },
-        "skus": ["57000002992", "68100048629", "4CW6SAER16MG", "7CBGEIJIWCKP", "7LA77YUJPSW2", "6000205370034", "206880", "5L9HF103LULI", "6000194034105", "10072749"]
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Inspo Module with Carousel #2 (Febreze Plug) — app-only per brief note",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Febreze Plug",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Prise Febreze",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Up to 50 days of continuous fragrance.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Jusqu’à 50 jours de parfum continu.",
+              "textColor": "001E60"
+            }
+          }
+        }
+      },
+      {
+        "order": 8,
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Inspo Module with Carousel #3 (Febreze Bathroom) — app-only per brief note",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Febreze Bathroom",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Febreze Salle de bain",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Non-stop odour-fighting, up to 45 days.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Élimine les odeurs jusqu’à 45 jours.",
+              "textColor": "001E60"
+            }
+          }
+        }
+      },
+      {
+        "order": 10,
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Inspo Module with Carousel #4 (Febreze Auto) — app-only per brief note",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Febreze Auto",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Febreze Auto",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Eliminate odours for better rides.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Roulez sans odeurs désagréables.",
+              "textColor": "001E60"
+            }
+          }
+        }
+      },
+      {
+        "order": 12,
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Inspo Module with Carousel #5 (Febreze Fabric) — app-only per brief note",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "",
+              "desktopAltCopy": "",
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Febreze Fabric",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Febreze Tissu",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Spray & refresh your household fabrics.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Vaporisez et rafraîchissez vos tissus d’intérieur.",
+              "textColor": "001E60"
+            }
+          }
+        }
+      },
+      {
+        "order": 13,
+        "bannerType": "image-and-text",
+        "bannerHeight": "220",
+        "sourceLabel": "Text + Image Module",
+        "banner": {
+          "web": {
+            "english": {
+              "desktop": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_E.jpg",
+              "desktopAltCopy": "",
+              "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_E.jpg",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "desktop": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_D_F.jpg",
+              "desktopAltCopy": "",
+              "mobile": "HPOV-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_M_F.jpg",
+              "mobileAltCopy": ""
+            }
+          },
+          "app": {
+            "english": {
+              "mobile": "",
+              "mobileAltCopy": ""
+            },
+            "french": {
+              "mobile": "",
+              "mobileAltCopy": ""
+            }
+          }
+        },
+        "logo": {
+          "english": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png",
+          "french": "HPOV-BP_CT5231_P&G-Febreze-Brand-Store_Logo_261001.png"
+        },
+        "bannerCta": {
+          "linkColor": "",
+          "web": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          },
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "bannerClickThoughURL": {
+          "app": {
+            "english": {
+              "linkText": "",
+              "linkValue": ""
+            },
+            "french": {
+              "linkText": "",
+              "linkValue": ""
+            }
+          }
+        },
+        "headline": {
+          "web": {
+            "english": {
+              "text": "Breathe happy with Febreze!",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Respirez le bonheur avec Febreze",
+              "textColor": "001E60"
+            }
+          },
+          "app": {
+            "english": {
+              "text": "Breathe happy with Febreze!",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Respirez le bonheur avec Febreze",
+              "textColor": "001E60"
+            }
+          }
+        },
+        "subHeadline": {
+          "web": {
+            "english": {
+              "text": "Transform your spaces into a breath of fresh air with Febreze! With an array of captivating scents, from crisp linen to cherry blossom, there’s a perfect fragrance for everyone. Say goodbye to unwanted smells and hello to a refreshing atmosphere that you and your guests will love.",
+              "textColor": "001E60"
+            },
+            "french": {
+              "text": "Faites entrer un vent de fraîcheur dans chaque pièce avec Febreze! Découvrez une variété de parfums envoûtants, du linge frais à la fleur de cerisier, pour tous les goûts. Dites adieu aux odeurs indésirables et bonjour à une ambiance rafraîchissante que vous apprécierez autant que vos invités.",
+              "textColor": "001E60"
+            }
+          },
+          "app": {
+            "english": {
+              "text": "",
+              "textColor": ""
+            },
+            "french": {
+              "text": "",
+              "textColor": ""
+            }
+          }
+        }
+      }
+    ],
+    "itemCarousel": [
+      {
+        "order": 5,
+        "title": {
+          "english": "Febreze Air",
+          "french": "Febreze Air"
+        },
+        "subTitle": {
+          "english": "",
+          "french": ""
+        },
+        "skus": [
+          "4VV5VAC48801",
+          "6000197848660",
+          "6000197849110",
+          "6000208807431",
+          "6000196727537",
+          "6000196727398",
+          "6000206703073",
+          "7BBC9XXXC8G8",
+          "575R6JXDFP2H",
+          "6000199303948"
+        ]
+      },
+      {
+        "order": 7,
+        "title": {
+          "english": "Febreze Plug",
+          "french": "Prise Febreze"
+        },
+        "subTitle": {
+          "english": "",
+          "french": ""
+        },
+        "skus": [
+          "6000202392680",
+          "0TBOFWY48G5X",
+          "6000208170948",
+          "6000208807841",
+          "6000200692396",
+          "6000208626369",
+          "6000208808680",
+          "6000208808911",
+          "16R9X4DM2FMG",
+          "6000208807734"
+        ]
+      },
+      {
+        "order": 9,
+        "title": {
+          "english": "Febreze Bathroom",
+          "french": "Febreze Salle de bain"
+        },
+        "subTitle": {
+          "english": "",
+          "french": ""
+        },
+        "skus": [
+          "6000208807245",
+          "6000208808320",
+          "6000208808307",
+          "6000208807226",
+          "6000208808621",
+          "5GK8XSRLL6B4",
+          "6000208807974",
+          "6000208807906",
+          "6000208806916",
+          "1J23J1EOL8CL"
+        ]
+      },
+      {
+        "order": 11,
+        "title": {
+          "english": "Febreze Auto",
+          "french": "Febreze Auto"
+        },
+        "subTitle": {
+          "english": "",
+          "french": ""
+        },
+        "skus": [
+          "6000197850023",
+          "6000208807987",
+          "6000199312941",
+          "6000208806981",
+          "6000208806836",
+          "6000199315800",
+          "6000208418483",
+          "6000208808592",
+          "6000208419850",
+          "6000208419543"
+        ]
+      },
+      {
+        "order": 12,
+        "title": {
+          "english": "Febreze Fabric",
+          "french": "Febreze Tissu"
+        },
+        "subTitle": {
+          "english": "",
+          "french": ""
+        },
+        "skus": [
+          "6000207494286",
+          "6000207362787",
+          "6000208169653",
+          "6000208808480",
+          "6000203371502",
+          "6000207362867",
+          "6000207494519",
+          "6000208808974",
+          "6000207363157"
+        ]
+      }
+    ],
+    "hubSpokeCard": [
+      {
+        "order": 14,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-1_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Trash"
+              },
+              "french": {
+                "searchText": "HSK-1_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Trash"
+              }
+            },
+            "heading": {
+              "english": "Trash",
+              "french": "Trash"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            }
+          },
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-2_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Air"
+              },
+              "french": {
+                "searchText": "HSK-2_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Air"
+              }
+            },
+            "heading": {
+              "english": "Air",
+              "french": "Air"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+air+mist",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+air+mist"
+            }
+          },
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-3_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Plugs"
+              },
+              "french": {
+                "searchText": "HSK-3_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Plugs"
+              }
+            },
+            "heading": {
+              "english": "Plugs",
+              "french": "Plugs"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+plugs+",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+plugs+"
+            }
+          },
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-4_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Bathroom"
+              },
+              "french": {
+                "searchText": "HSK-4_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Bathroom"
+              }
+            },
+            "heading": {
+              "english": "Bathroom",
+              "french": "Bathroom"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+bathroom",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+bathroom"
+            }
+          },
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-5_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Auto"
+              },
+              "french": {
+                "searchText": "HSK-5_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Auto"
+              }
+            },
+            "heading": {
+              "english": "Auto",
+              "french": "Auto"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze%20car&typeahead=febreze%20car",
+              "french": "https://www.walmart.ca/fr/search?q=febreze%20car&typeahead=febreze%20car"
+            }
+          },
+          {
+            "image": {
+              "english": {
+                "searchText": "HSK-6_BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Fabric"
+              },
+              "french": {
+                "searchText": "HSK-6_BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Fabric"
+              }
+            },
+            "heading": {
+              "english": "Fabric",
+              "french": "Fabric"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+fabric+refresher",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+fabric+refresher"
+            }
+          }
+        ]
+      }
+    ],
+    "inspirationModule": [
+      {
+        "order": 20,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Air"
+              },
+              "french": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Air"
+              }
+            },
+            "heading": {
+              "english": "Febreze Air",
+              "french": "Febreze Air"
+            },
+            "subHeading": {
+              "english": "Just-cleaned freshness in every space.",
+              "french": "Pour une sensation de fraîcheur dans chaque espace."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "4VV5VAC48801",
+              "6000197848660",
+              "6000197849110",
+              "6000208807431",
+              "6000196727537",
+              "6000196727398",
+              "6000206703073",
+              "7BBC9XXXC8G8",
+              "575R6JXDFP2H",
+              "6000199303948"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 21,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Plug"
+              },
+              "french": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Prise Febreze"
+              }
+            },
+            "heading": {
+              "english": "Febreze Plug",
+              "french": "Prise Febreze"
+            },
+            "subHeading": {
+              "english": "Up to 50 days of continuous fragrance.",
+              "french": "Jusqu'à 50 jours de parfum continu."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000202392680",
+              "0TBOFWY48G5X",
+              "6000208170948",
+              "6000208807841",
+              "6000200692396",
+              "6000208626369",
+              "6000208808680",
+              "6000208808911",
+              "16R9X4DM2FMG",
+              "6000208807734"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 22,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Bathroom"
+              },
+              "french": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Salle de bain"
+              }
+            },
+            "heading": {
+              "english": "Febreze Bathroom",
+              "french": "Febreze Salle de bain"
+            },
+            "subHeading": {
+              "english": "Non-stop odour-fighting, up to 45 days.",
+              "french": "Élimine les odeurs jusqu'à 45 jours."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000208807245",
+              "6000208808320",
+              "6000208808307",
+              "6000208807226",
+              "6000208808621",
+              "5GK8XSRLL6B4",
+              "6000208807974",
+              "6000208807906",
+              "6000208806916",
+              "1J23J1EOL8CL"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 23,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Auto"
+              },
+              "french": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Auto"
+              }
+            },
+            "heading": {
+              "english": "Febreze Auto",
+              "french": "Febreze Auto"
+            },
+            "subHeading": {
+              "english": "Eliminate odours for better rides.",
+              "french": "Roulez sans odeurs désagréables."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000197850023",
+              "6000208807987",
+              "6000199312941",
+              "6000208806981",
+              "6000208806836",
+              "6000199315800",
+              "6000208418483",
+              "6000208808592",
+              "6000208419850",
+              "6000208419543"
+            ]
+          }
+        ]
+      },
+      {
+        "order": 24,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
+          {
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Fabric"
+              },
+              "french": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Tissu"
+              }
+            },
+            "heading": {
+              "english": "Febreze Fabric",
+              "french": "Febreze Tissu"
+            },
+            "subHeading": {
+              "english": "Spray & refresh your household fabrics.",
+              "french": "Vaporisez et rafraîchissez vos tissus d’intérieur."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.tbd.com",
+              "french": "https://www.tbd.com"
+            },
+            "skus": [
+              "6000207494286",
+              "6000207362787",
+              "6000208169653",
+              "6000208808480",
+              "6000203371502",
+              "6000207362867",
+              "6000207494519",
+              "6000208808974",
+              "6000207363157"
+            ]
+          }
+        ]
       }
     ]
   }

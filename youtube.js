@@ -81,7 +81,6 @@ class Youtube {
     return await Helper.waitForSaveOrDiscard(
       Youtube.SELECTORS.saveButton,
       Youtube.SELECTORS.discardButton,
-      navigateBackAfterSave,
       moduleRecord
     );
   };

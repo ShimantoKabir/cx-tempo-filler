@@ -315,7 +315,6 @@ class Recipe {
     return await Helper.waitForSaveOrDiscard(
       Recipe.SELECTORS.saveButton,
       Recipe.SELECTORS.discardButton,
-      navigateBackAfterSave,
       moduleRecord
     );
   };

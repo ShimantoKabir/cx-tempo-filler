@@ -163,17 +163,14 @@ class Helper {
   // skinny-banner.js/hero-pov.js/hub-spoke.js/pov-card.js/item-carousel.js.
   // Returns true if Save was clicked, false if Discard Changes was clicked
   // — the caller uses this to decide whether to mark the module completed.
-  // navigateBack defaults true (every Create-mode module's final save needs
-  // to return to the module-zone list to find the next module) — Edit mode
-  // passes false, since there's no next module to find and nothing to go
-  // back to.
+  // No longer navigates back after saving — only one module is ever built
+  // per run now (popup's checklist is single-select), so there's never a
+  // "next module" to return and find.
   // moduleRecord (optional) is { pageId, deviceType, moduleKey, moduleName }
   // — only Create mode's calls pass one (Edit mode doesn't track/limit
-  // edits, so it never does). Saved here, before navigateBack below can
-  // move the page away from the module's own URL — this is the only point
-  // where "saved" is confirmed true AND window.location.href still is that
-  // URL.
-  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel, navigateBack = true, moduleRecord = null) => {
+  // edits, so it never does). Saved here, at the one point where "saved" is
+  // confirmed true AND window.location.href is still the module's own URL.
+  static waitForSaveOrDiscard = async (saveButtonSel, discardButtonSel, moduleRecord = null) => {
     const saveBtn = await Helper.waitForElementByText(saveButtonSel.selector, saveButtonSel.text, saveButtonSel.exact);
     const discardBtn = await Helper.waitForElementByText(
       discardButtonSel.selector,
@@ -213,18 +210,7 @@ class Helper {
       }
     }
 
-    if (!navigateBack) {
-      Helper.log(saved ? 'Save clicked.' : 'Discard Changes clicked.');
-      return saved;
-    }
-
-    Helper.log(
-      saved
-        ? 'Save clicked — going back to find the next module.'
-        : 'Discard Changes clicked — going back without marking this module completed.'
-    );
-    window.history.back();
-    await Helper.sleep(1000);
+    Helper.log(saved ? 'Save clicked.' : 'Discard Changes clicked.');
     return saved;
   };
 
@@ -333,9 +319,19 @@ class Helper {
   // was last focused. A dummy input (not any real form field) is injected
   // for this so the click can't accidentally land on something that
   // itself needs to stay focused/unchanged.
-  static injectDummyInput = () => {
+  // parent defaults to document.body (every existing call site's generic
+  // "blur whatever's focused" use) but can be pointed at a specific
+  // container instead — e.g. Hub Spokes NxM's row-0/category-0 wrapper,
+  // where the fix for its "first row name doesn't sync" bug is to append
+  // and click the dummy field INSIDE that same test-dataid-scoped div
+  // rather than at the body root, so the framework associates the forced
+  // blur with that row/category's own state.
+  static injectDummyInput = (parent = document.body) => {
     let el = document.getElementById('cxtf-dummy-input');
-    if (el) return el;
+    if (el) {
+      if (el.parentElement !== parent) parent.appendChild(el);
+      return el;
+    }
 
     el = document.createElement('input');
     el.type = 'text';
@@ -351,12 +347,12 @@ class Helper {
     el.style.height = '1px';
     el.style.opacity = '0';
     el.style.zIndex = '2147483647';
-    document.body.appendChild(el);
+    parent.appendChild(el);
     return el;
   };
 
-  static blurActiveFieldViaDummyInput = async () => {
-    const el = Helper.injectDummyInput();
+  static blurActiveFieldViaDummyInput = async (parent) => {
+    const el = Helper.injectDummyInput(parent);
     await Helper.clickTrusted(el);
     await Helper.sleep(300);
     el.remove();

@@ -154,6 +154,6 @@ class ItemCarousel {
     const moduleRecord = navigateBackAfterSave
       ? { pageId: brandPage.pageId, deviceType, moduleKey: `itemCarousel-${index}`, moduleName }
       : null;
-    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, navigateBackAfterSave, moduleRecord);
+    return await Helper.waitForSaveOrDiscard(SEL.saveButton, SEL.discardButton, moduleRecord);
   };
 }

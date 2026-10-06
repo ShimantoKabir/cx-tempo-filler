@@ -172,7 +172,7 @@ class ModuleEditor {
       // find after saving. Skinny Banner's sections don't pre-exist at all
       // (run() always clicks "add"), so it only needs navigateBackAfterSave
       // overridden, not a rowsPreExist-style flag.
-      if (descriptor.kind === 'hubSpokesNM') {
+      if (descriptor.kind === 'hubSpokeNM') {
         await HubSpoke.deleteExistingRows();
         const completed = await HubSpoke.run(
           this.deviceType,
@@ -253,9 +253,16 @@ class ModuleEditor {
         await ItemCarousel.prepareForEdit(this.deviceType);
         const completed = await ItemCarousel.run(this.deviceType, brandPage, descriptor.index, false);
         Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'inspirationModule') {
+        if (this.deviceType !== 'web') {
+          throw new Error('Inspiration Module is web-only — cannot be edited on an app run.');
+        }
+        await InspirationModule.prepareForEdit();
+        const completed = await InspirationModule.run(this.deviceType, brandPage, descriptor.index, false, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
       } else {
         throw new Error(
-          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, Recipe, Skinny Banner, POV Card, and Item Carousel for now (got "${descriptor.kind}").`
+          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, Recipe, Skinny Banner, POV Card, Item Carousel, and Inspiration Module for now (got "${descriptor.kind}").`
         );
       }
     } catch (err) {

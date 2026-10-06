@@ -349,7 +349,7 @@ add card: div[data-e2eid="cards-left-nav-Cards-add-button"]
 note for hero pov:
 ======================
 in one hero pov max 5 card can be added.
-in the selector like input[data-e2eid="cards-cards-0-........."]
+in the selector link input[data-e2eid="cards-cards-0-........."]
 the integer 0 is the position of a card. in the tempo-brief.json
 object heroPov is a arrow of object. The same amount of object present
 in the heroPov need to create hero pov card.
@@ -554,10 +554,10 @@ card:
         max-character: 35
 
     en link text: input[data-e2eid="POVs-POVs-4-POVCtaLink-clickable-el"]
-    en like value: textarea[data-e2eid="POVs-POVs-4-POVCtaLink-url-link"]
+    en link value: textarea[data-e2eid="POVs-POVs-4-POVCtaLink-url-link"]
 
     fr link text: input[data-e2eid="POVs-POVs-4-fr_POVCtaLink-clickable-el"]
-    fr like value: textarea[data-e2eid="POVs-POVs-4-fr_POVCtaLink-url-link"]
+    fr link value: textarea[data-e2eid="POVs-POVs-4-fr_POVCtaLink-url-link"]
 
 pov-card web
 =======================
@@ -611,10 +611,10 @@ card:
         max-character: 7
 
     en link text: input[data-e2eid="cards-cards-0-link-clickable-el"]
-    en like value: textarea[data-e2eid="cards-cards-0-link-url-link"]
+    en link value: textarea[data-e2eid="cards-cards-0-link-url-link"]
 
     fr link text: input[data-e2eid="cards-cards-0-fr_link-clickable-el"]
-    fr like value: textarea[data-e2eid="cards-cards-0-fr_link-url-link"]
+    fr link value: textarea[data-e2eid="cards-cards-0-fr_link-url-link"]
 
 
 item-carousel web
@@ -696,7 +696,7 @@ card:
         max-character: 41
 
     en link value: textarea[data-e2eid="categoryCards-categoryCards-0-image-url-link"]
-    fr like value: textarea[data-e2eid="categoryCards-categoryCards-0-fr_image-url-link"]
+    fr link value: textarea[data-e2eid="categoryCards-categoryCards-0-fr_image-url-link"]
 
 
 youtube web
@@ -1075,6 +1075,85 @@ options: button[data-e2eid="itemSelection"] + div div[id^="option-"]
     needed to check innerHtml: it includes "None" then select
 
 add skus: button[data-testid="clear-tags"]
+
+
+Inspiration Module web
+=======================
+Note: this module only available for web
+module search text: Inspiration Module
+module find key: InspirationModule
+
+module name*: input[id="../name"] 
+
+en title: input[data-e2eid="mainHeading"]
+fr title: input[data-e2eid="fr_mainHeading"]
+
+cards:
+=====
+note: max 3 card can be added
+
+    en search box opener: button[data-e2eid="inspirationModule-inspirationModule-0-cardImage-clickable-image-dropdown-button"]
+    en search text: input[data-e2eid="inspirationModule-inspirationModule-0-cardImage-clickable-image-dropdown-input"]
+    en search button: button[data-e2eid="inspirationModule-inspirationModule-0-cardImage-clickable-image-search-asset-button"]
+    en founded image: div#searched-image
+    en all text: input[data-e2eid="inspirationModule-inspirationModule-0-cardImage-alt-text"]
+
+    fr search box opener: button[data-e2eid="inspirationModule-inspirationModule-0-fr_cardImage-clickable-image-dropdown-button"]
+    fr search text: input[data-e2eid="inspirationModule-inspirationModule-0-fr_cardImage-clickable-image-dropdown-input"]
+    fr search button: button[data-e2eid="inspirationModule-inspirationModule-0-fr_cardImage-clickable-image-search-asset-button"]
+    fr founded image: div#searched-image
+    fr all text: input[data-e2eid="inspirationModule-inspirationModule-0-fr_cardImage-alt-text"]
+
+    en heading: input[data-e2eid="inspirationModule-inspirationModule-0-cardTitle"]
+        max-character: 23
+
+    fr heading: input[data-e2eid="inspirationModule-inspirationModule-0-fr_cardTitle"]
+        max-character: 23
+
+    en sub-heading: input[data-e2eid="inspirationModule-inspirationModule-0-cardSubTitle"]
+        max-character: 65
+
+    fr sub-heading: input[data-e2eid="inspirationModule-inspirationModule-0-fr_cardSubTitle"]
+        max-character: 65
+
+    en image link value: textarea[data-e2eid="inspirationModule-inspirationModule-0-cardImage-url-link"]
+    fr image link value: textarea[data-e2eid="inspirationModule-inspirationModule-0-fr_cardImage-url-link"]
+
+    en characters link text: input[data-e2eid="inspirationModule-inspirationModule-0-ctaInfo-title-text-input"]
+    en characters link text: input[data-e2eid="inspirationModule-inspirationModule-0-fr_ctaInfo-title-text-input"]
+
+    en characters link value: textarea[data-e2eid="inspirationModule-inspirationModule-0-ctaInfo-url-link"]
+    fr characters link value: textarea[data-e2eid="inspirationModule-inspirationModule-0-fr_ctaInfo-url-link"]
+    
+
+    number skus to add: button[data-e2eid="inspirationModule-inspirationModule-0-itemNumber"]
+    options: button[data-e2eid="inspirationModule-inspirationModule-0-itemNumber"] + div div[id^="option-"]
+        options innerHtml: 2, 3, Upto 20
+        needed to select based on how many skus on the input json/xlsx
+
+    $numberOfItem=twoItems|threeItems|oneItems
+    note: oneItems == Upto 20, twoItems == 2, threeItems = 3
+    
+    skus: input[data-e2eid="inspirationModule-inspirationModule-0-{numberOfItem}-item-string-input"]
+    note: skus should be separated by comma link 29TT0VBG6YNP, 4Z7WGKLJ4OJB
+    in input.json it will be a array of string but when ext need to set it as a sting separated by comma
+
+    add skus: button[data-e2eid="inspirationModule-inspirationModule-0-{numberOfItem}-add-button"]
+
+
+for edit:
+    clear: module name*: input[id="../name"] 
+
+    delete cards:
+    const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+    el.textContent.includes('Card')
+    );
+    ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+    target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+    });
+
+
+
 
 
 

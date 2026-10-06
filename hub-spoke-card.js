@@ -163,8 +163,9 @@ class HubSpokeCard {
 
   // Everything except image — deferred to run()'s later stage (see above).
   static fillCardNonImage = async (cardSel, cardData, addGbo) => {
-    await HubSpokeCard.setTruncated(cardSel.headingEn, cardData.heading?.english, cardSel.headingMaxLen);
-    await HubSpokeCard.setTruncated(cardSel.headingFr, cardData.heading?.french, cardSel.headingMaxLen);
+    // Default to "Shop" / "Magasiner" when the brief omits a heading.
+    await HubSpokeCard.setTruncated(cardSel.headingEn, cardData.heading?.english || 'Shop', cardSel.headingMaxLen);
+    await HubSpokeCard.setTruncated(cardSel.headingFr, cardData.heading?.french || 'Magasiner', cardSel.headingMaxLen);
 
     // Always app (this module is app-only), so addGbo alone decides.
     const linkValue = (url) => (addGbo ? Helper.appendGboParam(url) : url || '');
@@ -231,6 +232,41 @@ class HubSpokeCard {
     await HubSpokeCard.setValue(HubSpokeCard.SELECTORS.titleFr, entry.title?.french || '');
     Helper.log('Filled title.');
 
+    // Card 0's text fields specifically don't sync otherwise (same class of
+    // issue as Hub Spokes NxM's row 0 — see hub-spoke.js): for each one,
+    // first CDP-focus+click the real field itself, then CDP-click a dummy
+    // input appended INSIDE card 0's own dragElementWrapper (rather than at
+    // the body root, like the generic blur below) to force a real blur on
+    // it. No test-dataid wrapper exists for this module (card index is
+    // baked directly into each field's e2eid), so the card's own drag
+    // wrapper is used as the scoping container instead. Must happen before
+    // module name is set.
+    const firstCardContainer = HubSpokeCard.findCardWrappers()[0];
+    if (firstCardContainer) {
+      const firstCardSel = HubSpokeCard.SELECTORS.card(0);
+      const fieldsToSync = [
+        firstCardSel.headingEn,
+        firstCardSel.headingFr,
+        firstCardSel.image.en.altText,
+        firstCardSel.image.fr.altText,
+        firstCardSel.linkValueEn,
+        firstCardSel.linkValueFr,
+      ];
+      for (const fieldSelector of fieldsToSync) {
+        const fieldEl = document.querySelector(fieldSelector);
+        if (fieldEl) {
+          await Helper.clickTrusted(fieldEl);
+          await Helper.sleep(200);
+        } else {
+          console.warn(`[HubSpokeCard] Card 1 field not found: ${fieldSelector}`);
+        }
+        await Helper.blurActiveFieldViaDummyInput(firstCardContainer);
+      }
+      Helper.log('Forced focus+blur on card 1 fields to sync them.');
+    } else {
+      console.warn('[HubSpokeCard] Card 1 container not found — skipping its extra blur.');
+    }
+
     // Module name filled last of all — per explicit request — once every
     // card is done, rather than up front (see Helper.setModuleName's own
     // retry/verify logic for why this field needs special handling).
@@ -251,7 +287,6 @@ class HubSpokeCard {
     return await Helper.waitForSaveOrDiscard(
       HubSpokeCard.SELECTORS.saveButton,
       HubSpokeCard.SELECTORS.discardButton,
-      navigateBackAfterSave,
       moduleRecord
     );
   };

@@ -85,7 +85,7 @@
   }
 
   // Plain { english, french } text pair (no device split) — recipe's
-  // title/subhead/prepTime/etc., hubSpokeCard/hubSpokesNM's heading/name.
+  // title/subhead/prepTime/etc., hubSpokeCard/hubSpokeNM's heading/name.
   function localizedPlainText(label, path) {
     return LANGS.map((lang) => textField(`${label} ${langLabel(lang)}`, `${path}.${lang}`));
   }
@@ -237,7 +237,7 @@
   };
 
   // =========================================================================
-  // Hub Spokes NxM — brandPage.hubSpokesNM[i].rows[0..MAX_ROWS-1]
+  // Hub Spokes NxM — brandPage.hubSpokeNM[i].rows[0..MAX_ROWS-1]
   // .categories[0..MAX_COLUMNS-1] (hub-spoke.js MAX_ROWS=5, MAX_COLUMNS=6).
   // Deliberately wide (one row per module instance, per explicit choice) —
   // most Row/Col columns stay blank unless that many rows/categories exist.
@@ -268,7 +268,7 @@
 
   const HubSpokesModule = {
     sheetName: 'Hub Spokes NxM',
-    briefKey: 'hubSpokesNM',
+    briefKey: 'hubSpokeNM',
     fields: hubSpokesFields,
     postProcess(entry) {
       const rows = Array.isArray(entry.rows) ? entry.rows : [];
@@ -417,6 +417,41 @@
   };
 
   // =========================================================================
+  // Inspiration Module — brandPage.inspirationModule[i].cards[0..MAX_CARDS-1]
+  // (inspiration-module.js MAX_CARDS=3). Web-only. Module-level title, each
+  // card has an image, heading/sub-heading, a link value (URL), and a SKU
+  // list.
+  // =========================================================================
+  const INSPIRATION_MODULE_MAX_CARDS = 3;
+  function inspirationCardFields(i) {
+    const p = `cards.${i}`;
+    const label = (s) => `Card ${i + 1} ${s}`;
+    return [
+      ...localizedImageBlock(label('Image'), `${p}.cardImage`, ['']),
+      ...localizedPlainText(label('Heading'), `${p}.heading`),
+      ...localizedPlainText(label('Sub-Heading'), `${p}.subHeading`),
+      ...localizedPlainText(label('Link URL'), `${p}.linkValue`),
+      listField(label('SKUs (one per line)'), `${p}.skus`),
+    ];
+  }
+  const inspirationModuleFieldsAll = [
+    numField('Order', 'order'),
+    boolField('Need Edit Web', 'needEditForWeb'),
+    ...localizedPlainText('Title', 'title'),
+    ...repeatFields(INSPIRATION_MODULE_MAX_CARDS, inspirationCardFields),
+  ];
+
+  const InspirationModuleModule = {
+    sheetName: 'Inspiration Module',
+    briefKey: 'inspirationModule',
+    fields: inspirationModuleFieldsAll,
+    postProcess(entry) {
+      entry.cards = xlsxTrimTrailingBlank(entry.cards || []);
+      return entry;
+    },
+  };
+
+  // =========================================================================
   const XLSX_MODULES = [
     SkinnyBannerModule,
     HeroPovModule,
@@ -426,6 +461,7 @@
     ItemCarouselModule,
     YoutubeModule,
     RecipeModule,
+    InspirationModuleModule,
   ];
 
   // Shared entry point: brandPage -> { sheetName: rows[] } for every

@@ -204,24 +204,24 @@ class HubSpoke {
   // navigateBackAfterSave defaults true (Create mode needs to go back to
   // find the next module) — ModuleEditor passes false, since Edit mode is
   // done with exactly one module and there's nothing to go back to find.
-  // brandPage.hubSpokesNM is an array of independent module instances (same
+  // brandPage.hubSpokeNM is an array of independent module instances (same
   // "multi" pattern as itemCarousel/hubSpokeCard) — index picks which one.
   static run = async (deviceType, brandPage, index, addGbo, rowsPreExist = true, navigateBackAfterSave = true) => {
     // Category image linkValue isn't device-split in the brief (same value
     // used for web and app runs), so gbo=1 only applies on an app run.
     const applyGbo = deviceType === 'app' && Boolean(addGbo);
-    const hub = brandPage.hubSpokesNM?.[index];
-    if (!hub) throw new Error(`Brief is missing hubSpokesNM[${index}] data`);
+    const hub = brandPage.hubSpokeNM?.[index];
+    if (!hub) throw new Error(`Brief is missing hubSpokeNM[${index}] data`);
 
     const rows = Array.isArray(hub.rows) ? hub.rows.slice(0, HubSpoke.MAX_ROWS) : [];
-    if (rows.length === 0) throw new Error('hubSpokesNM.rows is empty');
+    if (rows.length === 0) throw new Error('hubSpokeNM.rows is empty');
 
     Helper.log('Filling Hub Spokes NxM module...');
 
     // When the brief has more than one Hub Spokes NxM, append a 1-based
     // sequence number so the generated names aren't all identical (same
     // convention as item-carousel.js/hub-spoke-card.js).
-    const total = Array.isArray(brandPage.hubSpokesNM) ? brandPage.hubSpokesNM.length : 1;
+    const total = Array.isArray(brandPage.hubSpokeNM) ? brandPage.hubSpokeNM.length : 1;
     const gridLayout = `${rows.length}x${hub.columns}`;
     let moduleName = ModuleNameBuilder.generateTempoModuleName(brandPage.brandName, 'hub-spokes-nxm', deviceType, {
       gridLayout,
@@ -308,9 +308,42 @@ class HubSpoke {
       }
     }
 
-    await HubSpoke.setValue(HubSpoke.SELECTORS.headingEn, hub.heading?.english || '');
-    await HubSpoke.setValue(HubSpoke.SELECTORS.headingFr, hub.heading?.french || '');
+    // Default to "Shop" / "Magasiner" when the brief omits a heading.
+    await HubSpoke.setValue(HubSpoke.SELECTORS.headingEn, hub.heading?.english || 'Shop');
+    await HubSpoke.setValue(HubSpoke.SELECTORS.headingFr, hub.heading?.french || 'Magasiner');
     Helper.log('Filled heading.');
+
+    // Row 0 / category 0's text fields specifically don't sync otherwise
+    // (confirmed live): for each one, first CDP-focus+click the real field
+    // itself, then CDP-click a dummy input appended INSIDE that category's
+    // own test-dataid-scoped wrapper (rather than at the body root, like
+    // the generic blur below) to force a real blur on it. Must happen
+    // before module name is set, per explicit request.
+    const firstCategoryContainer = document.querySelector(`div[test-dataid="rows${colNumber}-0,categories,0"]`);
+    if (firstCategoryContainer) {
+      const firstCatSel = HubSpoke.categorySelectors(colNumber, 0, 0);
+      const fieldsToSync = [
+        firstCatSel.nameEn,
+        firstCatSel.nameFr,
+        firstCatSel.image.en.altText,
+        firstCatSel.image.fr.altText,
+        firstCatSel.image.en.linkValue,
+        firstCatSel.image.fr.linkValue,
+      ];
+      for (const fieldSelector of fieldsToSync) {
+        const fieldEl = document.querySelector(fieldSelector);
+        if (fieldEl) {
+          await Helper.clickTrusted(fieldEl);
+          await Helper.sleep(200);
+        } else {
+          console.warn(`[HubSpoke] Row 1 / category 1 field not found: ${fieldSelector}`);
+        }
+        await Helper.blurActiveFieldViaDummyInput(firstCategoryContainer);
+      }
+      Helper.log('Forced focus+blur on row 1 / category 1 fields to sync them.');
+    } else {
+      console.warn('[HubSpoke] Row 1 / category 1 container not found — skipping its extra blur.');
+    }
 
     // Module name filled last of all — per explicit request — once every
     // row/category is done, rather than up front (see Helper.setModuleName's
@@ -327,12 +360,11 @@ class HubSpoke {
     // Only Create mode (navigateBackAfterSave=true) tracks a module record
     // — Edit mode doesn't track/limit edits, so it never passes one.
     const moduleRecord = navigateBackAfterSave
-      ? { pageId: brandPage.pageId, deviceType, moduleKey: `hubSpokesNM-${index}`, moduleName }
+      ? { pageId: brandPage.pageId, deviceType, moduleKey: `hubSpokeNM-${index}`, moduleName }
       : null;
     return await Helper.waitForSaveOrDiscard(
       HubSpoke.SELECTORS.saveButton,
       HubSpoke.SELECTORS.discardButton,
-      navigateBackAfterSave,
       moduleRecord
     );
   };

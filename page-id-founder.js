@@ -39,7 +39,7 @@ class PageIdFounder {
   // at a known URL).
   static FILL_BY_KIND = {
     heroPov: (deviceType, brandPage, d, addGbo) => HeroPov.run(deviceType, brandPage, d.index, addGbo),
-    hubSpokesNM: (deviceType, brandPage, d, addGbo) => HubSpoke.run(deviceType, brandPage, d.index, addGbo),
+    hubSpokeNM: (deviceType, brandPage, d, addGbo) => HubSpoke.run(deviceType, brandPage, d.index, addGbo),
     povCard: (deviceType, brandPage, d, addGbo) => PovCard.run(deviceType, brandPage, d.index, addGbo),
     itemCarousel: (deviceType, brandPage, d) => ItemCarousel.run(deviceType, brandPage, d.index),
     hubSpokeCard: (deviceType, brandPage, d, addGbo) => {
@@ -61,6 +61,12 @@ class PageIdFounder {
         throw new Error('Recipe is web-only — cannot be edited on an app run.');
       }
       return Recipe.run(deviceType, brandPage, d.index);
+    },
+    inspirationModule: (deviceType, brandPage, d) => {
+      if (deviceType !== 'web') {
+        throw new Error('Inspiration Module is web-only — cannot be edited on an app run.');
+      }
+      return InspirationModule.run(deviceType, brandPage, d.index);
     },
   };
 
@@ -102,7 +108,7 @@ class PageIdFounder {
     push('imageAndTextSkinnyBanner', 'skinnyBanner', () => ({ bannerType: 'image-and-text' }));
     push('textOnlySkinnyBanner', 'skinnyBanner', () => ({ bannerType: 'text-only' }));
     push('heroPov', 'heroPov');
-    push('hubSpokesNM', 'hubSpokesNM');
+    push('hubSpokeNM', 'hubSpokeNM');
     push('povCard', 'povCard');
     push('itemCarousel', 'itemCarousel');
     // hubSpokeCard/youtube/recipe are device-restricted (app-only /
@@ -113,6 +119,7 @@ class PageIdFounder {
     push('hubSpokeCard', 'hubSpokeCard');
     push('youtube', 'youtube');
     push('recipe', 'recipe');
+    push('inspirationModule', 'inspirationModule');
 
     descriptors.forEach((d) => {
       if (typeof d.order !== 'number') {
@@ -173,14 +180,17 @@ class PageIdFounder {
 
       // Web-only — skip rather than error if somehow selected on an app
       // run, same handling as hubSpokeCard's app-only skip above.
-      if ((d.kind === 'youtube' || d.kind === 'recipe') && this.deviceType !== 'web') {
+      if (
+        (d.kind === 'youtube' || d.kind === 'recipe' || d.kind === 'inspirationModule') &&
+        this.deviceType !== 'web'
+      ) {
         Helper.log(`"${d.moduleKey}" is web-only — skipping on app.`);
         continue;
       }
 
       if (d.kind === 'heroPov') {
         await ModuleFinder.run(this.deviceType, 'HeroPov');
-      } else if (d.kind === 'hubSpokesNM') {
+      } else if (d.kind === 'hubSpokeNM') {
         await ModuleFinder.run(this.deviceType, 'HubSpokesNxM', 'hubSpokes');
       } else if (d.kind === 'povCard') {
         const moduleKey = this.deviceType === 'web' ? 'POVCards' : 'POVCarousel';
@@ -199,6 +209,10 @@ class PageIdFounder {
         // module kind — Youtube.run/Recipe.run build the whole markup
         // themselves (see scratch.txt).
         await ModuleFinder.run(this.deviceType, 'CustomHtml', 'Custom HTML');
+      } else if (d.kind === 'inspirationModule') {
+        // "InspirationModule" auto-derives to "inspiration module", already
+        // matching scratch.txt's given search text — no override needed.
+        await ModuleFinder.run(this.deviceType, 'InspirationModule');
       } else {
         await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
       }
