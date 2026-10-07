@@ -13,6 +13,7 @@ class ModuleNameBuilder {
     'youtube': (p) => `${p.prefix}${p.brandName} Brand CP YouTube ${p.timeSuffix}`,
     'recipe': (p) => `${p.prefix}${p.brandName} Brand CP Recipe ${p.timeSuffix}`,
     'inspiration-module': (p) => `${p.prefix}${p.brandName} Brand CP Inspiration Module ${p.timeSuffix}`,
+    'accordion': (p) => `${p.prefix}${p.brandName} Brand CP Accordion ${p.timeSuffix}`,
   };
 
   /**

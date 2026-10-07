@@ -1026,6 +1026,51 @@
           }
         ]
       }
+    ],
+    "accordion": [
+      {
+        "order": 25,
+        "title": {
+          "english": "",
+          "french": ""
+        },
+        "sections": [
+          {
+            "text": {
+              "english": "Shipping & Returns",
+              "french": "Expédition et retours"
+            },
+            "details": [
+              {
+                "detailText": {
+                  "english": "Free shipping on orders over $35.",
+                  "french": "Livraison gratuite pour les commandes de 35 $ et plus."
+                }
+              },
+              {
+                "detailText": {
+                  "english": "Free 90-day returns.",
+                  "french": "Retours gratuits sous 90 jours."
+                }
+              }
+            ]
+          },
+          {
+            "text": {
+              "english": "Sizing Guide",
+              "french": "Guide des tailles"
+            },
+            "details": [
+              {
+                "detailText": {
+                  "english": "Not sure what size to pick? Check our size chart before you order.",
+                  "french": "Vous ne savez pas quelle taille choisir? Consultez notre guide des tailles avant de commander."
+                }
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
 }

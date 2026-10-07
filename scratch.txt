@@ -1153,7 +1153,95 @@ for edit:
     });
 
 
+accordion app
+=============
+module search text: Accordion Module
+module find key: Accordion
 
+module name*: input[id="../name"] 
+
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+
+parent-selector: div[test-dataid="sections-0,details,0"]
+    => div[test-dataid="sections-{section-pos},details,{details-pos}"]
+
+
+sections:
+    note: unlimited section can be added
+
+    en text: input[data-e2eid="sections-sections-{section-pos}-text"]
+    max character: 125
+    fr text: input[data-e2eid="sections-sections-{section-pos}-fr_text"]
+    max character: 125
+
+    details: under 1 section detail text can be multiple
+        add detail: parent-selector>div>span>button.add-group-button-right
+        fr detail text: parent-selector input[data-e2eid="sections-sections-{section-pos}-detailText"]
+        max character: 125
+        fr detail text: parent-selector input[data-e2eid="sections-sections-{section-pos}-fr_detailText"]
+        max character: 125
+
+for edit:
+
+    clear:
+    module name*: input[id="../name"] 
+
+    en title: input[data-e2eid="title"]
+    fr title: input[data-e2eid="fr_title"]
+
+    delete section:
+    const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+    el.textContent.includes('Accordion Sections')
+    );
+    ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+    target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+    });
+
+
+
+
+accordion web
+==============
+module search text: (FAQ)
+module find key: FAQ
+
+module name*: input[id="../name"] 
+en title: input[data-e2eid="title"]
+fr title: input[data-e2eid="fr_title"]
+
+parent-selector: div[test-dataid="faqList-0,answerParagraphs,0"]
+    => div[test-dataid="faqList-{faq-pos},answerParagraphs,{ans-pos}"]
+
+sections:
+    note: unlimited section can be added
+
+    en text: textarea[data-e2eid="faqList-faqList-{faq-pos}-questionText"]
+    max character: 125
+    fr text: textarea[data-e2eid="faqList-faqList-{faq-pos}-fr_questionText"]
+    max character: 125
+
+    details: under 1 section detail text can be multiple
+        add detail: parent-selector>div>span>button.add-group-button-right
+        fr detail text: parent-selector textarea[data-e2eid="faqList-faqList-{faq-pos}-paragraph"]
+        max character: 2000
+        fr detail text: parent-selector textarea[data-e2eid="faqList-faqList-{faq-pos}-fr_paragraph"]
+        max character: 2000
+
+for edit:
+
+    clear:
+        module name*: input[id="../name"] 
+        en title: input[data-e2eid="title"]
+        fr title: input[data-e2eid="fr_title"]
+
+    delete section:
+    const target = [...document.querySelectorAll('div.dragElementWrapper')].find((el) =>
+    el.textContent.includes('FAQ Links')
+    );
+    ['mouseover', 'mouseenter', 'pointerover', 'pointerenter'].forEach((type) => {
+    target.dispatchEvent(new MouseEvent(type, { bubbles: true }));
+    });
 
 
 

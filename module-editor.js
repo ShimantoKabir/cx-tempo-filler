@@ -156,8 +156,9 @@ class ModuleEditor {
       if (!descriptor) throw new Error(`Module "${this.moduleKey}" not found in brief.`);
 
       // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV,
-      // YouTube, Recipe, Skinny Banner, POV Card, and Item Carousel so far —
-      // other kinds haven't had a "clear existing content before refill" step built yet, and
+      // YouTube, Recipe, Skinny Banner, POV Card, Item Carousel, Inspiration
+      // Module, and Accordion so far — other kinds haven't had a "clear
+      // existing content before refill" step built yet, and
       // without one their fill functions would leave stale rows/cards from
       // the module's current content mixed in with the brief's new one.
       // YouTube/Recipe don't need that step at all — they're a single
@@ -260,9 +261,15 @@ class ModuleEditor {
         await InspirationModule.prepareForEdit();
         const completed = await InspirationModule.run(this.deviceType, brandPage, descriptor.index, false, false);
         Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
+      } else if (descriptor.kind === 'accordion') {
+        // Works on both web and app — no device restriction (two different
+        // CMS modules under one brief key, see accordion.js's file header).
+        await Accordion.prepareForEdit(this.deviceType);
+        const completed = await Accordion.run(this.deviceType, brandPage, descriptor.index, false, false);
+        Helper.log(completed ? 'Module saved.' : 'Changes discarded.');
       } else {
         throw new Error(
-          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, Recipe, Skinny Banner, POV Card, Item Carousel, and Inspiration Module for now (got "${descriptor.kind}").`
+          `Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV, YouTube, Recipe, Skinny Banner, POV Card, Item Carousel, Inspiration Module, and Accordion for now (got "${descriptor.kind}").`
         );
       }
     } catch (err) {

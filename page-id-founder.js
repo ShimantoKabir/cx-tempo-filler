@@ -68,6 +68,10 @@ class PageIdFounder {
       }
       return InspirationModule.run(deviceType, brandPage, d.index);
     },
+    // No device restriction — "accordion" is two different CMS modules
+    // under one brief key (Accordion on app, FAQ on web), not a
+    // device-restricted module (see accordion.js's file header).
+    accordion: (deviceType, brandPage, d) => Accordion.run(deviceType, brandPage, d.index),
   };
 
   constructor({ deviceType, pageId, autoSubmit, gboModules, briefData, selectedModules }) {
@@ -120,6 +124,7 @@ class PageIdFounder {
     push('youtube', 'youtube');
     push('recipe', 'recipe');
     push('inspirationModule', 'inspirationModule');
+    push('accordion', 'accordion');
 
     descriptors.forEach((d) => {
       if (typeof d.order !== 'number') {
@@ -173,8 +178,10 @@ class PageIdFounder {
 
       // App-only — skip rather than error if somehow selected on a web
       // run (the popup checklist doesn't filter by deviceType).
+      // "accordion" isn't here — it works on both devices (see
+      // accordion.js's file header).
       if (d.kind === 'hubSpokeCard' && this.deviceType !== 'app') {
-        Helper.log(`Hub Spoke Card is app-only — skipping "${d.moduleKey}" on web.`);
+        Helper.log(`"${d.moduleKey}" is app-only — skipping on web.`);
         continue;
       }
 
@@ -213,6 +220,15 @@ class PageIdFounder {
         // "InspirationModule" auto-derives to "inspiration module", already
         // matching scratch.txt's given search text — no override needed.
         await ModuleFinder.run(this.deviceType, 'InspirationModule');
+      } else if (d.kind === 'accordion') {
+        // Two different CMS modules under one brief key, same
+        // web/app-branching pattern as povCard above: app is the
+        // "Accordion" module (search text "Accordion Module"), web is the
+        // "FAQ" module (search text "(FAQ)") — see accordion.js's file
+        // header.
+        const moduleKey = this.deviceType === 'web' ? 'FAQ' : 'Accordion';
+        const searchText = this.deviceType === 'web' ? '(FAQ)' : 'Accordion Module';
+        await ModuleFinder.run(this.deviceType, moduleKey, searchText);
       } else {
         await ModuleFinder.run(this.deviceType, 'SkinnyBanner');
       }

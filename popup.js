@@ -117,6 +117,10 @@ const MODULE_DEFS = [
   { key: 'youtube', label: 'YouTube Embed', hasAppUrl: false, webOnly: true },
   { key: 'recipe', label: 'Recipe', hasAppUrl: false, webOnly: true },
   { key: 'inspirationModule', label: 'Inspiration Module', hasAppUrl: false, webOnly: true },
+  // No device restriction — two different CMS modules under one brief key
+  // (Accordion on app, FAQ on web), not an app-only module. No link/CTA
+  // field at all in either variant, so no gbo checkbox.
+  { key: 'accordion', label: 'Accordion', hasAppUrl: false },
 ];
 
 // Build-completion tracking lives in chrome.storage now, not in the brief
@@ -217,9 +221,9 @@ async function renderModuleChecklist(brandPage) {
   const isEditMode = document.getElementById('mode').value === 'edit';
   // Edit mode only supports Hub Spokes NxM, Hub Spoke Card, Hero POV,
   // YouTube, Recipe, Skinny Banner (both variants), POV Card, Item
-  // Carousel, and Inspiration Module so far (see module-editor.js) —
-  // restrict the picker itself rather than letting the user select an
-  // unsupported kind and hit an error mid-run.
+  // Carousel, Inspiration Module, and Accordion so far (see
+  // module-editor.js) — restrict the picker itself rather than letting the
+  // user select an unsupported kind and hit an error mid-run.
   const EDIT_SUPPORTED_KEYS = [
     'hubSpokeNM',
     'hubSpokeCard',
@@ -231,6 +235,7 @@ async function renderModuleChecklist(brandPage) {
     'povCard',
     'itemCarousel',
     'inspirationModule',
+    'accordion',
   ];
   const defs = isEditMode ? MODULE_DEFS.filter((def) => EDIT_SUPPORTED_KEYS.includes(def.key)) : MODULE_DEFS;
   const records = await getModuleRecords();
@@ -248,7 +253,7 @@ async function renderModuleChecklist(brandPage) {
       const message = document.createElement('div');
       message.style.color = '#d32f2f';
       message.textContent =
-        'No Hub Spokes NxM / Hub Spoke Card / Hero POV / YouTube / Recipe / Skinny Banner / POV Card / Item Carousel / Inspiration Module modules found in this brief.';
+        'No Hub Spokes NxM / Hub Spoke Card / Hero POV / YouTube / Recipe / Skinny Banner / POV Card / Item Carousel / Inspiration Module / Accordion modules found in this brief.';
       container.appendChild(message);
     }
     return;
