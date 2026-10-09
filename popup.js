@@ -381,43 +381,57 @@ function parseBriefJson(file) {
   });
 }
 
-// Converts an uploaded workbook (see generate-brief-template.js for the
-// expected shape: a "Page Info" sheet plus one sheet per XLSX_MODULES
-// entry) into the same { brandPage } shape parseBriefJson produces, via
-// xlsx-modules.js's sheetsToBrandPage — so everything downstream
-// (renderModuleChecklist, validateBrief, updateBriefSummary, Start) runs
-// identically regardless of which file format was uploaded. A sheet
-// missing or renamed just comes through as "no rows" for that module
-// (sheetsToBrandPage already tolerates that), not a hard failure.
-function parseBriefWorkbook(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = new Uint8Array(event.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
+// Reads the outline format's 2-row "page-info" sheet ([["page-id*", id],
+// ["brand-name*", name]]) — a plain key/value pair per row, not a header +
+// data row like every other sheet, so it's read separately via header:1
+// rather than sheet_to_json's default column-header inference.
+function readOutlinePageInfo(rows) {
+  const find = (label) => {
+    const row = rows.find((r) => r[0] != null && String(r[0]).trim().startsWith(label));
+    return row && row[1] != null ? String(row[1]).trim() : '';
+  };
+  return { pageId: find('page-id'), brandName: find('brand-name') };
+}
 
-        const sheetsByName = {};
-        workbook.SheetNames.forEach((name) => {
-          if (name === 'Instructions' || name === 'Page Info') return;
-          sheetsByName[name] = XLSX.utils.sheet_to_json(workbook.Sheets[name], { defval: '' });
-        });
+// Pulls the Sheet ID out of any of Google's URL shapes (.../d/{id}/edit,
+// .../d/{id}, .../d/{id}/edit?usp=sharing, etc.) — the ID is always the
+// path segment right after "/d/".
+function extractGoogleSheetId(url) {
+  const match = String(url).match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
+}
 
-        const pageInfoRows = workbook.Sheets['Page Info']
-          ? XLSX.utils.sheet_to_json(workbook.Sheets['Page Info'], { defval: '' })
-          : [];
-        const pageId = pageInfoRows[0]?.['Page ID'];
-        const brandName = pageInfoRows[0]?.['Brand Name'];
+// Fetches a Google Sheet (by its share URL) and parses it into the same
+// { brandPage } shape parseBriefJson produces — the export-as-xlsx
+// endpoint returns the exact same outline-format workbook a downloaded
+// .xlsx of that sheet would be, so this reuses xlsx-outline-modules.js's
+// parser unchanged. The actual network fetch happens in background.js
+// (see fetchGoogleSheetAsBase64) rather than here, since this popup window
+// closing mid-request would otherwise abort it.
+async function parseGoogleSheet(url) {
+  const sheetId = extractGoogleSheetId(url);
+  if (!sheetId) throw new Error('Could not find a Google Sheet ID in that URL.');
 
-        const brandPage = sheetsToBrandPage(sheetsByName, pageId, brandName);
-        resolve({ brandPage });
-      } catch (err) {
-        reject(err);
-      }
-    };
-    reader.onerror = () => reject(reader.error);
-    reader.readAsArrayBuffer(file);
+  const exportUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=xlsx`;
+  const resp = await chrome.runtime.sendMessage({ action: 'fetchGoogleSheet', payload: { url: exportUrl } });
+  if (!resp || resp.status !== 'ok') {
+    throw new Error(resp?.message || 'Failed to fetch the Google Sheet.');
+  }
+
+  const binary = atob(resp.base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  const workbook = XLSX.read(bytes, { type: 'array' });
+
+  const sheetsByName = {};
+  workbook.SheetNames.forEach((name) => {
+    sheetsByName[name] = XLSX.utils.sheet_to_json(workbook.Sheets[name], { header: 1, defval: '' });
   });
+  const { pageId, brandName } = sheetsByName['page-info']
+    ? readOutlinePageInfo(sheetsByName['page-info'])
+    : { pageId: '', brandName: '' };
+  const brandPage = outlineSheetsToBrandPage(sheetsByName, pageId, brandName);
+  return { brandPage };
 }
 
 // Rebuilds the "Page ID / Brand Name / Modules found" summary text, reading
@@ -434,87 +448,86 @@ function updateBriefSummary(brand) {
     `Modules found: ${modules.length}${modules.length ? ' (' + modules.join(', ') + ')' : ''}`;
 }
 
-document.getElementById('briefFile').addEventListener('change', async (event) => {
+// Shared by the JSON file path and the Google Sheet path — both produce
+// the same { brandPage } shape, so rendering/validating/summarizing it is
+// identical either way. `sourceLabel` is just what the status line calls
+// it ("Parsed..."/"Loaded...").
+async function applyParsedBrief(parsed, sourceLabel) {
   const statusEl = document.getElementById('status');
-  selectedBriefFile = event.target.files[0] || null;
+  selectedBriefData = parsed;
+
+  const brand = selectedBriefData.brandPage || {};
+  await renderModuleChecklist(brand);
+
+  statusEl.textContent = sourceLabel;
+  statusEl.style.color = '#2e7d32';
+  updateBriefSummary(brand);
+
+  // Surfaced separately from statusEl — parsing succeeded, these are
+  // data-quality problems with the brief's contents (see
+  // BRIEF_VALIDATORS), which can pile up independently of parse status. Any
+  // issue disables Start — running Build/Edit against a brief known to have
+  // a problem risks a half-filled or broken live module.
+  const issuesEl = document.getElementById('briefIssues');
+  const issues = validateBrief(brand);
+  issuesEl.textContent = issues.length ? `Brief issues:\n${issues.map((i) => `• ${i}`).join('\n')}` : '';
+  document.getElementById('startBtn').disabled = issues.length > 0;
+}
+
+function resetBriefUiBeforeLoad() {
   selectedBriefData = null;
   document.getElementById('moduleChecklist').innerHTML = '';
   document.getElementById('briefIssues').textContent = '';
-  // Disabled until parsing/validation below proves this file is actually
-  // usable — safer default than leaving a stale "enabled" from whatever
-  // was selected before.
+  document.getElementById('briefSummary').textContent = '';
+  // Disabled until parsing/validation proves this brief is actually usable
+  // — safer default than leaving a stale "enabled" from whatever was
+  // loaded before.
   document.getElementById('startBtn').disabled = true;
+}
+
+document.getElementById('briefFile').addEventListener('change', async (event) => {
+  const statusEl = document.getElementById('status');
+  selectedBriefFile = event.target.files[0] || null;
+  resetBriefUiBeforeLoad();
   if (!selectedBriefFile) return;
 
   statusEl.textContent = `Selected: ${selectedBriefFile.name}`;
   statusEl.style.color = '#555';
 
-  const summaryEl = document.getElementById('briefSummary');
-
-  if (selectedBriefFile.name.toLowerCase().endsWith('.json')) {
-    try {
-      selectedBriefData = await parseBriefJson(selectedBriefFile);
-      console.log('Parsed brief JSON:', selectedBriefData);
-
-      const brand = selectedBriefData.brandPage || {};
-      await renderModuleChecklist(brand);
-
-      statusEl.textContent = `Parsed "${selectedBriefFile.name}".`;
-      statusEl.style.color = '#2e7d32';
-      updateBriefSummary(brand);
-
-      // Surfaced separately from statusEl — the JSON itself parsed fine,
-      // these are data-quality problems with its contents (see
-      // BRIEF_VALIDATORS), which can pile up independently of parse status.
-      // Any issue disables Start — running Build/Edit against a brief known
-      // to have a problem risks a half-filled or broken live module.
-      const issuesEl = document.getElementById('briefIssues');
-      const issues = validateBrief(brand);
-      issuesEl.textContent = issues.length ? `Brief issues:\n${issues.map((i) => `• ${i}`).join('\n')}` : '';
-      document.getElementById('startBtn').disabled = issues.length > 0;
-    } catch (err) {
-      console.error('[CX Tempo Filler] Failed to parse JSON brief', err);
-      statusEl.textContent = 'Failed to parse JSON: ' + err.message;
-      statusEl.style.color = '#d32f2f';
-      summaryEl.textContent = '';
-      document.getElementById('briefIssues').textContent = '';
-      document.getElementById('startBtn').disabled = true;
-      selectedBriefData = null;
-    }
-    return;
+  try {
+    const parsed = await parseBriefJson(selectedBriefFile);
+    console.log('Parsed brief JSON:', parsed);
+    await applyParsedBrief(parsed, `Parsed "${selectedBriefFile.name}".`);
+  } catch (err) {
+    console.error('[CX Tempo Filler] Failed to parse JSON brief', err);
+    statusEl.textContent = 'Failed to parse JSON: ' + err.message;
+    statusEl.style.color = '#d32f2f';
   }
+});
 
-  if (typeof XLSX === 'undefined') {
-    statusEl.textContent = 'xlsx.full.min.js is missing from the extension folder — cannot parse.';
+document.getElementById('loadSheetBtn').addEventListener('click', async () => {
+  const statusEl = document.getElementById('status');
+  const url = document.getElementById('sheetUrl').value.trim();
+  resetBriefUiBeforeLoad();
+  selectedBriefFile = null;
+  document.getElementById('briefFile').value = '';
+  if (!url) {
+    statusEl.textContent = 'Please enter a Google Sheet URL.';
     statusEl.style.color = '#d32f2f';
     return;
   }
+
+  statusEl.textContent = 'Loading Google Sheet...';
+  statusEl.style.color = '#555';
 
   try {
-    selectedBriefData = await parseBriefWorkbook(selectedBriefFile);
-    console.log('Parsed brief workbook:', selectedBriefData);
-
-    const brand = selectedBriefData.brandPage || {};
-    await renderModuleChecklist(brand);
-
-    statusEl.textContent = `Parsed "${selectedBriefFile.name}".`;
-    statusEl.style.color = '#2e7d32';
-    updateBriefSummary(brand);
-
-    // Same validation/Start-gating as the JSON path (see above) — same
-    // brandPage shape either way, so the same checks apply.
-    const issuesEl = document.getElementById('briefIssues');
-    const issues = validateBrief(brand);
-    issuesEl.textContent = issues.length ? `Brief issues:\n${issues.map((i) => `• ${i}`).join('\n')}` : '';
-    document.getElementById('startBtn').disabled = issues.length > 0;
+    const parsed = await parseGoogleSheet(url);
+    console.log('Parsed Google Sheet:', parsed);
+    await applyParsedBrief(parsed, 'Loaded Google Sheet.');
   } catch (err) {
-    console.error('[CX Tempo Filler] Failed to parse workbook', err);
-    statusEl.textContent = 'Failed to parse workbook: ' + err.message;
+    console.error('[CX Tempo Filler] Failed to load Google Sheet', err);
+    statusEl.textContent = 'Failed to load Google Sheet: ' + err.message;
     statusEl.style.color = '#d32f2f';
-    summaryEl.textContent = '';
-    document.getElementById('briefIssues').textContent = '';
-    document.getElementById('startBtn').disabled = true;
-    selectedBriefData = null;
   }
 });
 
@@ -588,6 +601,7 @@ function resetUploadedBrief() {
   selectedBriefFile = null;
   selectedBriefData = null;
   document.getElementById('briefFile').value = '';
+  document.getElementById('sheetUrl').value = '';
   document.getElementById('status').textContent = '';
   document.getElementById('briefSummary').textContent = '';
   document.getElementById('briefIssues').textContent = '';

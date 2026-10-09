@@ -7,7 +7,7 @@
   body { font-family: -apple-system, Segoe UI, Arial, sans-serif; width: 260px; padding: 12px; }
   h3 { margin: 0 0 4px 0; font-size: 15px; }
   label { display: block; margin-top: 10px; font-size: 12px; font-weight: 600; color: #333; }
-  select, input[type="text"] {
+  select, input[type="text"], input[type="url"] {
     width: 100%; padding: 6px; margin-top: 4px; box-sizing: border-box;
     border: 1px solid #ccc; border-radius: 4px; font-size: 13px;
   }
@@ -71,8 +71,12 @@
     <input type="text" id="editUrl" placeholder="https://v2.tempo.cxtools.walmart.com/module/..." />
   </div>
 
-  <label for="briefFile">Brief File (optional, .xlsx or .json)</label>
-  <input type="file" id="briefFile" accept=".xlsx,.xls,.json" />
+  <label for="briefFile">Input File (.json)</label>
+  <input type="file" id="briefFile" accept=".json" />
+
+  <label for="sheetUrl">or Google Sheet URL</label>
+  <input type="url" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..." />
+  <button id="loadSheetBtn" type="button">Load Sheet</button>
 
   <div class="row" id="autoSubmitRow">
     <input type="checkbox" id="autoSubmit" />
@@ -86,8 +90,8 @@
   <div id="moduleChecklist"></div>
 
   <script src="xlsx.full.min.js"></script>
-  <script src="xlsx-schema.js"></script>
-  <script src="xlsx-modules.js"></script>
+  <script src="xlsx-outline-schema.js"></script>
+  <script src="xlsx-outline-modules.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

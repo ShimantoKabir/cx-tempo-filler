@@ -1,558 +1,248 @@
 {
   "brandPage": {
-    "pageId": "6000210080328",
-    "brandName": "Kraft Diwali",
+    "pageId": "6000209571253",
+    "brandName": "P&G Febreze",
     "textColor": "001E60",
-    "accordion": [
+    "inspirationModule": [
       {
-        "order": 20,
-        "title": { "english": "", "french": "" },
-        "sections": [
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
           {
-            "text": {
-              "english": "20-minute creamy butter paneer",
-              "french": "Paneer au beurre crémeux prêt en 20 minutes"
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Air"
+              },
+              "french": {
+                "searchText": "INSPO-1-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Air"
+              }
             },
-            "details": [
-              { "detailText": { "english": "Restaurant-style flavour in under 20 minutes.", "french": "Des saveurs dignes du restaurant en moins de 20 minutes." } },
-              { "detailText": { "english": "Prep Time: 5 minutes", "french": "Préparation : 5 minutes" } },
-              { "detailText": { "english": "Cook Time: 20 minutes", "french": "Cuisson : 20 minutes" } },
-              { "detailText": { "english": "Servings: 4", "french": "Portions : 4" } },
-              { "detailText": { "english": "Ingredients", "french": "Ingrédients" } },
-              { "detailText": { "english": "1 tbsp (salted or unsalted) butter", "french": "1 c. à soupe (15 ml) de beurre (salé ou non salé)" } },
-              { "detailText": { "english": "1 tsp garlic paste & ginger paste", "french": "1 c. à thé (5 ml) de pâte d’ail et 1 c. à thé (5 ml) de pâte de gingembre" } },
-              { "detailText": { "english": "1 jar Classico Fire-Roasted Tomato & Garlic Pasta Sauce", "french": "1 pot de sauce pour pâtes Tomates grillées sur le feu et ail de Classico" } },
-              { "detailText": { "english": "1 cup Heinz Tomato Ketchup", "french": "1 tasse (250 ml) de ketchup aux tomates Heinz" } },
-              { "detailText": { "english": "1 tsp garam masala", "french": "1 c. à thé (5 ml) de garam masala" } },
-              { "detailText": { "english": "1/2 block Philadelphia Original Brick Cream Cheese", "french": "½ bloc de fromage à la crème original Philadelphia" } },
-              { "detailText": { "english": "2 cups diced paneer (or cooked chicken)", "french": "2 tasses (500 ml) de paneer (ou de poulet cuit) en cubes" } },
-              { "detailText": { "english": "3/4 cup water", "french": "¾ de tasse d’eau" } },
-              { "detailText": { "english": "Salt to taste", "french": "Sel au goût" } },
-              { "detailText": { "english": "Directions", "french": "Instructions" } },
-              { "detailText": { "english": "Melt butter in a pan. Add garlic and ginger paste and sauté for 1 minute.", "french": "Dans une poêle, faire fondre le beurre. Ajouter la pâte d’ail et la pâte de gingembre et faire revenir pendant 1 minute." } },
-              { "detailText": { "english": "Add Classico Fire-Roasted Tomato & Garlic Pasta Sauce, Heinz Tomato Ketchup, and garam masala. Simmer for 5 minutes.", "french": "Ajouter la sauce pour pâtes Tomates grillées sur le feu et ail de Classico, le ketchup aux tomates Heinz et le garam masala. Laisser mijoter 5 minutes." } },
-              { "detailText": { "english": "Stir in Philadelphia Original Brick Cream Cheese until smooth and creamy.", "french": "Incorporer le fromage à la crème original Philadelphia en brique jusqu’à ce que le mélange soit lisse et crémeux." } },
-              { "detailText": { "english": "Add cubed cooked paneer or chicken and water. Simmer for 8–10 minutes. Adjust seasoning if required.", "french": "Ajouter les cubes de paneer ou de poulet cuits et l’eau. Laisser mijoter de 8 à 10 minutes. Rectifier l’assaisonnement au besoin." } },
-              { "detailText": { "english": "", "french": "Facultatif : Garnir de coriandre." } }
+            "heading": {
+              "english": "Febreze Air",
+              "french": "Febreze Air"
+            },
+            "subHeading": {
+              "english": "Just-cleaned freshness in every space.",
+              "french": "Pour une sensation de fraîcheur dans chaque espace."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+air+mist",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+air+mist"
+            },
+            "skus": [
+              "4VV5VAC48801",
+              "6000197848660",
+              "6000197849110",
+              "6000208807431",
+              "6000196727537",
+              "6000196727398",
+              "6000206703073",
+              "7BBC9XXXC8G8",
+              "575R6JXDFP2H",
+              "6000199303948"
             ]
           }
         ]
       },
       {
-        "order": 21,
-        "title": { "english": "", "french": "" },
-        "sections": [
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
           {
-            "text": {
-              "english": "One-pot vegetable biryani",
-              "french": "Biryani aux légumes tout-en-un"
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Plug"
+              },
+              "french": {
+                "searchText": "INSPO-2-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Prise Febreze"
+              }
             },
-            "details": [
-              { "detailText": { "english": "Prep Time: 10 minutes", "french": "Préparation : 10 minutes" } },
-              { "detailText": { "english": "Cook Time: 10 minutes", "french": "Cuisson : 10 minutes" } },
-              { "detailText": { "english": "Servings: 4", "french": "Portions : 4" } },
-              { "detailText": { "english": "Ingredients", "french": "Ingrédients" } },
-              { "detailText": { "english": "2 tbsp oil or butter", "french": "2 c. à soupe (30 ml) d’huile ou de beurre" } },
-              { "detailText": { "english": "2 tsp each garlic paste and ginger paste", "french": "2 c. à thé (10 ml) de pâte d’ail et 2 c. à thé (10 ml) de pâte de gingembre" } },
-              { "detailText": { "english": "1 ½ tsp biryani masala or garam masala", "french": "1 ½ c. à thé (7,5 ml) de biryani masala ou de garam masala" } },
-              { "detailText": { "english": "2 cups mixed vegetables, diced small, fresh or frozen (carrots, peas, green beans, cauliflower and/or potatoes)", "french": "2 tasses de mélange de légumes coupés en petits dés, frais ou surgelés (carottes, pois, haricots verts, chou-fleur et pommes de terre)" } },
-              { "detailText": { "english": "1 jar Classico Tomato & Basil Pasta Sauce", "french": "1 pot de sauce pour pâtes Tomates et basilic de Classico" } },
-              { "detailText": { "english": "2 cups basmati rice (rinsed)", "french": "2 tasses (500 ml) de riz basmati (rincé)" } },
-              { "detailText": { "english": "2 ½ cups water or vegetable broth", "french": "2 ½ tasses (625 ml) d’eau ou de bouillon de légumes" } },
-              { "detailText": { "english": "Salt to taste", "french": "Sel au goût" } },
-              { "detailText": { "english": "Directions", "french": "Instructions" } },
-              { "detailText": { "english": "Add oil or butter to a pot over medium heat. Sauté garlic and ginger paste for 1 minute.", "french": "Ajouter l’huile ou le beurre dans une casserole chauffée à feu moyen. Faire revenir la pâte d’ail et la pâte de gingembre pendant 1 minute." } },
-              { "detailText": { "english": "Add masala and vegetables. Sauté for an additional 3–4 minutes.", "french": "Ajouter le masala et les légumes, puis faire revenir pendant encore 3 ou 4 minutes." } },
-              { "detailText": { "english": "Stir in Classico Tomato & Basil Pasta Sauce and simmer for 5 minutes.", "french": "Ajouter la sauce pour pâtes Tomates et basilic de Classico, puis laisser mijoter 5 minutes." } },
-              { "detailText": { "english": "Add rice and water. Bring to a boil. Cover and reduce heat. Cook for 12–15 minutes until rice is tender and liquid is absorbed.", "french": "Ajouter le riz et l’eau. Porter à ébullition. Couvrir et baisser le feu. Cuire de 12 à 15 minutes ou jusqu’à ce que le riz soit tendre et que le liquide soit absorbé." } },
-              { "detailText": { "english": "Remove from heat and let stand, covered, for 5 minutes. Fluff with a fork, and garnish before serving.", "french": "Retirer du feu et laisser reposer à couvert pendant 5 minutes. Aérer la préparation à l’aide d’une fourchette et ajouter les garnitures avant de servir." } },
-              { "detailText": { "english": "Optional: Garnish with fried onions, cilantro, mint.", "french": "Facultatif : Garnir d’oignons frits, de coriandre et de menthe." } }
+            "heading": {
+              "english": "Febreze Plug",
+              "french": "Prise Febreze"
+            },
+            "subHeading": {
+              "english": "Up to 50 days of continuous fragrance.",
+              "french": "Jusqu’à 50 jours de parfum continu."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+plugs+",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+plugs+"
+            },
+            "skus": [
+              "6000202392680",
+              "0TBOFWY48G5X",
+              "6000208170948",
+              "6000208807841",
+              "6000200692396",
+              "6000208626369",
+              "6000208808680",
+              "6000208808911",
+              "16R9X4DM2FMG",
+              "6000208807734"
             ]
           }
         ]
       },
       {
-        "order": 22,
-        "title": { "english": "", "french": "" },
-        "sections": [
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
+        "cards": [
           {
-            "text": {
-              "english": "Weeknight peanut chicken & chutney",
-              "french": "Poulet aux arachides et chutney pour les soirs de semaine"
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Bathroom"
+              },
+              "french": {
+                "searchText": "INSPO-3-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Salle de bain"
+              }
             },
-            "details": [
-              { "detailText": { "english": "Prep Time: 5 minutes", "french": "Préparation : 5 minutes" } },
-              { "detailText": { "english": "Cook Time: 25 minutes", "french": "Cuisson : 25 minutes" } },
-              { "detailText": { "english": "Servings: 4", "french": "Portions : 4" } },
-              { "detailText": { "english": "Ingredients", "french": "Ingrédients" } },
-              { "detailText": { "english": "Chicken:", "french": "Poulet :" } },
-              { "detailText": { "english": "2 tbsp Kraft Smooth Peanut Butter", "french": "2 c. à soupe (30 ml) de beurre d’arachide crémeux Kraft" } },
-              { "detailText": { "english": "2 tbsp canola or vegetable oil", "french": "2 c. à soupe (30 ml) d’huile de canola ou végétale" } },
-              { "detailText": { "english": "1 tbsp lemon juice", "french": "1 c. à soupe (15 ml) de jus de citron" } },
-              { "detailText": { "english": "1 tsp each garlic paste and ginger paste", "french": "1 c. à thé (5 ml) de pâte d’ail et 1 c. à thé (5 ml) de pâte de gingembre" } },
-              { "detailText": { "english": "1 ½ tsp tandoori masala or garam masala", "french": "1 ½ c. à thé (7,5 ml) de tandoori masala ou de garam masala" } },
-              { "detailText": { "english": "½ tsp paprika or chili powder", "french": "½ c. à thé (2,5 ml) de paprika ou de poudre de chili" } },
-              { "detailText": { "english": "1 ½ lbs boneless chicken, cut into cubes", "french": "1 ½ lb (680 kg) de poulet désossé, coupé en cubes" } },
-              { "detailText": { "english": "Salt to taste", "french": "Sel au goût" } },
-              { "detailText": { "english": "Chutney:", "french": "Chutney :" } },
-              { "detailText": { "english": "¼ cup Kraft Crunchy Peanut Butter (can substitute for Kraft Smooth Peanut Butter)", "french": "¼ de tasse (60 ml) de beurre d’arachide croquant Kraft (ou de beurre d’arachide crémeux Kraft)" } },
-              { "detailText": { "english": "2 tbsp lemon or lime juice", "french": "2 c. à soupe (30 ml) de jus de citron ou de lime" } },
-              { "detailText": { "english": "1 tsp garlic, paste or minced", "french": "1 c. à thé (5 ml) d’ail (en pâte ou haché finement)" } },
-              { "detailText": { "english": "½–1 tsp chili powder or finely chopped green chili", "french": "½ à 1 c. à thé (2,5 à 5 ml) de poudre de chili ou de piment vert haché finement" } },
-              { "detailText": { "english": "3 tbsp warm water", "french": "3 c. à soupe (45 ml) d’eau tiède" } },
-              { "detailText": { "english": "Directions", "french": "Instructions" } },
-              { "detailText": { "english": "Chicken:", "french": "Poulet :" } },
-              { "detailText": { "english": "Whisk Kraft Smooth Peanut Butter, oil, lemon juice, garlic and ginger paste, and spices in a bowl until smooth. Adjust seasoning to taste.", "french": "Dans un bol, fouetter le beurre d’arachide crémeux Kraft, l’huile, le jus de citron, la pâte d’ail, la pâte de gingembre et les épices jusqu’à ce que le mélange soit lisse. Rectifier l’assaisonnement au goût." } },
-              { "detailText": { "english": "Add cubed chicken and coat thoroughly. Allow to marinade for 10–15 minutes.", "french": "Ajouter les cubes de poulet et bien les enrober du mélange. Laisser mariner de 10 à 15 minutes." } },
-              { "detailText": { "english": "Grill, pan-fry or air-fry the chicken, until it is cooked through and lightly charred.", "french": "Cuire le poulet au gril, à la poêle ou à la friteuse à air chaud de 10 à 12 minutes, ou jusqu’à ce qu’il soit bien cuit et légèrement doré." } },
-              { "detailText": { "english": "Chutney:", "french": "Chutney :" } },
-              { "detailText": { "english": "Whisk all the ingredients in a bowl until smooth.", "french": "Dans un bol, fouetter tous les ingrédients jusqu’à ce que le mélange soit lisse." } },
-              { "detailText": { "english": "Slowly add warm water, 1 tbsp at a time until desired consistency, thin enough to drizzle.", "french": "Ajouter progressivement l’eau tiède, 1 c. à soupe (15 ml) à la fois, jusqu’à l’obtention de la consistance désirée, soit assez liquide pour former un mince filet." } },
-              { "detailText": { "english": "Adjust seasoning to taste.", "french": "Rectifier l’assaisonnement au goût." } },
-              { "detailText": { "english": "Optional: Serve with hot lemon wedges and garnish with cilantro.", "french": "Facultatif : Servir avec des quartiers de citron chauds et garnir de coriandre." } }
+            "heading": {
+              "english": "Febreze Bathroom",
+              "french": "Febreze Salle de bain"
+            },
+            "subHeading": {
+              "english": "Non-stop odour-fighting, up to 45 days.",
+              "french": "Élimine les odeurs jusqu’à 45 jours."
+            },
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
+            },
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+bathroom",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+bathroom"
+            },
+            "skus": [
+              "6000208807245",
+              "6000208808320",
+              "6000208808307",
+              "6000208807226",
+              "6000208808621",
+              "5GK8XSRLL6B4",
+              "6000208807974",
+              "6000208807906",
+              "6000208806916",
+              "1J23J1EOL8CL"
             ]
           }
         ]
-      }
-    ],
-    "heroPov": [
+      },
       {
-        "order": 1,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
         "cards": [
           {
-            "povStyle": "card-with-no-cta",
-            "backgroundColor": { "app": "", "web": "" },
-            "image": {
-              "web": {
-                "english": {
-                  "mobile": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "desktopAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "desktopAltCopy": ""
-                }
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Auto"
               },
-              "app": {
-                "english": {
-                  "mobile": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "tabletAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-1_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "tabletAltCopy": ""
-                }
+              "french": {
+                "searchText": "INSPO-4-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Auto"
               }
             },
-            "logo": {
-              "web": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              },
-              "app": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              }
+            "heading": {
+              "english": "Febreze Auto",
+              "french": "Febreze Auto"
             },
-            "legal": {
-              "web": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                }
-              }
+            "subHeading": {
+              "english": "Eliminate odours for better rides.",
+              "french": "Roulez sans odeurs désagréables."
             },
-            "headline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
             },
-            "subHeadline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze%20car&typeahead=febreze%20car",
+              "french": "https://www.walmart.ca/fr/search?q=febreze%20car&typeahead=febreze%20car"
             },
-            "eyebrow": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
-            },
-            "cta": {
-              "web": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              },
-              "app": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              }
-            }
+            "skus": [
+              "6000197850023",
+              "6000208807987",
+              "6000199312941",
+              "6000208806981",
+              "6000208806836",
+              "6000199315800",
+              "6000208418483",
+              "6000208808592",
+              "6000208419850",
+              "6000208419543"
+            ]
           }
         ]
       },
       {
-        "order": 1,
+        "title": {
+          "english": "Shop",
+          "french": "Magasiner"
+        },
         "cards": [
           {
-            "povStyle": "card-with-no-cta",
-            "backgroundColor": { "app": "", "web": "" },
-            "image": {
-              "web": {
-                "english": {
-                  "mobile": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "desktopAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "desktopAltCopy": ""
-                }
+            "cardImage": {
+              "english": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_E.jpg",
+                "altCopy": "Febreze Fabric"
               },
-              "app": {
-                "english": {
-                  "mobile": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "tabletAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-2_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "tabletAltCopy": ""
-                }
+              "french": {
+                "searchText": "INSPO-5-BP_CT5231_P&G-Febreze-Brand-Store_261001_F.jpg",
+                "altCopy": "Febreze Tissu"
               }
             },
-            "logo": {
-              "web": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              },
-              "app": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              }
+            "heading": {
+              "english": "Febreze Fabric",
+              "french": "Febreze Tissu"
             },
-            "legal": {
-              "web": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                }
-              }
+            "subHeading": {
+              "english": "Spray & refresh your household fabrics.",
+              "french": "Vaporisez et rafraîchissez vos tissus d’intérieur."
             },
-            "headline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
+            "linkText": {
+              "english": "Shop",
+              "french": "Magasiner"
             },
-            "subHeadline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
+            "linkValue": {
+              "english": "https://www.walmart.ca/en/search?q=febreze+fabric+refresher",
+              "french": "https://www.walmart.ca/fr/search?q=febreze+fabric+refresher"
             },
-            "eyebrow": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
-            },
-            "cta": {
-              "web": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              },
-              "app": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              }
-            },
-            "sourceLabel": "Kraft Diwali brief — Recipe #2 Hero POV, image only (ported per request)"
-          }
-        ]
-      },
-      {
-        "order": 1,
-        "cards": [
-          {
-            "povStyle": "card-with-no-cta",
-            "backgroundColor": { "app": "", "web": "" },
-            "image": {
-              "web": {
-                "english": {
-                  "mobile": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "desktopAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "desktop": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "desktopAltCopy": ""
-                }
-              },
-              "app": {
-                "english": {
-                  "mobile": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_E.jpg",
-                  "tabletAltCopy": ""
-                },
-                "french": {
-                  "mobile": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "mobileAltCopy": "",
-                  "tablet": "RCP-3_CR0231_WK37-41-Kraft-Diwali_261008_F.jpg",
-                  "tabletAltCopy": ""
-                }
-              }
-            },
-            "logo": {
-              "web": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              },
-              "app": {
-                "english": { "searchText": "", "altCopy": "" },
-                "french": { "searchText": "", "altCopy": "" }
-              }
-            },
-            "legal": {
-              "web": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                },
-                "french": {
-                  "discloser": "",
-                  "title": "",
-                  "description": "",
-                  "textColor": ""
-                }
-              }
-            },
-            "headline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
-            },
-            "subHeadline": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
-            },
-            "eyebrow": {
-              "web": {
-                "english": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                },
-                "french": {
-                  "text": "",
-                  "desktopTextColor": "",
-                  "mobileTextColor": ""
-                }
-              },
-              "app": {
-                "english": { "text": "", "textColor": "" },
-                "french": { "text": "", "textColor": "" }
-              }
-            },
-            "cta": {
-              "web": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              },
-              "app": {
-                "english": { "linkText": "", "linkValue": "" },
-                "french": { "linkText": "", "linkValue": "" }
-              }
-            }
+            "skus": [
+              "6000207494286",
+              "6000207362787",
+              "6000208169653",
+              "6000208808480",
+              "6000203371502",
+              "6000207362867",
+              "6000207494519",
+              "6000208808974",
+              "6000207363157"
+            ]
           }
         ]
       }
     ]
-
   }
 }

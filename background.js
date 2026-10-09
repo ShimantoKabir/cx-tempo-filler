@@ -120,6 +120,31 @@ async function cdpSetValue(tabId, x, y, value) {
   await sendDebuggerCommand(tabId, 'Input.insertText', { text: String(value) });
 }
 
+// Fetches a Google Sheet's export-as-xlsx URL — needs to run here rather
+// than in popup.js, since popup.js only lives as long as the popup window
+// stays open, and a network request risks being aborted if the user clicks
+// away mid-fetch. Relies on the browser's existing Google session cookies
+// (no separate OAuth flow) — only works if the signed-in Google account
+// this browser profile is using actually has access to the sheet. Returns
+// the xlsx bytes as base64 (chrome.runtime messaging round-trips plain
+// JSON-safe values most reliably) for popup.js to decode and hand to
+// XLSX.read.
+function fetchGoogleSheetAsBase64(url) {
+  return fetch(url).then((res) => {
+    if (!res.ok) {
+      throw new Error(
+        `HTTP ${res.status} — the sheet may not be shared with your Google account, or you're not signed into Google in this browser.`
+      );
+    }
+    return res.arrayBuffer();
+  }).then((buffer) => {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+  });
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === 'startAutomation') {
     openAndRun(TARGET_URL, 'runAutomation', msg.payload);
@@ -150,6 +175,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     const { x, y, value } = msg.payload;
     cdpSetValue(tabId, x, y, value)
       .then(() => sendResponse({ status: 'ok' }))
+      .catch((err) => sendResponse({ status: 'error', message: err.message }));
+    return true; // keep the message channel open for the async response
+  } else if (msg.action === 'fetchGoogleSheet') {
+    fetchGoogleSheetAsBase64(msg.payload.url)
+      .then((base64) => sendResponse({ status: 'ok', base64 }))
       .catch((err) => sendResponse({ status: 'error', message: err.message }));
     return true; // keep the message channel open for the async response
   }

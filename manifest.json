@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Fills the Page Selection form on CX Tempo (device type + page ID) to speed up repetitive brief entry.",
   "permissions": ["tabs", "debugger", "storage"],
-  "host_permissions": ["https://v2.tempo.cxtools.walmart.com/*"],
+  "host_permissions": ["https://v2.tempo.cxtools.walmart.com/*", "https://docs.google.com/*"],
   "action": {
     "default_popup": "popup.html"
   },

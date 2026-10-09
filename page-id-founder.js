@@ -96,15 +96,12 @@ class PageIdFounder {
     const list = brandPage[key];
     if (!Array.isArray(list)) return;
     list.forEach((entry, index) => {
-      descriptors.push({ moduleKey: `${key}-${index}`, kind, index, order: entry?.order, ...extraFor(entry, index) });
+      descriptors.push({ moduleKey: `${key}-${index}`, kind, index, ...extraFor(entry, index) });
     });
   };
 
-  // Builds the ordered list of modules the brief actually contains, sorted
-  // by each module's own "order" field so creation follows the brief's
-  // intent rather than a hardcoded module-type sequence. A module with no
-  // "order" field sorts after every module that has one (see the warning
-  // logged below) rather than silently defaulting to some guessed position.
+  // Builds the list of modules the brief actually contains, in the order
+  // each module key is pushed below.
   static buildModuleDescriptors = (brandPage) => {
     const descriptors = [];
     const push = (key, kind, extraFor) => PageIdFounder.pushArrayDescriptors(descriptors, brandPage, key, kind, extraFor);
@@ -125,20 +122,6 @@ class PageIdFounder {
     push('recipe', 'recipe');
     push('inspirationModule', 'inspirationModule');
     push('accordion', 'accordion');
-
-    descriptors.forEach((d) => {
-      if (typeof d.order !== 'number') {
-        console.warn(`[PageIdFounder] Module "${d.moduleKey}" has no "order" field — it will run last.`);
-      }
-    });
-
-    // Modules with no order (undefined) sort after every ordered module,
-    // rather than being treated as 0 and jumping to the front.
-    descriptors.sort((a, b) => {
-      const orderA = typeof a.order === 'number' ? a.order : Infinity;
-      const orderB = typeof b.order === 'number' ? b.order : Infinity;
-      return orderA - orderB;
-    });
 
     return descriptors;
   };

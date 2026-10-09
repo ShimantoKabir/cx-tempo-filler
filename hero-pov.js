@@ -80,14 +80,29 @@ class HeroPov {
           maxLen: 29,
         },
         subHeading: {
-          addButton: { selector: 'button.add-group-button-right', text: 'SUBHEADING', exact: false },
+          // Scoped to this card's own container — confirmed via testing
+          // that the unscoped selector matched the WRONG card's "Add
+          // Subheading" button once a second card existed (both cards'
+          // triggers share the same text, so without scoping,
+          // waitForElementByText has no way to tell them apart).
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'SUBHEADING',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-text"]`,
           fr: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-fr_text"]`,
           color: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-textColor"]`,
           maxLen: 70,
         },
         eyebrow: {
-          addButton: { selector: 'button.add-group-button-right', text: 'EYEBROW', exact: false },
+          // Scoped to this card's own container — same reason as
+          // subHeading's addButton above.
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'EYEBROW',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-text"]`,
           fr: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-fr_text"]`,
           color: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-textColor"]`,
@@ -110,7 +125,13 @@ class HeroPov {
           },
         },
         legal: {
-          addButton: { selector: 'button.add-group-button-right', text: 'LEGAL DISCLOSURE', exact: false },
+          // Scoped to this card's own container — same reason as
+          // subHeading's addButton above.
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'LEGAL DISCLOSURE',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-regularText"]`,
           fr: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-fr_regularText"]`,
           color: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-textColor"]`,
@@ -152,7 +173,13 @@ class HeroPov {
           // reason `result` below was never scoped), so scoping those times
           // out waiting for elements that never appear at that path.
           fr: {
-            addButton: { selector: 'button.add-group-button-right', text: 'FR IMAGE', exact: false },
+            // Scoped to this card's own container — same reason as
+            // subHeading's addButton above.
+            addButton: {
+              selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+              text: 'FR IMAGE',
+              exact: false,
+            },
             mobile: {
               open: `div[test-dataid="cards-${i},fr_image"] button[data-e2eid="cards-cards-${i}-regularImage-dropdown-button"]`,
               search: `input[data-e2eid="cards-cards-${i}-regularImage-dropdown-input"]`,
@@ -187,7 +214,16 @@ class HeroPov {
           maxLen: 50,
         },
         subHeading: {
-          addButton: { selector: 'button.add-group-button-right', text: 'SUBHEADING', exact: false },
+          // Scoped to this card's own container — confirmed via testing
+          // that the unscoped selector matched the WRONG card's "Add
+          // Subheading" button once a second card existed (both cards'
+          // triggers share the same text, so without scoping,
+          // waitForElementByText has no way to tell them apart).
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'SUBHEADING',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-text"]`,
           fr: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-fr_text"]`,
           colorDesktop: `div[test-dataid="cards-${i},subheading"] input[data-e2eid="cards-cards-${i}-textColor"]`,
@@ -195,7 +231,13 @@ class HeroPov {
           maxLen: 70,
         },
         eyebrow: {
-          addButton: { selector: 'button.add-group-button-right', text: 'EYEBROW', exact: false },
+          // Scoped to this card's own container — same reason as
+          // subHeading's addButton above.
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'EYEBROW',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-text"]`,
           fr: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-fr_text"]`,
           colorDesktop: `div[test-dataid="cards-${i},eyebrow"] input[data-e2eid="cards-cards-${i}-textColor"]`,
@@ -219,7 +261,13 @@ class HeroPov {
           },
         },
         legal: {
-          addButton: { selector: 'button.add-group-button-right', text: 'DISCLOSURE', exact: false },
+          // Scoped to this card's own container — same reason as
+          // subHeading's addButton above.
+          addButton: {
+            selector: `div[test-dataid="cards-${i}"] button.add-group-button-right`,
+            text: 'DISCLOSURE',
+            exact: false,
+          },
           en: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-regularText"]`,
           fr: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-fr_regularText"]`,
           colorDesktop: `div[test-dataid="cards-${i},legalDisclosure"] input[data-e2eid="cards-cards-${i}-textColor"]`,
@@ -639,7 +687,7 @@ class HeroPov {
       moduleName += ` #${index + 1}`;
     }
 
-    const sortedCards = [...cards].slice(0, HeroPov.MAX_CARDS).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const cardsToFill = cards.slice(0, HeroPov.MAX_CARDS);
 
     // No intermediate save — per explicit request, unlike every other
     // module's two-stage (non-image fields saved first, then image) split.
@@ -647,20 +695,20 @@ class HeroPov {
     // was found to wipe sibling fields filled beforehand; removing it here
     // means that risk is no longer guarded against, so verify a card's
     // text fields actually survive image selection.
-    for (let i = 0; i < sortedCards.length; i++) {
+    for (let i = 0; i < cardsToFill.length; i++) {
       // Card 0 exists by default when the module opens; every card after
       // that needs an explicit "add card" click first.
       if (i > 0 || !cardsPreExist) {
         await HeroPov.addSection({ selector: HeroPov.ADD_CARD_SELECTOR });
       }
-      await HeroPov.selectCardImages(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
-      Helper.log(`Selected images for card ${i + 1} of ${sortedCards.length} (alt text deferred).`);
+      await HeroPov.selectCardImages(SEL.card(i), cardsToFill[i], deviceType, brandPage.brandName);
+      Helper.log(`Selected images for card ${i + 1} of ${cardsToFill.length} (alt text deferred).`);
     }
 
-    for (let i = 0; i < sortedCards.length; i++) {
-      await HeroPov.fillCardNonImage(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName, addGbo);
-      await HeroPov.fillCardImageAlts(SEL.card(i), sortedCards[i], deviceType, brandPage.brandName);
-      Helper.log(`Filled remaining fields for card ${i + 1} of ${sortedCards.length}.`);
+    for (let i = 0; i < cardsToFill.length; i++) {
+      await HeroPov.fillCardNonImage(SEL.card(i), cardsToFill[i], deviceType, brandPage.brandName, addGbo);
+      await HeroPov.fillCardImageAlts(SEL.card(i), cardsToFill[i], deviceType, brandPage.brandName);
+      Helper.log(`Filled remaining fields for card ${i + 1} of ${cardsToFill.length}.`);
     }
 
     // Module name filled last of all — per explicit request — once every

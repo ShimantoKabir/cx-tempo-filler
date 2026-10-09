@@ -183,15 +183,17 @@ heading:
     font color: input[data-e2eid="cards-cards-0-textColor"]
         max character: 7
 
+parent-selector: div[test-dataid="cards-{card-pos}"]
+
 sub-heading:
-    add button: button.add-group-button-right inner HTML includes "SUBHEADING"
+    add button: parent-selector button.add-group-button-right inner HTML includes "SUBHEADING"
     en heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-text"]
         max character: 70
     fr heading: div[test-dataid="cards-0,subheading"] input[data-e2eid="cards-cards-0-fr_text"]
         max character: 70
 
 eyebrow:
-    add button: button.add-group-button-right inner HTML includes "EYEBROW"
+    add button: parent-selector button.add-group-button-right inner HTML includes "EYEBROW"
     en heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-text"]
         max character: 30
     fr heading: div[test-dataid="cards-0,eyebrow"] input[data-e2eid="cards-cards-0-fr_text"]
